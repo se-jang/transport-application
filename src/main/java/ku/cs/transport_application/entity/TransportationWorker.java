@@ -3,6 +3,7 @@ package ku.cs.transport_application.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import ku.cs.transport_application.common.TransportationWorkerStatus;
 import lombok.Data;
 
@@ -16,6 +17,8 @@ public class TransportationWorker {
     private String name;
     private String password;
     private TransportationWorkerStatus status;
+
+    @OneToMany
     private List<Order> orders;
 
     @Id

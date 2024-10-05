@@ -1,9 +1,6 @@
 package ku.cs.transport_application.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import ku.cs.transport_application.common.OrderStatus;
 import lombok.Data;
 
@@ -21,8 +18,15 @@ public class Order {
 
     private OrderStatus status;
     private LocalDateTime date;
+
+    @ManyToOne
     private User customer;
 
+    @ManyToOne
+    private User company;
+
+    private TransportationWorker worker;
+
     @OneToMany(mappedBy = "order")
-    private List<Product> products = new ArrayList<>();;
+    private List<OrderLine> orderLines = new ArrayList<>();
 }
