@@ -7,21 +7,23 @@ import jakarta.persistence.OneToMany;
 import ku.cs.transport_application.common.TransportationWorkerStatus;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Data
 @Entity
 public class TransportationWorker {
+    @Id
+    @GeneratedValue
+    private UUID id;
+
     private String username;
     private String name;
     private String password;
     private TransportationWorkerStatus status;
 
-    @OneToMany
-    private List<Order> orders;
+    @OneToMany(mappedBy = "worker")
+    private List<Order> orders = new ArrayList<>();
 
-    @Id
-    @GeneratedValue
-    private UUID id;
 }

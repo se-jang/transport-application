@@ -20,11 +20,15 @@ public class Order {
     private LocalDateTime date;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private User customer;
 
     @ManyToOne
+    @JoinColumn(name = "company_id")
     private User company;
 
+    @ManyToOne
+    @JoinColumn(name = "worker_id")
     private TransportationWorker worker;
 
     @OneToMany(mappedBy = "order")
