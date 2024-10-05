@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Order {
     @Id
     @GeneratedValue
-    private final UUID id;
+    private UUID id;
 
     private OrderStatus status;
     private LocalDateTime date;

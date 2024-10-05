@@ -19,5 +19,5 @@ public class User {
 
     @Id
     @GeneratedValue
-    private final UUID id;
+    private UUID id;
 }

@@ -16,5 +16,5 @@ public class Admin {
 
     @Id
     @GeneratedValue
-    private final UUID id;
+    private UUID id;
 }

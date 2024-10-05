@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Bill {
     @Id
     @GeneratedValue
-    private final UUID id;
+    private UUID id;
 
     private BillStatus status;
     private int shippingCost;

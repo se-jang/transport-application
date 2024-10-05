@@ -20,5 +20,5 @@ public class TransportationWorker {
 
     @Id
     @GeneratedValue
-    private final UUID id;
+    private UUID id;
 }
