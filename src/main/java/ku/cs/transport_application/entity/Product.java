@@ -16,7 +16,6 @@ public class Product {
     @GeneratedValue
     private UUID id;
 
-    private int amount;
     private String name;
 
     @ManyToOne

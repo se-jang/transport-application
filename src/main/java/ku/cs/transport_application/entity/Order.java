@@ -18,8 +18,15 @@ public class Order {
 
     private OrderStatus status;
     private LocalDateTime date;
+
+    @ManyToOne
     private User customer;
 
+    @ManyToOne
+    private User company;
+
+    private TransportationWorker worker;
+
     @OneToMany(mappedBy = "order")
-    private List<Product> products = new ArrayList<>();;
+    private List<OrderLine> orderLines = new ArrayList<>();
 }
