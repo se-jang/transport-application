@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import ku.cs.transport_application.common.ProductType;
 import lombok.Data;
 import java.util.UUID;
 
@@ -19,5 +20,5 @@ public class Product {
     private String name;
 
     @ManyToOne
-    private Type type;
+    private ProductType type;
 }
