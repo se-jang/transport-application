@@ -1,10 +1,10 @@
 package ku.cs.transport_application.entity;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.*;
+import lombok.Data;
 
+@Entity
+@Data
 public class OrderLine {
     @EmbeddedId
     private OrderLineKey id;
@@ -17,7 +17,7 @@ public class OrderLine {
     private Order order;
 
     @ManyToOne
-    @MapsId("product_id")
+    @MapsId("productId")
     @JoinColumn(name = "product_id")
     private Product product;
 }

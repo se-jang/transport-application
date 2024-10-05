@@ -9,6 +9,6 @@ public class OrderLineKey implements Serializable {
     @Column(name = "order_id")
     private UUID orderId;
 
-    @Column(name = "menu_id")
-    private UUID menuId;
+    @Column(name = "product_id")
+    private UUID productId;
 }
