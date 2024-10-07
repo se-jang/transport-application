@@ -1,4 +1,13 @@
 package ku.cs.transport_application.repository;
 
-public interface ProductRepository {
+import ku.cs.transport_application.common.ProductType;
+import ku.cs.transport_application.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+public interface ProductRepository extends JpaRepository<Product, UUID> {
+    Product findByID(UUID id);
+    Product findByType(ProductType type);
+    Product findByName(String name);
 }

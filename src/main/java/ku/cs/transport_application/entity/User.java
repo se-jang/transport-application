@@ -12,8 +12,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-public class
-User {
+public class User {
     @Id
     @GeneratedValue
     private UUID id;
