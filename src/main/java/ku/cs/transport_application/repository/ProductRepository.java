@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, UUID> {
-    Product findByID(UUID id);
     Product findByType(ProductType type);
     Product findByName(String name);
 }

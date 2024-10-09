@@ -24,6 +24,11 @@ public class Bill {
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private User customer;
+    @JoinColumn(name = "company_id")
+    private User company;
+
+    public void setShippingCost() {
+        this.shippingCost = 1250;
+    }
+
 }
