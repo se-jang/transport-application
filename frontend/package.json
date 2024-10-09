@@ -1,0 +1,30 @@
+{
+  "name": "transport-application",
+  "version": "1.0.0",
+  "description": "transport-application",
+  "main": "index.js",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/se-sa/transport-application.git"
+  },
+  "keywords": [
+    "transport-application"
+  ],
+  "author": "6510450810, 6510450763, 6510450607",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/se-sa/transport-application/issues"
+  },
+  "homepage": "https://github.com/se-sa/transport-application#readme",
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "vue-template-compiler": "^2.7.16"
+  },
+  "dependencies": {
+    "vue": "^3.5.11"
+  }
+}
