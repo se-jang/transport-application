@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import static ku.cs.transport_application.common.TransportationWorkerStatus.AVAILABLE;
+
 @Service
-public class TransportWorkerService {
+public class TransportationWorkerService {
 
     @Autowired
     TransportationWorkerRepository transportationWorkerRepository;
@@ -24,5 +26,9 @@ public class TransportWorkerService {
                 .orElseThrow(() -> new IllegalArgumentException("Worker not found"));
         record.setStatus(status);
         transportationWorkerRepository.save(record);
+    }
+
+    public List<TransportationWorker> getAvailableTransportationWorker() {
+        return transportationWorkerRepository.findByStatus(AVAILABLE);
     }
 }
