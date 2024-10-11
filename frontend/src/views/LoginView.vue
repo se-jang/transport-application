@@ -21,27 +21,27 @@
 export default {
   data() {
     return {
-      username: '',
-      password: ''
+      username: "",
+      password: "",
     };
   },
   methods: {
     handleLogin() {
       console.log("Logging in with:", this.username, this.password);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Hanuman&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Hanuman&display=swap");
 
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #87CEEB;
+  background-color: #87ceeb;
 }
 
 .login-box {
@@ -54,7 +54,7 @@ export default {
 
 .login-title {
   text-align: center;
-  font-family: 'Hanuman', sans-serif;
+  font-family: "Hanuman", sans-serif;
 }
 
 .form-group {
@@ -77,13 +77,12 @@ input {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #0096FA;
+  background-color: #0096fa;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-
 button:hover {
   background-color: #45a049;
 }
