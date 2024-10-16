@@ -1,7 +1,8 @@
 <template>
   <div class="order-card">
-    <h2 class="order-id">Order ID</h2>
-    <p class="due-date">Due Date: ...</p>
+    <div class="status-indicator" :class="statusClass">{{ status }}</div>
+    <h2 class="order-id">Order ID: {{ orderId }}</h2>
+    <p class="due-date">Due Date: {{ dueDate }}</p>
     <button class="details-button">Details</button>
   </div>
 </template>
@@ -9,11 +10,40 @@
 <script>
 export default {
   name: "OrderAdminCard",
+  props: {
+    status: {
+      type: String,
+      default: "checked",
+    },
+    orderId: {
+      type: String,
+      required: true,
+    },
+    dueDate: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    statusClass() {
+      switch (this.status) {
+        case "checked":
+          return "status-checked";
+        case "ongoing":
+          return "status-ongoing";
+        case "delivered":
+          return "status-delivered";
+        default:
+          return "";
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .order-card {
+  position: relative;
   background-color: white;
   padding: 20px;
   border-radius: 5px;
@@ -27,15 +57,36 @@ export default {
 }
 
 .details-button {
-  padding: 5px 8px;
+  padding: 5px 10px;
   font-family: "Inter", sans-serif;
   background-color: gray;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
-  align-self: flex-start;
   width: auto;
+}
+
+.status-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  border-radius: 5px;
+}
+
+.status-checked {
+  background-color: red;
+}
+
+.status-ongoing {
+  background-color: orange;
+}
+
+.status-delivered {
+  background-color: green;
 }
 </style>

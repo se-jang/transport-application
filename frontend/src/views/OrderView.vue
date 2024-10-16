@@ -6,7 +6,14 @@
 
     <div class="main-container">
       <div class="order-container">
-        <component :is="orderComponent"></component>
+        <component
+            v-for="order in orders"
+            :key="order.id"
+            :is="orderComponent"
+            :status="order.status"
+            :orderId="order.id"
+            :dueDate="order.dueDate"
+        />
       </div>
     </div>
   </div>
@@ -26,6 +33,11 @@ export default {
   data() {
     return {
       role: "admin",
+      orders: [
+        { id: "1", dueDate: "2024-10-20", status: "checked" },
+        { id: "2", dueDate: "2024-10-22", status: "ongoing" },
+        { id: "3", dueDate: "2024-10-25", status: "delivered" },
+      ],
     };
   },
   computed: {
