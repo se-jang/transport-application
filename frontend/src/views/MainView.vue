@@ -18,27 +18,27 @@
 </template>
 
 <script>
-import HeaderAdmin from '../components/HeaderAdmin.vue';
-import HeaderWorker from '../components/HeaderWorker.vue';
-import HeaderCompany from '../components/HeaderCompany.vue';
-import HeaderCustomer from '../components/HeaderCustomer.vue';
+import HeaderAdmin from "../components/HeaderAdmin.vue";
+import HeaderWorker from "../components/HeaderWorker.vue";
+import HeaderCompany from "../components/HeaderCompany.vue";
+import HeaderCustomer from "../components/HeaderCustomer.vue";
 
 export default {
   data() {
     return {
-      role: 'admin',
+      role: "customer",
     };
   },
   computed: {
     headerComponent() {
       switch (this.role) {
-        case 'admin':
+        case "admin":
           return HeaderAdmin;
-        case 'worker':
+        case "worker":
           return HeaderWorker;
-        case 'company':
+        case "company":
           return HeaderCompany;
-        case 'customer':
+        case "customer":
           return HeaderCustomer;
         default:
           return null;
