@@ -27,12 +27,15 @@ export default {
 }
 
 .details-button {
-  padding: 10px 20px;
+  padding: 5px 8px;
   font-family: "Inter", sans-serif;
   background-color: gray;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
+  align-self: flex-start;
+  width: auto;
 }
 </style>

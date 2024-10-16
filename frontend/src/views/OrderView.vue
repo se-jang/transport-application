@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <div class="page-container">
     <header>
       <component :is="headerComponent"></component>
     </header>
 
-    <div class="order-container">
-      <component :is="orderComponent"></component>
+    <div class="main-container">
+      <div class="order-container">
+        <component :is="orderComponent"></component>
+      </div>
     </div>
   </div>
 </template>
@@ -60,9 +62,37 @@ export default {
 </script>
 
 <style scoped>
-.order-container {
-  background-color: #f0f0f0;
-  padding: 20px;
+:root {
+  --main-bg-color: #4a4a4a;
+  --sub-bg-color: #eeeeee;
+  --card-bg-color: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-container {
+  background-color: var(--main-bg-color);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.order-container {
+  background-color: #e6e6e6;
+  padding: 20px;
+  width: 80%;
+  max-width: 1200px;
+  overflow-y: auto;
+  height: 100%;
 }
 </style>
