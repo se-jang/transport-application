@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import ku.cs.transport_application.common.OrderStatus;
 import ku.cs.transport_application.common.TransportationWorkerStatus;
+import ku.cs.transport_application.entity.Product;
 import ku.cs.transport_application.entity.TransportationWorker;
 import ku.cs.transport_application.entity.User;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -34,4 +36,9 @@ public class OrderRequest {
     @NotBlank
     private TransportationWorker worker;
 
+    @NotBlank
+    private List<Product> product;
+
+    @NotBlank
+    private int quantity;
 }
