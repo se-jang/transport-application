@@ -14,10 +14,8 @@ public class TransportationWorkerController {
     private TransportationWorkerService transportationWorkerService;
 
     @GetMapping("/transportation-workers")
-    public ResponseEntity<?> transportationWorkers(Model model) {
-        model.addAttribute("transportationWorkers", transportationWorkerService.getAvailableTransportationWorker());
+    public ResponseEntity<?> getTransportationWorkers() {
         return ResponseEntity.ok(transportationWorkerService.getAvailableTransportationWorker());
     }
-
 
 }

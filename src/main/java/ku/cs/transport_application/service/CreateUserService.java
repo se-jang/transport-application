@@ -12,19 +12,16 @@ import org.springframework.stereotype.Service;
 public class CreateUserService {
 
     @Autowired
-    private UserRepository repository;
-
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Autowired
     private ModelMapper modelMapper;
 
-
-    public boolean isUsernameAvailable(String username) {
-        return repository.findByUsername(username) == null;
+    public boolean isUsernameUserAvailable(String username) {
+        return userRepository.findByUsername(username) == null;
     }
 
     public void createUser(CreateUserRequest user) {
@@ -33,7 +30,7 @@ public class CreateUserService {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         record.setPassword(hashedPassword);
 
-        repository.save(record);
+        userRepository.save(record);
     }
 
 }

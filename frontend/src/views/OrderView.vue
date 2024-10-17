@@ -8,12 +8,12 @@
       <div class="order-container">
         <h2 class="order-title">Order</h2>
         <component
-          v-for="order in orders"
-          :key="order.id"
-          :is="orderComponent"
-          :status="order.status"
-          :orderId="order.id"
-          :dueDate="order.dueDate"
+            v-for="order in orders"
+            :key="order.id"
+            :is="orderComponent"
+            :status="order.status"
+            :orderId="order.id"
+            :dueDate="order.dueDate"
         />
       </div>
     </div>

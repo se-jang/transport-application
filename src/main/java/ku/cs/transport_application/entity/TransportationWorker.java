@@ -21,6 +21,8 @@ public class TransportationWorker {
     private String username;
     private String name;
     private String password;
+    private String phoneNum;
+    private String address;
     private TransportationWorkerStatus status;
 
     @OneToMany(mappedBy = "worker")

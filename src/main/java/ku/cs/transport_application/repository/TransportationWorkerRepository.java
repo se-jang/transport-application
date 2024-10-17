@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface TransportationWorkerRepository extends JpaRepository<TransportationWorker, UUID> {
     List<TransportationWorker> findByStatus(TransportationWorkerStatus status);
+    TransportationWorker findByUsername(String username);
 }
