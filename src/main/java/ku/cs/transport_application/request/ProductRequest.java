@@ -6,7 +6,7 @@ import ku.cs.transport_application.common.ProductType;
 import lombok.Data;
 
 @Data
-public class Product {
+public class ProductRequest {
 
     @NotBlank(message = "Name is required")
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Name only contain letters")

@@ -1,17 +1,19 @@
 package ku.cs.transport_application.service;
 
-import ku.cs.transport_application.entity.Order;
-import ku.cs.transport_application.entity.OrderLine;
-import ku.cs.transport_application.entity.Product;
-import ku.cs.transport_application.entity.User;
+import ku.cs.transport_application.common.OrderStatus;
+import ku.cs.transport_application.common.ProductType;
+import ku.cs.transport_application.entity.*;
 import ku.cs.transport_application.repository.OrderLineRepository;
 import ku.cs.transport_application.repository.OrderRepository;
+import ku.cs.transport_application.repository.ProductRepository;
 import ku.cs.transport_application.repository.UserRepository;
 import ku.cs.transport_application.request.OrderRequest;
+import ku.cs.transport_application.request.ProductDetailRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
@@ -26,28 +28,46 @@ public class CreateOrderService {
     private UserRepository userRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     public void createOrder(OrderRequest request){
-        Order record = modelMapper.map(request, Order.class);
+        Order order = new Order();
+        order.setStatus(OrderStatus.UNCHECK);
+        order.setDate(LocalDateTime.now());
+
         User customer = userRepository.findByUsername(request.getCustomerUsername());
-        record.setCustomer(customer);
-        orderRepository.save(record);
+        order.setCustomer(customer);
 
-        OrderLine orderLine = new OrderLine();
-        orderLine.setOrder(record);
+        User company = userRepository.findByUsername(request.getCompanyUsername());
+        order.setCompany(company);
 
-        for (Map.Entry<Product, Integer> entry : request.getProductQuantities().entrySet()) {
-            Product product = entry.getKey();
-            Integer quantity = entry.getValue();
+        orderRepository.save(order);
 
-            orderLine.setOrder(record);
+        for ( ProductDetailRequest productDetail: request.getProductDetails()) {
+            Product product = new Product();
+            String productName = productDetail.getProductName();
+            ProductType productType = productDetail.getProductType();
+            Integer quantity = productDetail.getQuantity();
+
+            product.setName(productName);
+            product.setType(productType);
+
+            OrderLine orderLine = new OrderLine();
+            orderLine.setOrder(order);
             orderLine.setProduct(product);
             orderLine.setQuantity(quantity);
 
-            orderLineRepository.save(orderLine);
-        }
+            OrderLineKey orderLineKey = new OrderLineKey();
+            orderLineKey.setOrderId(order.getId());
+            orderLineKey.setProductId(product.getId());
 
-        orderLineRepository.save(orderLine);
+            orderLine.setId(orderLineKey);
+
+            orderLineRepository.save(orderLine);
+            productRepository.save(product);
+        }
     }
 }

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/LoginView.vue";
 import MainViews from "@/views/MainView.vue";
 import OrderView from "@/views/OrderView.vue";
+import OrderDetailView from "@/views/OrderDetailView.vue";
 import CreateUserView from "@/views/CreateUserView.vue";
 import WorkerListView from "@/views/WorkerListView.vue"
 
@@ -20,6 +21,11 @@ const routes = [
     path: '/orders',
     name: 'orders',
     component: OrderView,
+  },
+  {
+    path :'/order-detail',
+    name: 'order-detail',
+    component: OrderDetailView,
   },
   {
     path: '/create-user',

@@ -1,24 +1,21 @@
 package ku.cs.transport_application.request;
 
 import jakarta.validation.constraints.NotBlank;
-import ku.cs.transport_application.common.OrderStatus;
-import ku.cs.transport_application.entity.Product;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.util.Map;
+import java.util.List;
 
 @Data
 public class OrderRequest {
 
-    @NotBlank
-    private OrderStatus status;
-
-    @NotBlank
+    @NotBlank(message = "Customer username is required")
     private String customerUsername;
 
-    @NotBlank
+    @NotBlank(message = "Company username is required")
     private String companyUsername;
 
-    @NotBlank
-    private Map<Product, Integer> productQuantities;
+    @NotEmpty
+    private List<ProductDetailRequest> productDetails;
 }
