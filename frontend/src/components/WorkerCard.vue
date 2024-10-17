@@ -1,26 +1,25 @@
 <template>
-  <div class="order-card">
+  <div class="worker-card">
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
-    <h2 class="order-id">Order ID: {{ orderId }}</h2>
-    <p class="due-date">Due Date: {{ dueDate }}</p>
+    <h2 class="worker-id">Worker ID: {{ workerId }}</h2>
+    <p class="worker-name">Name: {{ name }}</p>
     <button class="details-button">Details</button>
-    <button v-if="status === 'delivered'" class="bill-button">Bill</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: "OrderCompanyCard",
+  name: "WorkerCard",
   props: {
     status: {
       type: String,
-      default: "checked",
+      required: true,
     },
-    orderId: {
+    workerId: {
       type: String,
       required: true,
     },
-    dueDate: {
+    name: {
       type: String,
       required: true,
     },
@@ -28,12 +27,12 @@ export default {
   computed: {
     statusClass() {
       switch (this.status) {
-        case "checked":
-          return "status-checked";
+        case "available":
+          return "status-available";
         case "ongoing":
           return "status-ongoing";
-        case "delivered":
-          return "status-delivered";
+        case "unavailable":
+          return "status-unavailable";
         default:
           return "";
       }
@@ -43,7 +42,7 @@ export default {
 </script>
 
 <style scoped>
-.order-card {
+.worker-card {
   position: relative;
   background-color: white;
   padding: 20px;
@@ -52,15 +51,14 @@ export default {
   margin-top: 15px;
 }
 
-.order-id,
-.due-date {
+.worker-id,
+.worker-name {
   font-family: "Inter", sans-serif;
   margin: 0;
-  margin-bottom :10px;
+  margin-bottom: 10px;
 }
 
-.details-button,
-.bill-button {
+.details-button {
   padding: 5px 10px;
   font-family: "Inter", sans-serif;
   background-color: gray;
@@ -69,7 +67,6 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   width: auto;
-  margin-right: 10px;
 }
 
 .status-indicator {
@@ -83,9 +80,9 @@ export default {
   border-radius: 5px;
 }
 
-.status-checked {
+.status-available {
   font-family: "Inter", sans-serif;
-  background-color: red;
+  background-color: green;
 }
 
 .status-ongoing {
@@ -93,8 +90,8 @@ export default {
   background-color: orange;
 }
 
-.status-delivered {
+.status-unavailable {
   font-family: "Inter", sans-serif;
-  background-color: green;
+  background-color: red;
 }
 </style>

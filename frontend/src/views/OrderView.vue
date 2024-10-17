@@ -8,12 +8,12 @@
       <div class="order-container">
         <h2 class="order-title">Order</h2>
         <component
-            v-for="order in orders"
-            :key="order.id"
-            :is="orderComponent"
-            :status="order.status"
-            :orderId="order.id"
-            :dueDate="order.dueDate"
+          v-for="order in orders"
+          :key="order.id"
+          :is="orderComponent"
+          :status="order.status"
+          :orderId="order.id"
+          :dueDate="order.dueDate"
         />
       </div>
     </div>
@@ -33,7 +33,7 @@ import OrderCustomerCard from "../components/OrderCustomerCard.vue";
 export default {
   data() {
     return {
-      role: "customer",
+      role: "admin",
       orders: [
         { id: "1", dueDate: "2024-10-20", status: "checked" },
         { id: "2", dueDate: "2024-10-20", status: "ongoing" },

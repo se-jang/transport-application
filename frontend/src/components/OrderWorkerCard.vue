@@ -92,14 +92,17 @@ export default {
 }
 
 .status-checked {
+  font-family: "Inter", sans-serif;
   background-color: red;
 }
 
 .status-ongoing {
+  font-family: "Inter", sans-serif;
   background-color: orange;
 }
 
 .status-delivered {
+  font-family: "Inter", sans-serif;
   background-color: green;
 }
 </style>

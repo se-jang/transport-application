@@ -3,6 +3,7 @@ import LoginView from "@/views/LoginView.vue";
 import MainViews from "@/views/MainView.vue";
 import OrderView from "@/views/OrderView.vue";
 import CreateUserView from "@/views/CreateUserView.vue";
+import WorkerListView from "@/views/WorkerListView.vue"
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/create-user',
     name: 'createUser',
     component: CreateUserView,
+  },
+  {
+    path: '/worker-list',
+    name: 'worker-list',
+    component: WorkerListView,
   },
 ];
 
