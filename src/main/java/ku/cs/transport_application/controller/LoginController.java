@@ -1,9 +1,11 @@
 package ku.cs.transport_application.controller;
 
+import ku.cs.transport_application.entity.TransportationWorker;
 import ku.cs.transport_application.entity.User;
 import ku.cs.transport_application.request.LoginRequest;
 import ku.cs.transport_application.response.JwtResponse;
 import ku.cs.transport_application.service.JwtService;
+import ku.cs.transport_application.service.TransportationWorkerService;
 import ku.cs.transport_application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ public class LoginController {
     private UserService userService;
 
     @Autowired
+    private TransportationWorkerService transportationWorkerService;
+
+    @Autowired
     private JwtService jwtService;
 
     @Autowired
@@ -29,11 +34,18 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         User user = userService.findByUsername(request.getUsername());
-        System.out.println("Login request: " + request);
+        TransportationWorker worker = transportationWorkerService.findWorkerByUsername(request.getUsername());
+
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             String token = jwtService.generateToken(user.getUsername());
             return ResponseEntity.ok(new JwtResponse(token));
         }
+
+        if (worker != null && passwordEncoder.matches(request.getPassword(), worker.getPassword())) {
+            String token = jwtService.generateToken(worker.getUsername());
+            return ResponseEntity.ok(new JwtResponse(token));
+        }
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
     }
 

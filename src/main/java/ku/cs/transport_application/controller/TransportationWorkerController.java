@@ -15,7 +15,7 @@ public class TransportationWorkerController {
 
     @GetMapping("/transportation-workers")
     public ResponseEntity<?> getTransportationWorkers() {
-        return ResponseEntity.ok(transportationWorkerService.getAvailableTransportationWorker());
+        return ResponseEntity.ok(transportationWorkerService.getAvailableWorker());
     }
 
 }

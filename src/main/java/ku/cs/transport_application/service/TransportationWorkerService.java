@@ -28,7 +28,11 @@ public class TransportationWorkerService {
         transportationWorkerRepository.save(record);
     }
 
-    public List<TransportationWorker> getAvailableTransportationWorker() {
+    public TransportationWorker findWorkerByUsername(String username) {
+        return transportationWorkerRepository.findByUsername(username);
+    }
+
+    public List<TransportationWorker> getAvailableWorker() {
         return transportationWorkerRepository.findByStatus(AVAILABLE);
     }
 }
