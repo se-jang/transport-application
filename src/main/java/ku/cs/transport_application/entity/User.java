@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import ku.cs.transport_application.common.UserRole;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ public class User {
     private String name;
     private String password;
     private String phoneNum;
-    private String userType;
     private String address;
+    private UserRole userRole;
 
     @OneToMany(mappedBy = "company")
     private List<Bill> bills = new ArrayList<>();

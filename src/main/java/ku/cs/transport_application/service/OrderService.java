@@ -7,11 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static ku.cs.transport_application.common.UserRole.COMPANY;
+import static ku.cs.transport_application.common.UserRole.CUSTOMER;
+
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
     public List<Order> getOrdersByUser(User user) {
-        return orderRepository.findByUser(user);
+        if (user.getUserRole()== COMPANY) {
+            return orderRepository.findByCompanyId(user.getId());
+        } else if (user.getUserRole() == CUSTOMER) {
+            return orderRepository.findByCustomerId(user.getId());
+        } else {
+            return null;
+        }
     }
 }
