@@ -10,7 +10,11 @@ import ku.cs.transport_application.repository.UserRepository;
 import ku.cs.transport_application.request.OrderRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
+@Service
 public class CreateOrderService {
     @Autowired
     private OrderRepository orderRepository;
@@ -26,19 +30,24 @@ public class CreateOrderService {
 
     public void createOrder(OrderRequest request){
         Order record = modelMapper.map(request, Order.class);
-        User customer = userRepository.findByUsername(request.getCustomer().getName());
+        User customer = userRepository.findByUsername(request.getCustomerUsername());
         record.setCustomer(customer);
         orderRepository.save(record);
 
         OrderLine orderLine = new OrderLine();
         orderLine.setOrder(record);
 
-        for (Product product: request.getProduct()) {
+        for (Map.Entry<Product, Integer> entry : request.getProductQuantities().entrySet()) {
+            Product product = entry.getKey();
+            Integer quantity = entry.getValue();
+
+            orderLine.setOrder(record);
             orderLine.setProduct(product);
-            orderLine.setQuantity(request.getQuantity());
+            orderLine.setQuantity(quantity);
+
+            orderLineRepository.save(orderLine);
         }
 
         orderLineRepository.save(orderLine);
     }
-
 }

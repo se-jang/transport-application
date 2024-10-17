@@ -1,19 +1,11 @@
 package ku.cs.transport_application.request;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
 import ku.cs.transport_application.common.OrderStatus;
-import ku.cs.transport_application.common.TransportationWorkerStatus;
 import ku.cs.transport_application.entity.Product;
-import ku.cs.transport_application.entity.TransportationWorker;
-import ku.cs.transport_application.entity.User;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @Data
 public class OrderRequest {
@@ -21,24 +13,12 @@ public class OrderRequest {
     @NotBlank
     private OrderStatus status;
 
-    @PastOrPresent(message = "The date must be in the present or past.")
-    private LocalDateTime date;
-
-    @FutureOrPresent(message = "The date must be in the present or Future.")
-    private LocalDateTime deliveryDate;
+    @NotBlank
+    private String customerUsername;
 
     @NotBlank
-    private User customer;
+    private String companyUsername;
 
     @NotBlank
-    private User company;
-
-    @NotBlank
-    private TransportationWorker worker;
-
-    @NotBlank
-    private List<Product> product;
-
-    @NotBlank
-    private int quantity;
+    private Map<Product, Integer> productQuantities;
 }
