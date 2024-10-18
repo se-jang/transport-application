@@ -28,7 +28,7 @@ public class OrderService {
         if (recordOptional.isPresent()) {
             User record = recordOptional.get();
 
-            if (record.getUserRole()== USER) {
+            if (record.getRole() == USER) {
                 return orderRepository.findByUserId(record.getId());
             } else {
                 return null;

@@ -3,12 +3,9 @@ package ku.cs.transport_application.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import ku.cs.transport_application.common.UserRole;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -21,8 +18,8 @@ public class User {
     private String username;
     private String name;
     private String password;
-    private String phoneNum;
-    private String address;
-    private UserRole userRole;
+    private String phoneNumber;
+    private String email;
+    private UserRole role;
 
 }

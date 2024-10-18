@@ -19,6 +19,7 @@ public class Order {
 
     private OrderStatus status;
     private String customerName;
+    private String customerAddress;
     private LocalDateTime date;
     private LocalDateTime deliveredDate;
 

@@ -36,6 +36,7 @@ public class CreateOrderService {
     public void createOrder(OrderRequest request){
         Order order = new Order();
         order.setCustomerName(request.getCustomerName());
+        order.setCustomerAddress(request.getCustomerAddress());
         order.setStatus(OrderStatus.UNCHECK);
         order.setDate(LocalDateTime.now());
 

@@ -28,12 +28,12 @@ public class CreateUserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username not available");
         }
 
-        if (user.getUserRole() == UserRole.WORKER) {
+        if (user.getRole() == UserRole.WORKER) {
             createWorkerService.createWorker(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("Worker created successfully");
         }
 
-        else if (user.getUserRole() == UserRole.USER) {
+        else if (user.getRole() == UserRole.USER) {
             createUserService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
         }

@@ -13,6 +13,9 @@ public class OrderRequest {
     @NotBlank(message = "Customer name is required")
     private String customerName;
 
+    @NotBlank(message = "Customer address is required")
+    private String customerAddress;
+
     @NotBlank(message = "username is required")
     private String username;
 

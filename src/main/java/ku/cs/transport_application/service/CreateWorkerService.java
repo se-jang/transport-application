@@ -30,8 +30,8 @@ public class CreateWorkerService {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         worker.setPassword(hashedPassword);
 
-        worker.setPhoneNum(user.getPhoneNum());
-        worker.setAddress(user.getAddress());
+        worker.setPhoneNumber(user.getPhoneNumber());
+        worker.setEmail(user.getEmail());
         worker.setStatus(TransportationWorkerStatus.AVAILABLE);
 
         transportationWorkerRepository.save(worker);

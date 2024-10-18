@@ -1,9 +1,6 @@
 package ku.cs.transport_application.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import ku.cs.transport_application.common.UserRole;
 import lombok.Data;
 
@@ -23,11 +20,12 @@ public class CreateUserRequest {
 
     @Pattern(regexp = "^[0-9]*$", message = "Phone number must be numeric")
     @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
-    private String phoneNum;
+    private String phoneNumber;
 
-    @NotBlank(message = "Address is required")
-    private String address;
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
+    private String email;
 
     @NotNull(message = "User role is required")
-    private UserRole userRole;
+    private UserRole role;
 }

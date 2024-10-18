@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<User> getUsers() {
-        return userRepository.findByUserRoleNot(UserRole.ADMIN);
+        return userRepository.findByRoleNot(UserRole.ADMIN);
     }
 
     public User findByUsername(String username) {
