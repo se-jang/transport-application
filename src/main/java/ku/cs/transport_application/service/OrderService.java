@@ -1,5 +1,6 @@
 package ku.cs.transport_application.service;
 
+import ku.cs.transport_application.common.OrderStatus;
 import ku.cs.transport_application.entity.Order;
 import ku.cs.transport_application.entity.User;
 import ku.cs.transport_application.repository.OrderRepository;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ku.cs.transport_application.common.OrderStatus.UNCHECK;
 import static ku.cs.transport_application.common.UserRole.COMPANY;
 import static ku.cs.transport_application.common.UserRole.CUSTOMER;
 
@@ -37,5 +39,16 @@ public class OrderService {
         } else {
             return null;
         }
+    }
+
+    public List<Order> getUncheckOrder() {
+        return orderRepository.findByStatus(UNCHECK);
+    }
+
+    public void upDateOrderStatus(UUID id, OrderStatus status) {
+        Order record = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        record.setStatus(status);
+        orderRepository.save(record);
     }
 }

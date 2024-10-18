@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OrderRepository extends JpaRepository<Order, UUID> {
-    Order findByStatus(OrderStatus status);
+    List<Order> findByStatus(OrderStatus status);
     List<Order> findByCustomerId(UUID customerId);
     List<Order> findByCompanyId(UUID companyId);
 }
