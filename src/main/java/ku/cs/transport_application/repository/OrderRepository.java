@@ -9,6 +9,5 @@ import java.util.UUID;
 
 public interface OrderRepository extends JpaRepository<Order, UUID> {
     List<Order> findByStatus(OrderStatus status);
-    List<Order> findByCustomerId(UUID customerId);
-    List<Order> findByCompanyId(UUID companyId);
+    List<Order> findByUserId(UUID userId);
 }

@@ -10,11 +10,11 @@ import java.util.List;
 @Data
 public class OrderRequest {
 
-    @NotBlank(message = "Customer username is required")
-    private String customerUsername;
+    @NotBlank(message = "Customer name is required")
+    private String customerName;
 
-    @NotBlank(message = "Company username is required")
-    private String companyUsername;
+    @NotBlank(message = "username is required")
+    private String username;
 
     @NotEmpty
     private List<ProductDetailRequest> productDetails;

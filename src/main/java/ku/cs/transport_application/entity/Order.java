@@ -18,16 +18,13 @@ public class Order {
     private UUID id;
 
     private OrderStatus status;
+    private String customerName;
     private LocalDateTime date;
     private LocalDateTime deliveredDate;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private User customer;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private User company;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "worker_id")

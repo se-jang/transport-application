@@ -25,6 +25,4 @@ public class User {
     private String address;
     private UserRole userRole;
 
-    @OneToMany(mappedBy = "company")
-    private List<Bill> bills = new ArrayList<>();
 }

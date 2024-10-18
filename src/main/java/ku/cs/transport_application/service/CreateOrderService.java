@@ -35,14 +35,12 @@ public class CreateOrderService {
 
     public void createOrder(OrderRequest request){
         Order order = new Order();
+        order.setCustomerName(request.getCustomerName());
         order.setStatus(OrderStatus.UNCHECK);
         order.setDate(LocalDateTime.now());
 
-        User customer = userRepository.findByUsername(request.getCustomerUsername());
-        order.setCustomer(customer);
-
-        User company = userRepository.findByUsername(request.getCompanyUsername());
-        order.setCompany(company);
+        User user = userRepository.findByUsername(request.getUsername());
+        order.setUser(user);
 
         orderRepository.save(order);
 

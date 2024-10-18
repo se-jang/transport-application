@@ -33,7 +33,7 @@ public class CreateUserController {
             return ResponseEntity.status(HttpStatus.CREATED).body("Worker created successfully");
         }
 
-        else if (user.getUserRole() == UserRole.COMPANY || user.getUserRole() == UserRole.CUSTOMER) {
+        else if (user.getUserRole() == UserRole.USER) {
             createUserService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
         }

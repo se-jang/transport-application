@@ -1,5 +1,5 @@
 package ku.cs.transport_application.common;
 
 public enum OrderStatus {
-    UNCHECK, CHECKED, ONGOING, DELIVERED, REFUND, REFUNDED,BILLED;
+    UNCHECK, CHECKED, ONGOING, DELIVERED;
 }

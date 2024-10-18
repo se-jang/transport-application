@@ -13,8 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static ku.cs.transport_application.common.OrderStatus.UNCHECK;
-import static ku.cs.transport_application.common.UserRole.COMPANY;
-import static ku.cs.transport_application.common.UserRole.CUSTOMER;
+import static ku.cs.transport_application.common.UserRole.*;
 
 @Service
 public class OrderService {
@@ -29,10 +28,8 @@ public class OrderService {
         if (recordOptional.isPresent()) {
             User record = recordOptional.get();
 
-            if (record.getUserRole()== COMPANY) {
-                return orderRepository.findByCompanyId(record.getId());
-            } else if (record.getUserRole() == CUSTOMER) {
-                return orderRepository.findByCustomerId(record.getId());
+            if (record.getUserRole()== USER) {
+                return orderRepository.findByUserId(record.getId());
             } else {
                 return null;
             }
