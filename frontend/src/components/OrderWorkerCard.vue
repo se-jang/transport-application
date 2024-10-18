@@ -7,6 +7,8 @@
       <button class="details-button">Details</button>
       <button class="almost-there-button">Almost There</button>
       <button class="success-button">Success</button>
+      <input type="file" id="fileInput" style="display:none" />
+      <button type="button" onclick="document.getElementById('fileInput').click()">Upload</button>
     </div>
   </div>
 </template>
@@ -43,6 +45,25 @@ export default {
     },
   },
 };
+function uploadFile() {
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            formData.append("file", file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('File uploaded successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error uploading file:', error);
+            });
+        }
 </script>
 
 <style scoped>
