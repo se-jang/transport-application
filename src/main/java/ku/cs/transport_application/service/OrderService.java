@@ -83,11 +83,4 @@ public class OrderService {
             orderRepository.save(recordOrder);
         }
     }
-
-    public boolean changeOrderStatus(UUID orderId, OrderStatus status) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
-        order.setStatus(status);
-        return order.getStatus() == CHECKED;
-    }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
@@ -30,10 +31,12 @@ public class OrderController {
         }
 
         try {
-            byte[] fileBytes = file.getBytes();
+            String uploadDir = "src/main/resources/static/images/uploads/";
             String fileName = file.getOriginalFilename();
+            byte[] fileBytes = file.getBytes();
 
             assert fileName != null;
+            File uploadedFile = new File(uploadDir + fileName);
             return new ResponseEntity<>(Map.of("message", "File uploaded successfully", "fileName", fileName), HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(Map.of("error", "Failed to upload file"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,12 +47,8 @@ public class OrderController {
     public ResponseEntity<?> changeOrderStatus(@RequestParam("orderId") UUID orderId,
                                                @RequestParam("status") OrderStatus status) {
         try {
-            boolean updated = orderService.changeOrderStatus(orderId, status);
-            if (updated) {
-                return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(Map.of("error", "Order not found or status update failed"), HttpStatus.BAD_REQUEST);
-            }
+            orderService.upDateOrderStatus(orderId, status);
+            return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
