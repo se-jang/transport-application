@@ -3,18 +3,18 @@
     <div class="header-container">
       <div class="logo">Transport application</div>
       <nav class="admin-nav">
-        <a href="#">Order</a>
-        <a href="#">Transport worker</a>
-        <a href="#">User</a>
-        <a href="#">Create User</a>
+        <router-link to="/orders">Order</router-link>
+        <router-link to="/worker-list">Transport worker</router-link>
+        <router-link to="/user-list">User</router-link>
+        <router-link to="/create-user">Create User</router-link>
       </nav>
     </div>
     <div class="admin-profile">
       <a href="#">Contact</a>
       <img
-          src="https://via.placeholder.com/40"
-          alt="Profile"
-          class="profile-image"
+        src="https://via.placeholder.com/40"
+        alt="Profile"
+        class="profile-image"
       />
     </div>
   </div>
