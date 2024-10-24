@@ -8,6 +8,7 @@ import ku.cs.transport_application.repository.OrderRepository;
 import ku.cs.transport_application.repository.TransportationWorkerRepository;
 import ku.cs.transport_application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -37,6 +38,9 @@ public class OrderService {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    private String fromEmail;
 
     public List<Order> getOrdersByUser(UUID id) {
         Optional<User> recordOptional = userRepository.findById(id);
@@ -106,7 +110,7 @@ public class OrderService {
         message.setTo(email);
         message.setSubject(subject);
         message.setText(body);
-        message.setFrom("pariyanuch.m@ku.th");
+        message.setFrom(fromEmail);
 
         mailSender.send(message);
     }
