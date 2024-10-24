@@ -31,9 +31,9 @@ import OrderCompanyCard from "../components/OrderCompanyCard.vue";
 import OrderCustomerCard from "../components/OrderCustomerCard.vue";
 
 export default {
+  props: ['role'],
   data() {
     return {
-      role: "admin",
       orders: [
         { id: "1", dueDate: "2024-10-20", status: "checked" },
         { id: "2", dueDate: "2024-10-20", status: "ongoing" },
@@ -74,6 +74,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style scoped>

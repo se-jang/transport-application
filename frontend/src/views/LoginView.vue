@@ -28,7 +28,6 @@ export default {
   methods: {
     async login() {
       try {
-        console.log("Login attempt with username:", this.username); // Debug: log username
         const response = await fetch("http://localhost:8080/login", {
           method: "POST",
           headers: {
@@ -40,22 +39,13 @@ export default {
           }),
         });
 
-        console.log("Response status:", response.status);
         if (response.ok) {
           const data = await response.json();
-          console.log("Login successful! Token:", data.token);
-
           localStorage.setItem("jwt", data.token);
-          console.log("Token saved to localStorage");
-
           const role = data.role;
-          console.log("User role:", role);
-
           this.$router.push({ name: 'orders', params: { role } });
-          console.log("Navigating to /orders with role:", role);
         } else {
           const error = await response.text();
-          console.log("Login failed:", error);
           alert("Login failed: " + error);
         }
       } catch (error) {
