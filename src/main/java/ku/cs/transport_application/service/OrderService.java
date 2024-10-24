@@ -8,20 +8,18 @@ import ku.cs.transport_application.repository.OrderRepository;
 import ku.cs.transport_application.repository.TransportationWorkerRepository;
 import ku.cs.transport_application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import static ku.cs.transport_application.common.OrderStatus.CHECKED;
-import static ku.cs.transport_application.common.OrderStatus.UNCHECK;
+import static ku.cs.transport_application.common.OrderStatus.*;
 import static ku.cs.transport_application.common.UserRole.*;
 
 @Service
@@ -34,9 +32,6 @@ public class OrderService {
 
     @Autowired
     private TransportationWorkerRepository twRepository;
-
-    @Autowired
-    private JavaMailSender mailSender;
 
     public List<Order> getOrdersByUser(UUID id) {
         Optional<User> recordOptional = userRepository.findById(id);
@@ -73,6 +68,21 @@ public class OrderService {
         return orderRepository.findByStatus(CHECKED);
     }
 
+    public List<Order> getOnGoing() {
+        return orderRepository.findByStatus(ONGOING);
+    }
+
+    public List<Order> getDelivered() {
+        return orderRepository.findByStatus(DELIVERED);
+    }
+
+    public List<Order> getNotUncheckOrder() {
+        List<Order> notUncheckOrders = orderRepository.findAll();
+        return notUncheckOrders.stream()
+                .filter(order -> !(order.getStatus() == UNCHECK))
+                .collect(Collectors.toList());
+    }
+
     public void upDateOrderStatus(UUID id, OrderStatus status) {
         Order record = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
@@ -91,24 +101,6 @@ public class OrderService {
             recordOrder.setWorker(recordWorker);
             orderRepository.save(recordOrder);
         }
-    }
-
-    public void sendEmail(UUID orderId) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
-        User user = userRepository.findByName(order.getCustomerName());
-        String email = user.getEmail();
-        String subject = String.format("Order Update: Your Order %s is now %s", orderId, order.getStatus());
-        String body = String.format("Dear %s,\n\nWe would like to inform you that your order is now %s. " +
-                "If you have any questions or require further assistance, please do not hesitate to contact us.\n\n" +
-                "Thank you for choosing our service!\n\nBest regards,\nTransportation Application", user.getName(),order.getStatus());
-        message.setTo(email);
-        message.setSubject(subject);
-        message.setText(body);
-        message.setFrom("pariyanuch.m@ku.th");
-
-        mailSender.send(message);
     }
 
     public void uploadFile(UUID orderID, String fileName, String uploadDir) {

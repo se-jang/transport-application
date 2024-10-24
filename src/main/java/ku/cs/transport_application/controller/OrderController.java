@@ -2,6 +2,7 @@ package ku.cs.transport_application.controller;
 
 import ku.cs.transport_application.common.OrderStatus;
 import ku.cs.transport_application.entity.Order;
+import ku.cs.transport_application.service.MailSenderService;
 import ku.cs.transport_application.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,27 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private MailSenderService mailSenderService;
+
     @GetMapping("/uncheck-order")
     public ResponseEntity<?> getUncheckOrder() {
         return ResponseEntity.ok(orderService.getUncheckOrder());
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserOrder(@PathVariable("userID") UUID userID) {
+        return ResponseEntity.ok(orderService.getOrdersByUser(userID));
+    }
+
+    @GetMapping("/{transportationWorkerId}")
+    public ResponseEntity<?> getTransportationWorkerOrder(@PathVariable("transportationWorkerId") UUID transportationWorkerId) {
+        return ResponseEntity.ok(orderService.getOrdersByWorker(transportationWorkerId));
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<?> getNotUncheckOrder() {
+        return ResponseEntity.ok(orderService.getNotUncheckOrder());
     }
 
     @PostMapping("/upload")
@@ -38,7 +57,7 @@ public class OrderController {
 
             assert fileName != null;
 
-            if ((fileName != null && !fileName.endsWith(".pdf"))) {
+            if ((!fileName.endsWith(".pdf"))) {
                 return new ResponseEntity<>(Map.of("error", "Only PDF files are allowed"), HttpStatus.BAD_REQUEST);
             }
 
@@ -55,7 +74,7 @@ public class OrderController {
                                                @RequestParam("status") OrderStatus status) {
         try {
             orderService.upDateOrderStatus(orderId, status);
-            orderService.sendEmail(orderId);
+            mailSenderService.sendEmail(orderId);
             return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -34,7 +34,7 @@ import HeaderCustomer from "../components/HeaderCustomer.vue";
 export default {
   data() {
     return {
-      role: "customer",
+      role: "admin",
     };
   },
   computed: {
