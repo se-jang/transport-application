@@ -22,6 +22,7 @@ public class Order {
     private String customerAddress;
     private LocalDateTime date;
     private LocalDateTime deliveredDate;
+    private String shipmentDocDir;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

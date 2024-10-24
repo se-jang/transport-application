@@ -1,6 +1,7 @@
 package ku.cs.transport_application.controller;
 
 import ku.cs.transport_application.common.OrderStatus;
+import ku.cs.transport_application.entity.Order;
 import ku.cs.transport_application.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class OrderController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestParam("orderId") UUID orderId, @RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return new ResponseEntity<>(Map.of("error", "File is empty"), HttpStatus.BAD_REQUEST);
         }
@@ -36,7 +37,13 @@ public class OrderController {
             byte[] fileBytes = file.getBytes();
 
             assert fileName != null;
-            File uploadedFile = new File(uploadDir + fileName);
+
+            if ((fileName != null && !fileName.endsWith(".pdf"))) {
+                return new ResponseEntity<>(Map.of("error", "Only PDF files are allowed"), HttpStatus.BAD_REQUEST);
+            }
+
+            orderService.uploadFile(orderId, fileName, uploadDir);
+
             return new ResponseEntity<>(Map.of("message", "File uploaded successfully", "fileName", fileName), HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(Map.of("error", "Failed to upload file"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,6 +55,7 @@ public class OrderController {
                                                @RequestParam("status") OrderStatus status) {
         try {
             orderService.upDateOrderStatus(orderId, status);
+            orderService.sendEmail(orderId);
             return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);
