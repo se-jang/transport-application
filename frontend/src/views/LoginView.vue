@@ -40,30 +40,31 @@ export default {
           }),
         });
 
-        console.log("Response status:", response.status); // Debug: log status code
-        console.log(response)
+        console.log("Response status:", response.status);
         if (response.ok) {
           const data = await response.json();
-          console.log("Login successful! Token:", data.token); // Debug: log token
+          console.log("Login successful! Token:", data.token);
 
           localStorage.setItem("jwt", data.token);
-          console.log("Token saved to localStorage"); // Debug: confirm token is saved
+          console.log("Token saved to localStorage");
 
-          this.$router.push("/orders"); // Attempt navigation to /orders
-          console.log("Navigating to /orders..."); // Debug: log navigation
+          const role = data.role;
+          console.log("User role:", role);
+
+          this.$router.push({ name: 'orders', params: { role } });
+          console.log("Navigating to /orders with role:", role);
         } else {
           const error = await response.text();
-          console.log("Login failed:", error); // Debug: log failure reason
-          alert("Login failed: " + error); 
+          console.log("Login failed:", error);
+          alert("Login failed: " + error);
         }
       } catch (error) {
-        console.error("Error during login:", error); // Debug: log any caught errors
+        console.error("Error during login:", error);
       }
     },
   },
 };
 </script>
-
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Hanuman&display=swap");

@@ -3,10 +3,10 @@
     <div class="header-container">
       <div class="logo">Transport application</div>
       <nav class="admin-nav">
-        <router-link to="/orders">Order</router-link>
-        <router-link to="/worker-list">Transport worker</router-link>
-        <router-link to="/user-list">User</router-link>
-        <router-link to="/create-user">Create User</router-link>
+        <router-link :to="{ name: 'orders', params: { role: 'admin' }}">Order</router-link>
+        <router-link :to="{ name: 'worker-list', params: { role: 'admin' }}">Transport worker</router-link>
+        <router-link :to="{ name: 'user-list', params: { role: 'admin' }}">User</router-link>
+        <router-link :to="{ name: 'createUser', params: { role: 'admin' }}">Create User</router-link>
       </nav>
     </div>
     <div class="admin-profile">

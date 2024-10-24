@@ -4,7 +4,7 @@ import MainViews from "@/views/MainView.vue";
 import OrderView from "@/views/OrderView.vue";
 import OrderDetailView from "@/views/OrderDetailView.vue";
 import CreateUserView from "@/views/CreateUserView.vue";
-import WorkerListView from "@/views/WorkerListView.vue"
+import WorkerListView from "@/views/WorkerListView.vue";
 import WorkerDetailView from "@/views/WorkerDetailView.vue";
 import AddOrderView from "@/views/AddOrderView.vue";
 import UserListView from "@/views/UserListView.vue";
@@ -18,54 +18,64 @@ const routes = [
     component: LoginView,
   },
   {
-    path: '/main',
+    path: '/main/:role',
     name: 'main',
     component: MainViews,
+    props: true,
   },
   {
-    path: '/orders',
+    path: '/orders/:role',
     name: 'orders',
     component: OrderView,
+    props: true,
   },
   {
-    path :'/order-detail',
+    path :'/order-detail/:role',
     name: 'order-detail',
     component: OrderDetailView,
+    props: true,
   },
   {
-    path: '/create-user',
+    path: '/create-user/:role',
     name: 'createUser',
     component: CreateUserView,
+    props: true,
   },
   {
-    path: '/worker-list',
+    path: '/worker-list/:role',
     name: 'worker-list',
     component: WorkerListView,
+    props: true,
   },
   {
-    path: '/worker-detail',
+    path: '/worker-detail/:role',
     name: 'worker-detail',
-    component: WorkerDetailView
+    component: WorkerDetailView,
+    props: true,
   },
   {
-    path: '/add-order',
+    path: '/add-order/:role',
     name: 'add-order',
-    component: AddOrderView
+    component: AddOrderView,
+    props: true,
   },
   {
-    path: '/user-list',
+    path: '/user-list/:role',
     name: 'user-list',
-    component: UserListView
+    component: UserListView,
+    props: true,
   },
   {
-    path: '/user-detail',
+    path: '/user-detail/:role',
     name: 'user-detail',
-    component: UserDetailView
+    component: UserDetailView,
+    props: true,
   },
   {
-    path: '/create-order',
+    path: '/create-order/:role',
     name: 'create-order',
-    component: CreateOrderView
+    component: CreateOrderView,
+    props: true,
   },
 ];
 
