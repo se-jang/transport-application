@@ -5,6 +5,9 @@ import OrderView from "@/views/OrderView.vue";
 import OrderDetailView from "@/views/OrderDetailView.vue";
 import CreateUserView from "@/views/CreateUserView.vue";
 import WorkerListView from "@/views/WorkerListView.vue"
+import WorkerDetailView from "@/views/WorkerDetailView.vue";
+import AddOrderView from "@/views/AddOrderView.vue";
+import UserListView from "@/views/UserListView.vue";
 
 const routes = [
   {
@@ -37,6 +40,21 @@ const routes = [
     name: 'worker-list',
     component: WorkerListView,
   },
+  {
+    path: '/worker-detail',
+    name: 'worker-detail',
+    component: WorkerDetailView
+  },
+  {
+    path: '/add-order',
+    name: 'add-order',
+    component: AddOrderView
+  },
+  {
+    path: '/user-list',
+    name: 'user-list',
+    component: UserListView
+  }
 ];
 
 const router = createRouter({

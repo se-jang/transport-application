@@ -10,9 +10,9 @@
     <div class="company-profile">
       <a href="#">Contact</a>
       <img
-          src="https://via.placeholder.com/40"
-          alt="Profile"
-          class="profile-image"
+        src="https://via.placeholder.com/40"
+        alt="Profile"
+        class="profile-image"
       />
     </div>
   </div>
