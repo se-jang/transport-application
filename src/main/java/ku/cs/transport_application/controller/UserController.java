@@ -22,7 +22,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<?> getUserDetail(@PathVariable UUID userId, OrderService orderService) {
         return ResponseEntity.ok((orderService.getOrdersByUser(userId)));
     }

@@ -8,12 +8,12 @@
       <div class="order-container">
         <h2 class="order-title">Order</h2>
         <component
-          v-for="order in orders"
-          :key="order.id"
-          :is="orderComponent"
-          :status="order.status"
-          :orderId="order.id"
-          :dueDate="order.dueDate"
+            v-for="order in orders"
+            :key="order.id"
+            :is="orderComponent"
+            :status="order.status"
+            :orderId="order.id"
+            :dueDate="order.dueDate"
         />
       </div>
     </div>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
@@ -31,26 +32,15 @@ import OrderCompanyCard from "../components/OrderCompanyCard.vue";
 import OrderCustomerCard from "../components/OrderCustomerCard.vue";
 
 export default {
-  data() {
-    return {
-      role: "admin",
-      orders: [
-        { id: "1", dueDate: "2024-10-20", status: "checked" },
-        { id: "2", dueDate: "2024-10-20", status: "ongoing" },
-        { id: "3", dueDate: "2024-10-20", status: "delivered" },
-        { id: "4", dueDate: "2024-10-20", status: "ongoing" },
-        { id: "5", dueDate: "2024-10-20", status: "delivered" }
-      ],
-    };
-  },
   computed: {
+    ...mapGetters(["userRole"]),
     headerComponent() {
-      switch (this.role) {
-        case "admin":
+      switch (this.userRole) {
+        case "ADMIN":
           return HeaderAdmin;
-        case "worker":
+        case "WORKER":
           return HeaderWorker;
-        case "company":
+        case "USER":
           return HeaderCompany;
         case "customer":
           return HeaderCustomer;
@@ -59,12 +49,12 @@ export default {
       }
     },
     orderComponent() {
-      switch (this.role) {
-        case "admin":
+      switch (this.userRole) {
+        case "ADMIN":
           return OrderAdminCard;
-        case "worker":
+        case "WORKER":
           return OrderWorkerCard;
-        case "company":
+        case "USER":
           return OrderCompanyCard;
         case "customer":
           return OrderCustomerCard;
@@ -72,6 +62,17 @@ export default {
           return null;
       }
     },
+  },
+  data() {
+    return {
+      orders: [
+        { id: "1", dueDate: "2024-10-20", status: "checked" },
+        { id: "2", dueDate: "2024-10-20", status: "ongoing" },
+        { id: "3", dueDate: "2024-10-20", status: "delivered" },
+        { id: "4", dueDate: "2024-10-20", status: "ongoing" },
+        { id: "5", dueDate: "2024-10-20", status: "delivered" }
+      ],
+    };
   },
 };
 </script>

@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -26,9 +28,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["updateUserRole"]),
     async login() {
       try {
-        console.log("Login attempt with username:", this.username); // Debug: log username
         const response = await fetch("http://localhost:8080/login", {
           method: "POST",
           headers: {
@@ -40,30 +42,32 @@ export default {
           }),
         });
 
-        console.log("Response status:", response.status); // Debug: log status code
-        console.log(response)
         if (response.ok) {
           const data = await response.json();
-          console.log("Login successful! Token:", data.token); // Debug: log token
 
-          localStorage.setItem("jwt", data.token);
-          console.log("Token saved to localStorage"); // Debug: confirm token is saved
+          if (data.token && data.role) {
+            localStorage.setItem("jwt", data.token);
+            const userRole = data.role;
 
-          this.$router.push("/orders"); // Attempt navigation to /orders
-          console.log("Navigating to /orders..."); // Debug: log navigation
+            console.log("User role:", userRole);
+
+            this.updateUserRole(userRole);
+
+            this.$router.push("/orders");
+          } else {
+            alert("Login failed: Role or token is missing in the response.");
+          }
         } else {
           const error = await response.text();
-          console.log("Login failed:", error); // Debug: log failure reason
-          alert("Login failed: " + error); 
+          alert("Login failed: " + error);
         }
       } catch (error) {
-        console.error("Error during login:", error); // Debug: log any caught errors
+        console.error("Error during login:", error);
       }
     },
   },
 };
 </script>
-
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Hanuman&display=swap");
@@ -115,6 +119,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
 button:hover {
   background-color: #45a049;
 }
