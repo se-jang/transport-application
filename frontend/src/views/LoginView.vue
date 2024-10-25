@@ -28,6 +28,7 @@ export default {
   methods: {
     async login() {
       try {
+        console.log("Login attempt with username:", this.username); // Debug: log username
         const response = await fetch("http://localhost:8080/login", {
           method: "POST",
           headers: {
@@ -39,22 +40,30 @@ export default {
           }),
         });
 
+        console.log("Response status:", response.status); // Debug: log status code
+        console.log(response)
         if (response.ok) {
           const data = await response.json();
+          console.log("Login successful! Token:", data.token); // Debug: log token
+
           localStorage.setItem("jwt", data.token);
-          const role = data.role;
-          this.$router.push({ name: 'orders', params: { role } });
+          console.log("Token saved to localStorage"); // Debug: confirm token is saved
+
+          this.$router.push("/orders"); // Attempt navigation to /orders
+          console.log("Navigating to /orders..."); // Debug: log navigation
         } else {
           const error = await response.text();
-          alert("Login failed: " + error);
+          console.log("Login failed:", error); // Debug: log failure reason
+          alert("Login failed: " + error); 
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error during login:", error); // Debug: log any caught errors
       }
     },
   },
 };
 </script>
+
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Hanuman&display=swap");
