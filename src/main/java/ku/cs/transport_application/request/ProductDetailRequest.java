@@ -5,8 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import ku.cs.transport_application.common.ProductType;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class ProductDetailRequest {
+
+    private UUID id;
 
     @NotBlank(message = "Product name is required")
     private String productName;

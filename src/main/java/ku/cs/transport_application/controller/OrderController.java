@@ -1,16 +1,18 @@
 package ku.cs.transport_application.controller;
 
 import ku.cs.transport_application.common.OrderStatus;
-import ku.cs.transport_application.entity.Order;
+import ku.cs.transport_application.request.OrderRequest;
 import ku.cs.transport_application.service.MailSenderService;
 import ku.cs.transport_application.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
@@ -83,6 +85,18 @@ public class OrderController {
 
     @PostMapping("/{orderId}")
     public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") UUID orderId) {
-        return ResponseEntity.ok(orderService.getOrdersByWorker(orderId));
+        OrderRequest orderDetail = orderService.getOrderDetail(orderId);
+        return ResponseEntity.ok(orderDetail);
     }
+
+    @GetMapping("/orders/{orderId}/shipment-doc")
+    public ResponseEntity<Resource> getShipmentDoc(@PathVariable UUID orderId) {
+        Resource fileResource = orderService.getShipmentDoc(orderId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
+                .body(fileResource);
+    }
+
 }
