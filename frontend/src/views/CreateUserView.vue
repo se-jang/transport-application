@@ -16,8 +16,24 @@
         <input type="text" id="customerName" required placeholder="Enter customer name" />
       </div>
       <div class="form-group">
-        <label for="address">Address</label>
-        <input type="text" id="address" required placeholder="Enter address" />
+        <label for="password">Password</label>
+        <input type="text" id="password" required placeholder="Enter password" />
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" required placeholder="Enter phone number" />
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="text" id="email" required placeholder="Enter E-mail" />
+      </div>
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role" required>
+        <option value="" disabled selected>Select Role</option>
+        <option value="USER">User</option>
+        <option value="WORKER">Worker</option>
+    </select>
       </div>
       <button type="submit" class="accept-button">Accept</button>
     </form>
@@ -63,71 +79,103 @@ export default {
 
 <style scoped>
 .container{
-  max-width: 80%;
+  max-width: 70%;
   height: 94vh;
   margin: 0 auto;
   background-color: #f9f9f9; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 .create-user-container {
-  max-width: 90%;
-  height: 75%;
+  max-width: 80%;
+  height: 88%;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  display: inline-block;
-  text-align: left;
-  margin-top: 5%;
-  margin-bottom: 0px; 
-  margin-left: 4%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .create-user-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  width: 25%;
+  display: flex; 
+  flex-direction: column;
+  align-items: flex-start; 
+  margin-bottom: 0px; 
 }
 
-label {
-  margin-left: 3%;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input {
-  margin-left: 3%;
-  width: 30%;
+input{
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px; 
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
 }
 
-.accept-button {
-  margin-left: 3%;
-  width: 5%;
-  background-color: #189e1f;
-  color: rgb(0, 0, 0);
-  border: none; 
+select {
   border-radius: 5px;
-  cursor: pointer;
+}
+
+.accept-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 40px;
+  background-color: #189e1f;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;       
+}
+
+
+h1 {
+  display: inline-block;
+  text-align: left;
+  margin-top: 5%;
+  margin-bottom: 0px; 
+  margin-left: 10%; 
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.accept-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 40px;
+  background-color: #189e1f;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;       
 }
 
 .accept-button:hover {
   background-color: #24be2c;
 }
 
+
 .back-button {
   display: inline-block;
-  margin-bottom: 20px;
-  margin-left: 75%;
+  margin-top: 5%;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: 21%;
   width: 5%;
   background-color: #363636;
   color: rgb(255, 255, 255);
@@ -138,4 +186,5 @@ input {
 .back-button:hover {
   background-color: #808080;
 }
+
 </style>
