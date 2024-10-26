@@ -92,6 +92,10 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public List<Order> getAllOrder() {
+        return orderRepository.findAll();
+    }
+
     public OrderRequest getOrderDetail(UUID orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));

@@ -41,9 +41,24 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByWorker(transportationWorkerId));
     }
 
-    @GetMapping("/order")
+    @GetMapping("/not-uncheck-orders")
     public ResponseEntity<?> getNotUncheckOrder() {
         return ResponseEntity.ok(orderService.getNotUncheckOrder());
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity <?> getAllOrder () {
+        return ResponseEntity.ok(orderService.getAllOrder());
+    }
+
+    @GetMapping("/delivered-orders")
+    public ResponseEntity <?> getDelivered() {
+        return ResponseEntity.ok(orderService.getDelivered());
+    }
+
+    @GetMapping("/on-going-orders")
+    public ResponseEntity <?> getOnGoingOrder() {
+        return ResponseEntity.ok(orderService.getOnGoing());
     }
 
     @PostMapping("/upload")
