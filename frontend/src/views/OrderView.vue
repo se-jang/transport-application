@@ -8,12 +8,12 @@
       <div class="order-container">
         <h2 class="order-title">Order</h2>
         <component
-            v-for="order in orders"
-            :key="order.id"
-            :is="orderComponent"
-            :status="order.status"
-            :orderId="order.id"
-            :dueDate="order.dueDate"
+          v-for="order in orders"
+          :key="order.id"
+          :is="orderComponent"
+          :status="order.status"
+          :orderId="order.id"
+          :dueDate="order.dueDate"
         />
       </div>
     </div>
@@ -25,11 +25,9 @@ import { mapGetters } from "vuex";
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
-import HeaderCustomer from "../components/HeaderCustomer.vue";
 import OrderAdminCard from "../components/OrderAdminCard.vue";
 import OrderWorkerCard from "../components/OrderWorkerCard.vue";
 import OrderCompanyCard from "../components/OrderCompanyCard.vue";
-import OrderCustomerCard from "../components/OrderCustomerCard.vue";
 
 export default {
   computed: {
@@ -42,8 +40,6 @@ export default {
           return HeaderWorker;
         case "USER":
           return HeaderCompany;
-        case "customer":
-          return HeaderCustomer;
         default:
           return null;
       }
@@ -56,8 +52,6 @@ export default {
           return OrderWorkerCard;
         case "USER":
           return OrderCompanyCard;
-        case "customer":
-          return OrderCustomerCard;
         default:
           return null;
       }

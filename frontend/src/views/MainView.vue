@@ -43,7 +43,6 @@ import { mapGetters } from "vuex";
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
-import HeaderCustomer from "../components/HeaderCustomer.vue";
 
 export default {
   computed: {
@@ -56,8 +55,6 @@ export default {
           return HeaderWorker;
         case "USER":
           return HeaderCompany;
-        case "customer":
-          return HeaderCustomer;
         default:
           return null;
       }

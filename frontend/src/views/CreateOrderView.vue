@@ -1,153 +1,234 @@
 <template>
-  <div class="create-order-page">
-    <header>
-      <component :is="headerComponent"></component>
-    </header>
-
-    <div class="main-container">
-      <div class="content-container">
-        <h1>Create Order</h1>
-
-        <div class="order-form">
-          <div class="form-group">
-            <label for="customer-name">Customer Name:</label>
-            <input type="text" id="customer-name" v-model="customerName" />
+  <header>
+    <component :is="headerComponent"></component>
+  </header>
+  <div class="sub-container">
+    <h2>Create Order</h2>
+    <div class="form-container">
+      <form @submit.prevent="submitOrder">
+        <div class="customer-info">
+          <div class="text-box">
+            <label for="customerName">Customer Name:</label>
+            <input type="text" id="customerName" class="input" placeholder="Enter Customer Name" v-model="orderRequest.customerName" required />
           </div>
 
-          <div class="form-group">
-            <label for="address">Address:</label>
-            <input type="text" id="address" v-model="address" />
+          <div class="text-box">
+            <label for="customerAddress">Customer Address:</label>
+            <input type="text" id="customerAddress" class="input" placeholder="Enter Customer Address" v-model="orderRequest.customerAddress" required />
           </div>
-
-          <div class="form-group">
-            <label for="product-name">Product Name:</label>
-            <input type="text" id="product-name" v-model="productName" />
-          </div>
-
-          <div class="form-group">
-            <label for="product-type">Product Type:</label>
-            <input type="text" id="product-type" v-model="productType" />
-          </div>
-
-          <div class="form-group">
-            <label for="product-amount">Amount:</label>
-            <input type="number" id="product-amount" v-model="productAmount" />
-          </div>
-
-          <button class="accept-button" @click="submitOrder">Accept</button>
         </div>
 
-        <button class="back-button">Back</button>
-      </div>
+        <h3>Products</h3>
+        <div class="scroll-container">
+          <div class="product-fields" v-for="(product, index) in orderRequest.productDetails" :key="index">
+            <input type="text" class="input" placeholder="Product Name" v-model="product.productName" required />
+            <select v-model="product.productType" required>
+              <option disabled value="">Select Type</option>
+              <option value="LIGHTWEIGHT">Lightweight</option>
+              <option value="HEAVYWEIGHT">Heavyweight</option>
+              <option value="FRAGILE">Fragile</option>
+              <option value="HAZARDOUS">Hazardous</option>
+              <option value="SPECIALTY">Specialty</option>
+            </select>
+            <input type="number" class="input" placeholder="Quantity" v-model.number="product.quantity" min="1" required />
+            <button type="button" class="x" @click="removeProduct(index)">✖</button>
+          </div>
+        </div>
+        <button type="button" class="add" @click="addProduct">+ Add Product</button>
+        <button type="submit" class="accept-button">Accept</button>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import HeaderAdmin from "../components/HeaderAdmin.vue";
+import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
 
 export default {
+  computed: {
+    ...mapGetters(["userRole", "username"]),
+    headerComponent() {
+      switch (this.userRole) {
+        case "ADMIN":
+          return HeaderAdmin;
+        case "WORKER":
+          return HeaderWorker;
+        case "USER":
+          return HeaderCompany;
+        default:
+          return null;
+      }
+    },
+  },
   data() {
     return {
-      role: "company",
-      customerName: "",
-      address: "",
-      productName: "",
-      productType: "",
-      productAmount: 1,
+      orderRequest: {
+        customerName: '',
+        customerAddress: '',
+        productDetails: [
+          { productName: '', productType: '', quantity: 1 }
+        ]
+      }
     };
   },
-  computed: {
-    headerComponent() {
-      return HeaderCompany;
-    },
-  },
   methods: {
-    submitOrder() {
-      console.log("Order Submitted", {
-        customerName: this.customerName,
-        address: this.address,
-        productName: this.productName,
-        productType: this.productType,
-        productAmount: this.productAmount,
-      });
+    addProduct() {
+      this.orderRequest.productDetails.push({ productName: '', productType: '', quantity: 1 });
     },
-  },
+    removeProduct(index) {
+      this.orderRequest.productDetails.splice(index, 1);
+    },
+    async submitOrder() {
+      const orderData = {
+        ...this.orderRequest,
+        username: this.username
+      };
+      try {
+        const response = await fetch('http://localhost:8080/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderData)
+        });
+
+        if (response.ok) {
+          alert('Order created successfully');
+          this.resetForm();
+          this.$router.push("/orders");
+        } else {
+          const errorData = await response.json();
+          alert(`Error: ${errorData.message || 'Failed to create order'}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error creating the order');
+      }
+    },
+    resetForm() {
+      this.orderRequest = {
+        customerName: '',
+        customerAddress: '',
+        productDetails: [{ productName: '', productType: '', quantity: 1 }]
+      };
+    }
+  }
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
-
-.create-order-page {
-  background-color: #f5f5f5;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  font-family: "Inter", sans-serif;
+<style scoped>
+.sub-container {
+  max-width: 70%;
+  height: 94vh;
+  margin: 0 auto;
+  background-color: #f9f9f9; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.main-container {
+.form-container {
+  max-width: 80%;
+  height: 89.7%;
+  margin: auto;
+  background-color: #f9f9f9; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
+  align-items: center;
   flex: 1;
-  padding: 20px;
 }
 
-.content-container {
-  background-color: #ffffff;
-  padding: 20px;
-  width: 80%;
-  max-width: 1000px;
+.customer-info {
+  display: flex;
+  gap: 20px;
+  margin-top: 2%;
+}
+
+.scroll-container {
+  box-sizing: border-box;
+  max-height: 500px;
+  min-height: 500px;
+  overflow-y: overlay;
+  background-color: rgb(255, 255, 255);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
+  padding: 10px;
+  width: 1000px;
 }
 
-h1 {
-  font-weight: 600;
+.product-fields {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 99%;
+  background-color: rgb(255, 255, 255);
 }
 
-.order-form {
+h2 {
+  display: inline-block;
+  text-align: left;
+  margin-top: 5%;
+  margin-bottom: 0px; 
+  margin-left: 10%; 
+}
+
+h3{
+  margin-top: 2%;
+}
+
+.input {
+  width: 100%;
+  max-width: 500px;
+  padding: 5px; 
+  box-sizing: border-box;
+}
+
+.accept-button, .add {
   margin-top: 20px;
+  background-color: #189e1f;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.accept-button:hover, .add:hover {
+  background-color: #24be2c;
 }
 
-.form-group label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 5px;
+.text-box {
+  width: 45%;
 }
 
-.form-group input {
+input {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  margin-top: 5px;
+}
+select {
+  margin-top: 5px;
+  height: 29px;
+  border-radius: 5px;
+  border-color: rgb(199, 199, 199);
 }
 
-.accept-button {
-  margin-top: 20px;
-  background-color: #007bff;
-  color: white;
+.x {
+  margin-top: 5px;
+  width: 10%;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #bebebe;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
   cursor: pointer;
-  width: auto;
+  font-size: 16px;
 }
 
-.back-button {
-  margin-top: 20px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
+.x:hover {
+  background-color: #4b4b4b;
 }
 </style>
