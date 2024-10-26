@@ -26,22 +26,22 @@ public class OrderController {
     @Autowired
     private MailSenderService mailSenderService;
 
-    @GetMapping("/uncheck-order")
+    @GetMapping("/orders/uncheck-order")
     public ResponseEntity<?> getUncheckOrder() {
         return ResponseEntity.ok(orderService.getUncheckOrder());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/orders/{userId}")
     public ResponseEntity<?> getUserOrder(@PathVariable("userID") UUID userID) {
         return ResponseEntity.ok(orderService.getOrdersByUser(userID));
     }
 
-    @GetMapping("/{transportationWorkerId}")
+    @GetMapping("/orders/{transportationWorkerId}")
     public ResponseEntity<?> getTransportationWorkerOrder(@PathVariable("transportationWorkerId") UUID transportationWorkerId) {
         return ResponseEntity.ok(orderService.getOrdersByWorker(transportationWorkerId));
     }
 
-    @GetMapping("/not-uncheck-orders")
+    @GetMapping("/orders/not-uncheck-orders")
     public ResponseEntity<?> getNotUncheckOrder() {
         return ResponseEntity.ok(orderService.getNotUncheckOrder());
     }
@@ -51,12 +51,12 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllOrder());
     }
 
-    @GetMapping("/delivered-orders")
+    @GetMapping("/orders/delivered-orders")
     public ResponseEntity <?> getDelivered() {
         return ResponseEntity.ok(orderService.getDelivered());
     }
 
-    @GetMapping("/on-going-orders")
+    @GetMapping("/orders/on-going-orders")
     public ResponseEntity <?> getOnGoingOrder() {
         return ResponseEntity.ok(orderService.getOnGoing());
     }
@@ -98,7 +98,7 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/{orderId}")
+    @PostMapping("/orders/{orderId}")
     public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") UUID orderId) {
         OrderRequest orderDetail = orderService.getOrderDetail(orderId);
         return ResponseEntity.ok(orderDetail);

@@ -4,63 +4,60 @@
   </header>
   <div class="container">
     <h1>Create User</h1>
-    <button class="back-button">Back</button>
-  <div class="create-user-container">
-    <form @submit.prevent="handleSubmit" class="create-user-form">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" required placeholder="Enter username" />
-      </div>
-      <div class="form-group">
-        <label for="customerName">Customer Name</label>
-        <input type="text" id="customerName" required placeholder="Enter customer name" />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="text" id="password" required placeholder="Enter password" />
-      </div>
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input type="text" id="phoneNumber" required placeholder="Enter phone number" />
-      </div>
-      <div class="form-group">
-        <label for="email">E-mail</label>
-        <input type="text" id="email" required placeholder="Enter E-mail" />
-      </div>
-      <div class="form-group">
-        <label for="role">Role</label>
-        <select id="role" required>
-        <option value="" disabled selected>Select Role</option>
-        <option value="USER">User</option>
-        <option value="WORKER">Worker</option>
-    </select>
-      </div>
-      <button type="submit" class="accept-button">Accept</button>
-    </form>
+    <button class="back-button" @click="goBack">Back</button>
+    <div class="create-user-container">
+      <form @submit.prevent="handleSubmit" method="post" class="create-user-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" v-model="formData.username" id="username" required placeholder="Enter username" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" v-model="formData.password" id="password" required placeholder="Enter password" />
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" v-model="formData.name" id="name" required placeholder="Enter name" />
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" v-model="formData.phoneNumber" id="phoneNumber" required placeholder="Enter phone number" />
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" v-model="formData.email" id="email" required placeholder="Enter E-mail" />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select v-model="formData.role" id="role" required>
+            <option value="" disabled selected>Select Role</option>
+            <option value="USER">User</option>
+            <option value="WORKER">Worker</option>
+          </select>
+        </div>
+        <button type="submit" class="accept-button">Accept</button>
+      </form>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
 import HeaderCustomer from "../components/HeaderCustomer.vue";
 
 export default {
-  data() {
-    return {
-      role: "admin",
-    };
-  },
   computed: {
+    ...mapGetters(["userRole"]),
     headerComponent() {
-      switch (this.role) {
-        case "admin":
+      switch (this.userRole) {
+        case "ADMIN":
           return HeaderAdmin;
-        case "worker":
+        case "WORKER":
           return HeaderWorker;
-        case "company":
+        case "USER":
           return HeaderCompany;
         case "customer":
           return HeaderCustomer;
@@ -69,13 +66,58 @@ export default {
       }
     },
   },
+  data() {
+    return {
+      formData: {
+        username: "",
+        password: "",
+        name: "",
+        phoneNumber: "",
+        email: "",
+        role: "",
+      },
+    };
+  },
   methods: {
-    handleSubmit() {
-      console.log("Form submitted");
+    async handleSubmit() {
+      try {
+        const response = await fetch("http://localhost:8080/create-user", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(this.formData),
+        });
+
+        const contentType = response.headers.get("Content-Type");
+
+        if (response.ok) {
+          if (contentType && contentType.includes("application/json")) {
+            const result = await response.json();
+            alert(result.message);
+          } else {
+            const text = await response.text();
+            alert(text);
+          }
+        } else if (response.status === 409) {
+          const errorText = await response.text();
+          alert(errorText);
+        } else {
+          const errorText = await response.text();
+          alert(errorText || "An error occurred. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+      }
+    },
+    goBack() {
+      window.history.back();
     },
   },
 };
 </script>
+
 
 <style scoped>
 .container{
@@ -110,7 +152,7 @@ export default {
   display: flex; 
   flex-direction: column;
   align-items: flex-start; 
-  margin-bottom: 0px; 
+  margin-bottom: 3%; 
 }
 
 input{
