@@ -28,7 +28,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["updateUserRole"]),
+    ...mapActions(["updateUserRole", "updateUsername"]),
     async login() {
       try {
         const response = await fetch("http://localhost:8080/login", {
@@ -45,17 +45,21 @@ export default {
         if (response.ok) {
           const data = await response.json();
 
-          if (data.token && data.role) {
+          if (data.token && data.role && data.username) {
             localStorage.setItem("jwt", data.token);
+
             const userRole = data.role;
+            const username = data.username;
 
             console.log("User role:", userRole);
+            console.log("Username:", username);
 
             this.updateUserRole(userRole);
+            this.updateUsername(username);
 
-            this.$router.push("/orders");
+            this.$router.push("/main");
           } else {
-            alert("Login failed: Role or token is missing in the response.");
+            alert("Login failed: Role, username, or token is missing in the response.");
           }
         } else {
           const error = await response.text();
