@@ -3,7 +3,7 @@
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
     <h2 class="worker-id">Worker ID: {{ workerId }}</h2>
     <p class="worker-name">Name: {{ name }}</p>
-    <button class="details-button">Details</button>
+    <button class="details-button" @click="goDetail">Details</button>
   </div>
 </template>
 
@@ -22,6 +22,11 @@ export default {
     name: {
       type: String,
       required: true,
+    },
+  },
+  methods: {
+    goDetail() {
+      this.$router.push("/worker-detail");
     },
   },
   computed: {

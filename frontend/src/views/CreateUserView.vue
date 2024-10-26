@@ -89,9 +89,8 @@ export default {
           body: JSON.stringify(this.formData),
         });
 
-        const contentType = response.headers.get("Content-Type");
-
         if (response.ok) {
+          const contentType = response.headers.get("Content-Type");
           if (contentType && contentType.includes("application/json")) {
             const result = await response.json();
             alert(result.message);
@@ -99,9 +98,7 @@ export default {
             const text = await response.text();
             alert(text);
           }
-        } else if (response.status === 409) {
-          const errorText = await response.text();
-          alert(errorText);
+          this.resetForm();
         } else {
           const errorText = await response.text();
           alert(errorText || "An error occurred. Please try again.");
@@ -111,8 +108,19 @@ export default {
         alert("An error occurred. Please try again.");
       }
     },
+
     goBack() {
       window.history.back();
+    },
+    resetForm() {
+      this.formData = {
+        username: "",
+        password: "",
+        name: "",
+        phoneNumber: "",
+        email: "",
+        role: "",
+      };
     },
   },
 };

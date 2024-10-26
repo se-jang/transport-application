@@ -44,26 +44,32 @@ export default {
       }
     },
   },
+  methods: {
+  uploadFile() {
+    const formData = new FormData();
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    if (file) {
+      formData.append("file", file);
+
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('File uploaded successfully:', data);
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+      });
+    } else {
+      alert("Please select a file to upload.");
+    }
+  },
+}
 };
-function uploadFile() {
-            const formData = new FormData();
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-
-            formData.append("file", file);
-
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('File uploaded successfully:', data);
-            })
-            .catch(error => {
-                console.error('Error uploading file:', error);
-            });
-        }
 </script>
 
 <style scoped>
@@ -99,6 +105,12 @@ function uploadFile() {
   border-radius: 5px;
   cursor: pointer;
   width: auto;
+}
+
+.details-button:hover,
+.almost-there-button:hover,
+.success-button:hover {
+  background-color: #4b4b4b;
 }
 
 .status-indicator {

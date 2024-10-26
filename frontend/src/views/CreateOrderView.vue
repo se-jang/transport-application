@@ -98,7 +98,7 @@ export default {
         if (response.ok) {
           alert('Order created successfully');
           this.resetForm();
-          this.$router.push("/orders");
+          this.$router.push("/main");
         } else {
           const errorData = await response.json();
           alert(`Error: ${errorData.message || 'Failed to create order'}`);

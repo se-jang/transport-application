@@ -2,43 +2,43 @@
   <div class="worker-details-page">
     <header>
       <component :is="headerComponent"></component>
+      <h2>Worker ID: {{ workerId }}</h2>
     </header>
 
     <div class="main-container">
       <div class="content-container">
-        <h1>Worker ID: 00001</h1>
-
         <div class="order-list-header">
           <h2>Order list</h2>
-          <button class="add-button">Add</button>
+          <button class="add-button" @click="addOrder">Add</button>
         </div>
 
         <div class="order-list-container">
           <table class="order-list-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Due date</th>
+                <th>Order ID</th>
+                <th>Date</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="order in orders" :key="order.id">
                 <td>{{ order.id }}</td>
-                <td>{{ order.dueDate }}</td>
+                <td>{{ formatDate(order.date) }}</td>
                 <td>{{ order.status }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <button class="back-button">Back</button>
+        <button class="back-button" @click="$router.back()">Back</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
@@ -47,12 +47,9 @@ import HeaderCustomer from "../components/HeaderCustomer.vue";
 export default {
   data() {
     return {
+      workerId: this.$route.params.workerId,  // รับ workerId จาก route parameters
+      orders: [],
       role: "admin",
-      orders: [
-        { id: "12345", dueDate: "2024-10-21", status: "Ongoing" },
-        { id: "12346", dueDate: "2024-10-22", status: "Ongoing" },
-        { id: "12347", dueDate: "2024-10-23", status: "Delivered" },
-      ],
     };
   },
   computed: {
@@ -69,6 +66,25 @@ export default {
         default:
           return null;
       }
+    },
+  },
+  created() {
+    this.fetchOrders();
+  },
+  methods: {
+    async fetchOrders() {
+      try {
+        const response = await axios.get(`http://localhost:8080/${this.workerId}`);
+        this.orders = response.data;
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    },
+    formatDate(date) {
+      return new Date(date).toLocaleDateString("en-US");
+    },
+    addOrder() {
+      this.$router.push("/add-order");
     },
   },
 };

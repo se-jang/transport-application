@@ -1,48 +1,73 @@
 <template>
-    <div class="page-container">
-      <header>
-        <component :is="headerComponent"></component>
-      </header>
-  
-      <div class="main-container">
-        <div class="worker-container">
-          <h2 class="worker-title">Workers</h2>
-          <WorkerCard
-            v-for="worker in workers"
-            :key="worker.id"
-            :status="worker.status"
-            :workerId="worker.id"
-            :name="worker.name"
-          />
-        </div>
+  <div class="page-container">
+    <header>
+      <component :is="headerComponent"></component>
+    </header>
+
+    <div class="main-container">
+      <div class="worker-container">
+        <h2 class="worker-title">Workers</h2>
+        <WorkerCard
+          v-for="worker in workers"
+          :key="worker.id"
+          :status="worker.status"
+          :workerId="worker.id"
+          :name="worker.name"
+        />
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
+  import axios from "axios";
+  import { mapGetters } from "vuex";
   import HeaderAdmin from "../components/HeaderAdmin.vue";
+  import HeaderWorker from "../components/HeaderWorker.vue";
+  import HeaderCompany from "../components/HeaderCompany.vue";
   import WorkerCard from "../components/WorkerCard.vue";
   
   export default {
     data() {
       return {
-        role: "admin", 
-        workers: [
-          { id: "7", name: "Cristiano Ronaldo", status: "available" },
-          { id: "11", name: "Neymar", status: "ongoing" },
-          { id: "10", name: "Lionel Messi", status: "unavailable" },
-          { id: "24", name: "Andre Onana", status: "available" },
-        ],
+        workers: [],
       };
     },
+    created() {
+      this.fetchWorkers();
+    },
     computed: {
+      ...mapGetters(["userRole", "username"]),
       headerComponent() {
-        return HeaderAdmin;
+        switch (this.userRole) {
+          case "ADMIN":
+            return HeaderAdmin;
+          case "WORKER":
+            return HeaderWorker;
+          case "USER":
+            return HeaderCompany;
+          default:
+            return null;
+        }
       },
     },
-    components: {
-      WorkerCard,
+    methods: {
+      async fetchWorkers() {
+        try {
+          const response = await axios.get("http://localhost:8080/transportation-workers");
+          this.workers = response.data.map(worker => ({
+            id: worker.id,
+            name: worker.name,
+            status: worker.status.toLowerCase(),
+          }));
+        } catch (error) {
+          console.error("Error fetching workers:", error);
+        }
+      },
     },
+  components: {
+    WorkerCard,
+  },
   };
   </script>
   
@@ -57,11 +82,12 @@
   .main-container {
     display: flex;
     justify-content: center;
+    padding-top: 0%;
+    padding-bottom: 0%;
     flex: 1;
   }
   
   .worker-title {
-    font-family: "Inter", sans-serif;
     font-size: 24px;
     font-weight: bold;
     color: #333;
@@ -75,7 +101,7 @@
     width: 80%;
     max-width: 1200px;
     overflow-y: auto;
-    height: 100%;
+    min-height: 100%;
   }
   </style>
   
