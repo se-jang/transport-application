@@ -103,11 +103,9 @@ public class OrderService {
         List<OrderLine> orderLines = orderLineRepository.findByOrderId(orderId);
 
         OrderRequest orderRequest = new OrderRequest();
-        orderRequest.setId(orderId);
         orderRequest.setDate(order.getDate());
         orderRequest.setCustomerName(order.getCustomerName());
         orderRequest.setCustomerAddress(order.getCustomerAddress());
-        orderRequest.setUsername(order.getUser().getUsername());
         orderRequest.setWorkerUsername(order.getWorker().getUsername());
         orderRequest.setStatus(order.getStatus());
 

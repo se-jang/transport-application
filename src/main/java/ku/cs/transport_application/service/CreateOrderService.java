@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 
 @Service
 public class CreateOrderService {
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -32,19 +33,18 @@ public class CreateOrderService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public void createOrder(OrderRequest request){
+    public void createOrder(OrderRequest request) {
         Order order = new Order();
         order.setCustomerName(request.getCustomerName());
         order.setCustomerAddress(request.getCustomerAddress());
         order.setStatus(OrderStatus.UNCHECK);
         order.setDate(LocalDateTime.now());
 
-        User user = userRepository.findByUsername(request.getUsername());
-        order.setUser(user);
+        order.setUser(userRepository.findByUsername(request.getUsername()));
 
         orderRepository.save(order);
 
-        for ( ProductDetailRequest productDetail: request.getProductDetails()) {
+        for (ProductDetailRequest productDetail : request.getProductDetails()) {
             Product product = new Product();
             String productName = productDetail.getProductName();
             ProductType productType = productDetail.getProductType();
