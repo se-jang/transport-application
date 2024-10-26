@@ -1,12 +1,13 @@
 <template>
   <div class="company-header">
     <div class="header-container">
-      <div class="logo">Transport application</div>
+      <router-link to="/main" class="logo">Transport application</router-link>
       <nav class="company-nav">
-        <a href="#">Create Order</a>
-        <a href="#">My Order</a>
+        <router-link to="/create-order">Create Order</router-link>
+        <router-link to="/orders">My Order</router-link>
       </nav>
     </div>
+    
     <div class="company-profile">
       <a href="#">Contact</a>
       <img
@@ -40,9 +41,16 @@ export default {
   align-items: center;
 }
 
+.logo {
+  text-decoration: none;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
 .company-nav {
   margin-top: 10px;
-  margin-left: 100px;
   display: flex;
   gap: 10px;
 }
