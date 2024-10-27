@@ -85,6 +85,14 @@ public class OrderService {
         return orderRepository.findByStatus(DELIVERED);
     }
 
+    public List<Order> getUploaded() {
+        return orderRepository.findByStatus(UPLOADED);
+    }
+
+    public List<Order> getComplete() {
+        return orderRepository.findByStatus(COMPLETED);
+    }
+
     public List<Order> getNotUncheckOrder() {
         List<Order> notUncheckOrders = orderRepository.findAll();
         return notUncheckOrders.stream()

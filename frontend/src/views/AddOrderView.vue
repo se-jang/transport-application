@@ -10,9 +10,9 @@
         <div v-for="order in filteredOrders" :key="order.id" class="order-card">
           <input
               type="radio"
-              :value="order.id"
-              v-model="selectedOrder"
-              class="order-checkbox"
+          :value="order.id"
+          v-model="selectedOrder"
+          class="order-checkbox"
           />
           <component
               :is="orderComponent"
@@ -69,7 +69,7 @@ export default {
               this.orders = response.data.map(order => ({
                 id: order.id,
                 status: order.status,
-                dueDate: order.dueDate,
+                date: order.date,
               }));
             } else {
               console.error("Received data is not an array:", response.data);

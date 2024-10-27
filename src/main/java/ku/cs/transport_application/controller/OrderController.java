@@ -26,12 +26,12 @@ public class OrderController {
     @Autowired
     private MailSenderService mailSenderService;
 
-    @GetMapping("/orders/uncheck-order")
+    @GetMapping("/orders/uncheck-orders")
     public ResponseEntity<?> getUncheckOrder() {
         return ResponseEntity.ok(orderService.getUncheckOrder());
     }
 
-    @GetMapping("/orders/check-order")
+    @GetMapping("/orders/check-orders")
     public ResponseEntity<?> getCheckedOrder() {
         return ResponseEntity.ok(orderService.getCheckedOrder());
     }
@@ -52,7 +52,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getNotUncheckOrder());
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/orders/all-orders")
     public ResponseEntity <?> getAllOrder () {
         return ResponseEntity.ok(orderService.getAllOrder());
     }
@@ -65,6 +65,16 @@ public class OrderController {
     @GetMapping("/orders/on-going-orders")
     public ResponseEntity <?> getOnGoingOrder() {
         return ResponseEntity.ok(orderService.getOnGoing());
+    }
+
+    @GetMapping("/orders/uploaded-orders")
+    public ResponseEntity <?> getUploadedOrder() {
+        return ResponseEntity.ok(orderService.getUploaded());
+    }
+
+    @GetMapping("/orders/completed-orders")
+    public ResponseEntity <?> getCompletedOrder() {
+        return ResponseEntity.ok(orderService.getComplete());
     }
 
     @PostMapping("/upload")

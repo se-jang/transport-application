@@ -9,22 +9,24 @@
         <h2 class="order-title">Order</h2>
         <div>
           <label v-if="userRole === 'ADMIN'" for="status">Filter by Status:</label>
-          <select v-if="userRole === 'ADMIN'" v-model="selectedStatus" @change="fetchOrders">
+          <select v-if="userRole === 'ADMIN'" v-model="selectedStatus" @change="fetchOrdersFilter">
             <option value="all">All</option>
             <option value="uncheck">Unchecked</option>
             <option value="not-uncheck">Not Unchecked</option>
-            <option value="delivered">Delivered</option>
             <option value="on-going">On-going</option>
+            <option value="delivered">Delivered</option>
+            <option value="uploaded">Uploaded</option>
+            <option value="complete">Complete</option>
           </select>
           <button v-if="userRole !== 'ADMIN'" @click="fetchOwnOrders">My Orders</button>
         </div>
         <component
-            v-for="order in orders"
-            :key="order.id"
-            :is="orderComponent"
-            :status="order.status"
-            :orderId="order.id"
-            :date="order.date || 'N/A'"
+          v-for="order in orders"
+          :key="order.id"
+          :is="orderComponent"
+          :orderId="order.id"
+          :date="order.date || 'N/A'"
+          :status="order.status"
         />
       </div>
     </div>
@@ -56,6 +58,9 @@ export default {
       selectedStatus: "all",
     };
   },
+  created() {
+    this.fetchOrders(); // Load orders when component is created
+  },
   computed: {
     ...mapGetters(["userRole"]),
     headerComponent() {
@@ -85,53 +90,92 @@ export default {
   },
   methods: {
     async fetchOrders() {
-      let endpoint = 'http://localhost:8080/orders';
-      switch (this.selectedStatus) {
-        case 'uncheck':
-          endpoint = 'http://localhost:8080/orders/uncheck-order';
-          break;
-        case 'not-uncheck':
-          endpoint = 'http://localhost:8080/orders/not-uncheck-orders';
-          break;
-        case 'delivered':
-          endpoint = 'http://localhost:8080/orders/delivered-orders';
-          break;
-        case 'on-going':
-          endpoint = 'http://localhost:8080/orders/on-going-orders';
-          break;
-      }
+  try {
+    const response = await axios.get("http://localhost:8080/orders/all-orders?fields=id,date,status,customerName");
 
-      try {
-        const response = await axios.get(endpoint);
-        this.orders = response.data.map(order => ({
-          id: order.id,
-          date: order.date,
-          status: order.status.toLowerCase(),
-        }));
-        console.log("Fetched orders:", this.orders);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    },
+    const data = Array.isArray(response.data) ? response.data : [response.data];
+    console.log(response.data)
+    this.orders = data.map(order => ({
+      id: order.id,
+      date: order.date || 'N/A',
+      status: order.status,
+    }));
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+  }
+},
+
+async fetchOrdersFilter() {
+  let endpoint;
+  switch (this.selectedStatus) {
+    case 'uncheck':
+      endpoint = 'http://localhost:8080/orders/uncheck-orders';
+      break;
+    case 'not-uncheck':
+      endpoint = 'http://localhost:8080/orders/not-uncheck-orders';
+      break;
+    case 'on-going':
+      endpoint = 'http://localhost:8080/orders/on-going-orders';
+      break;
+    case 'delivered':
+      endpoint = 'http://localhost:8080/orders/delivered-orders';
+      break;
+    case 'uploaded':
+      endpoint = 'http://localhost:8080/orders/uploaded-orders';
+      break;
+    case 'complete':
+      endpoint = 'http://localhost:8080/orders/complete-orders';
+      break;
+    case 'all':
+    default:
+      endpoint = 'http://localhost:8080/orders/all-orders';
+      break;
+  }
+
+  try {
+    const response = await axios.get(endpoint);
+    
+    // ถ้า response.data เป็น object ให้แปลงเป็น array
+    const data = Array.isArray(response.data) ? response.data : [response.data];
+
+    this.orders = data.map(order => ({
+      id: order.id,
+      date: order.date || 'N/A',
+      status: order.status.toLowerCase(),
+      customerName: order.customerName,
+      customerAddress: order.customerAddress,
+      orderLines: order.orderLines.map(line => ({
+        productId: line.id.productId,
+        quantity: line.quantity,
+      })),
+    }));
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+  }
+},
+
     async fetchOwnOrders() {
       try {
-        const userId = this.userRole;
-        if (userId === "USER") {
-          const response = await axios.get(`http://localhost:8080/orders/${userId}`);
-          this.orders = response.data;
-        } else if (userId === "WORKER") {
-          const response = await axios.get(`http://localhost:8080/orders/${userId}`);
-          this.orders = response.data;
-        }
+        const userId = this.userRole; // Change this to fetch by actual user ID if needed
+        const response = await axios.get(`http://localhost:8080/orders/${userId}`);
+        this.orders = response.data.map(order => ({
+          id: order.id,
+          date: order.date || 'N/A',
+          status: order.status.toLowerCase(),
+          customerName: order.customerName,
+          customerAddress: order.customerAddress,
+          orderLines: order.orderLines.map(line => ({
+            productId: line.id.productId,
+            quantity: line.quantity,
+          })),
+        }));
       } catch (error) {
         console.error('Error fetching own orders:', error);
       }
     },
   },
   mounted() {
-    if (!this.orderId || !this.status) {
-      console.warn('Invalid orderId or status:', this.orderId, this.status);
-    } else if (this.userRole === 'ADMIN') {
+    if (this.userRole === 'ADMIN') {
       this.fetchOrders();
     } else {
       this.fetchOwnOrders();
@@ -139,6 +183,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 :root {

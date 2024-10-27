@@ -15,18 +15,18 @@
         <div class="order-list-container">
           <table class="order-list-table">
             <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Date</th>
-              <th>Status</th>
-            </tr>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="order in orders" :key="order.id">
-              <td>{{ order.id }}</td>
-              <td>{{ formatDate(order.date) }}</td>
-              <td>{{ order.status }}</td>
-            </tr>
+              <tr v-for="order in orders" :key="order.id">
+                <td>{{ order.id }}</td>
+                <td>{{ formatDate(order.date) }}</td>
+                <td>{{ order.status }}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      workerId: this.$route.params.workerId, // รับ workerId จาก route parameters
+      workerId: this.$route.params.workerId,
       orders: [],
       role: "admin",
     };
