@@ -46,26 +46,23 @@ public class CreateOrderService {
 
         for (ProductDetailRequest productDetail : request.getProductDetails()) {
             Product product = new Product();
-            String productName = productDetail.getProductName();
-            ProductType productType = productDetail.getProductType();
-            Integer quantity = productDetail.getQuantity();
+            product.setName(productDetail.getProductName());
+            product.setType(productDetail.getProductType());
 
-            product.setName(productName);
-            product.setType(productType);
+            productRepository.save(product);
 
             OrderLine orderLine = new OrderLine();
             orderLine.setOrder(order);
             orderLine.setProduct(product);
-            orderLine.setQuantity(quantity);
+            orderLine.setQuantity(productDetail.getQuantity());
 
             OrderLineKey orderLineKey = new OrderLineKey();
             orderLineKey.setOrderId(order.getId());
             orderLineKey.setProductId(product.getId());
-
             orderLine.setId(orderLineKey);
 
             orderLineRepository.save(orderLine);
-            productRepository.save(product);
         }
+
     }
 }
