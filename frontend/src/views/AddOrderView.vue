@@ -9,20 +9,20 @@
         <h2 class="order-title">Add Order</h2>
         <div v-for="order in filteredOrders" :key="order.id" class="order-card">
           <input
-            type="checkbox"
-            :value="order.id"
-            v-model="selectedOrders"
-            class="order-checkbox"
+              type="radio"
+              :value="order.id"
+              v-model="selectedOrder"
+              class="order-checkbox"
           />
           <component
-            :is="orderComponent"
-            :status="order.status"
-            :orderId="order.id"
-            :dueDate="order.dueDate"
+              :is="orderComponent"
+              :status="order.status"
+              :orderId="order.id"
+              :dueDate="order.date"
           />
         </div>
         <button class="back-button" @click="goBack">Back</button>
-        <button class="add-button" @click="addSelectedOrders">Add</button>
+        <button class="add-button" @click="addSelectedOrder">Add</button>
       </div>
     </div>
   </div>
@@ -31,19 +31,14 @@
 <script>
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import OrderAdminCard from "../components/OrderAdminCard.vue";
+import axios from "axios";
 
 export default {
   data() {
     return {
       role: "admin",
-      selectedOrders: [],
-      orders: [
-        { id: "1", dueDate: "2024-10-20", status: "checked" },
-        { id: "2", dueDate: "2024-10-20", status: "ongoing" },
-        { id: "3", dueDate: "2024-10-20", status: "delivered" },
-        { id: "4", dueDate: "2024-10-20", status: "checked" },
-        { id: "5", dueDate: "2024-10-20", status: "delivered" },
-      ],
+      selectedOrder: null,
+      orders: [],
     };
   },
   computed: {
@@ -54,14 +49,41 @@ export default {
       return OrderAdminCard;
     },
     filteredOrders() {
-      return this.orders.filter((order) => order.status === "checked");
+      return Array.isArray(this.orders) ? this.orders.filter((order) => order.status === "checked") : [];
     },
   },
   methods: {
-    goBack() {},
-    addSelectedOrders() {
-      console.log("Selected Orders: ", this.selectedOrders);
+    goBack() {
+      this.$router.push("/worker-list");
     },
+    addSelectedOrder() {
+      console.log("Selected Order: ", this.selectedOrder);
+    },
+    fetchCheckedOrders() {
+      axios.get("http://localhost:8080/orders/check-order")
+          .then(response => {
+            console.log(response.data); // ตรวจสอบข้อมูลที่ได้รับ
+
+            // ตรวจสอบว่า response.data เป็น array หรือไม่
+            if (Array.isArray(response.data)) {
+              this.orders = response.data.map(order => ({
+                id: order.id,
+                status: order.status,
+                dueDate: order.dueDate,
+              }));
+            } else {
+              console.error("Received data is not an array:", response.data);
+              this.orders = []; // ตั้งค่าเป็น array ว่างถ้าไม่เป็น array
+            }
+          })
+          .catch(error => {
+            console.error("There was an error fetching checked orders!", error);
+            this.orders = [];
+          });
+    }
+  },
+  mounted() {
+    this.fetchCheckedOrders();
   },
 };
 </script>

@@ -2,7 +2,7 @@
   <div class="order-card">
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
     <h2 class="order-id">Order ID: {{ orderId }}</h2>
-    <p class="due-date">Due Date: {{ dueDate }}</p>
+    <p class="due-date">Due Date: {{ date }}</p>
     <button class="details-button">Details</button>
     <button v-if="status === 'delivered'" class="bill-button">Bill</button>
   </div>
@@ -20,7 +20,7 @@ export default {
       type: String,
       required: true,
     },
-    dueDate: {
+    date: {
       type: String,
       required: true,
     },
@@ -56,7 +56,7 @@ export default {
 .due-date {
   font-family: "Inter", sans-serif;
   margin: 0;
-  margin-bottom :10px;
+  margin-bottom: 10px;
 }
 
 .details-button,

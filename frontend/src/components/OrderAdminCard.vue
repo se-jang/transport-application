@@ -2,8 +2,8 @@
   <div class="order-card">
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
     <h2 class="order-id">Order ID: {{ orderId }}</h2>
-    <p class="due-date">Due Date: {{ dueDate }}</p>
-    <button class="details-button">Details</button>
+    <p class="due-date">Date: {{ date }}</p>
+    <button class="details-button" @click="viewDetails">Details</button>
   </div>
 </template>
 
@@ -13,29 +13,31 @@ export default {
   props: {
     status: {
       type: String,
-      default: "checked",
+      required: true,
     },
     orderId: {
       type: String,
       required: true,
     },
-    dueDate: {
+    date: {
       type: String,
       required: true,
     },
   },
   computed: {
     statusClass() {
-      switch (this.status) {
-        case "checked":
-          return "status-checked";
-        case "ongoing":
-          return "status-ongoing";
-        case "delivered":
-          return "status-delivered";
-        default:
-          return "";
-      }
+      return {
+        "status-red": this.status === "UNCHECKED",
+        "status-orange": this.status === "NOT_UNCHECKED",
+        "status-green": this.status === "DELIVERED",
+        "status-yellow": this.status === "ON_GOING",
+      };
+    },
+  },
+  methods: {
+    viewDetails() {
+      console.log(`Viewing details for order ID: ${this.orderId}`);
+      this.$router.push({name: 'OrderDetails', params: {orderId: this.orderId}});
     },
   },
 };
@@ -55,7 +57,7 @@ export default {
 .due-date {
   font-family: "Inter", sans-serif;
   margin: 0;
-  margin-bottom :10px;
+  margin-bottom: 10px;
 }
 
 .details-button {
@@ -78,20 +80,5 @@ export default {
   font-weight: bold;
   color: white;
   border-radius: 5px;
-}
-
-.status-checked {
-  font-family: "Inter", sans-serif;
-  background-color: red;
-}
-
-.status-ongoing {
-  font-family: "Inter", sans-serif;
-  background-color: orange;
-}
-
-.status-delivered {
-  font-family: "Inter", sans-serif;
-  background-color: green;
 }
 </style>

@@ -7,13 +7,24 @@
     <div class="main-container">
       <div class="order-container">
         <h2 class="order-title">Order</h2>
+        <div>
+          <label v-if="userRole === 'ADMIN'" for="status">Filter by Status:</label>
+          <select v-if="userRole === 'ADMIN'" v-model="selectedStatus" @change="fetchOrders">
+            <option value="all">All</option>
+            <option value="uncheck">Unchecked</option>
+            <option value="not-uncheck">Not Unchecked</option>
+            <option value="delivered">Delivered</option>
+            <option value="on-going">On-going</option>
+          </select>
+          <button v-if="userRole !== 'ADMIN'" @click="fetchOwnOrders">My Orders</button>
+        </div>
         <component
-          v-for="order in orders"
-          :key="order.id"
-          :is="orderComponent"
-          :status="order.status"
-          :orderId="order.id"
-          :dueDate="order.dueDate"
+            v-for="order in orders"
+            :key="order.id"
+            :is="orderComponent"
+            :status="order.status"
+            :orderId="order.id"
+            :date="order.date || 'N/A'"
         />
       </div>
     </div>
@@ -28,8 +39,23 @@ import HeaderCompany from "../components/HeaderCompany.vue";
 import OrderAdminCard from "../components/OrderAdminCard.vue";
 import OrderWorkerCard from "../components/OrderWorkerCard.vue";
 import OrderCompanyCard from "../components/OrderCompanyCard.vue";
+import axios from "axios";
 
 export default {
+  components: {
+    HeaderAdmin,
+    HeaderWorker,
+    HeaderCompany,
+    OrderAdminCard,
+    OrderWorkerCard,
+    OrderCompanyCard,
+  },
+  data() {
+    return {
+      orders: [],
+      selectedStatus: "all",
+    };
+  },
   computed: {
     ...mapGetters(["userRole"]),
     headerComponent() {
@@ -57,16 +83,59 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      orders: [
-        { id: "1", dueDate: "2024-10-20", status: "checked" },
-        { id: "2", dueDate: "2024-10-20", status: "ongoing" },
-        { id: "3", dueDate: "2024-10-20", status: "delivered" },
-        { id: "4", dueDate: "2024-10-20", status: "ongoing" },
-        { id: "5", dueDate: "2024-10-20", status: "delivered" }
-      ],
-    };
+  methods: {
+    async fetchOrders() {
+      let endpoint = 'http://localhost:8080/orders';
+      switch (this.selectedStatus) {
+        case 'uncheck':
+          endpoint = 'http://localhost:8080/orders/uncheck-order';
+          break;
+        case 'not-uncheck':
+          endpoint = 'http://localhost:8080/orders/not-uncheck-orders';
+          break;
+        case 'delivered':
+          endpoint = 'http://localhost:8080/orders/delivered-orders';
+          break;
+        case 'on-going':
+          endpoint = 'http://localhost:8080/orders/on-going-orders';
+          break;
+      }
+
+      try {
+        const response = await axios.get(endpoint);
+        this.orders = response.data.map(order => ({
+          id: order.id,
+          date: order.date,
+          status: order.status.toLowerCase(),
+        }));
+        console.log("Fetched orders:", this.orders);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    },
+    async fetchOwnOrders() {
+      try {
+        const userId = this.userRole;
+        if (userId === "USER") {
+          const response = await axios.get(`http://localhost:8080/orders/${userId}`);
+          this.orders = response.data;
+        } else if (userId === "WORKER") {
+          const response = await axios.get(`http://localhost:8080/orders/${userId}`);
+          this.orders = response.data;
+        }
+      } catch (error) {
+        console.error('Error fetching own orders:', error);
+      }
+    },
+  },
+  mounted() {
+    if (!this.orderId || !this.status) {
+      console.warn('Invalid orderId or status:', this.orderId, this.status);
+    } else if (this.userRole === 'ADMIN') {
+      this.fetchOrders();
+    } else {
+      this.fetchOwnOrders();
+    }
   },
 };
 </script>

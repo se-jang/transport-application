@@ -15,18 +15,18 @@
         <div class="order-list-container">
           <table class="order-list-table">
             <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
             </thead>
             <tbody>
-              <tr v-for="order in orders" :key="order.id">
-                <td>{{ order.id }}</td>
-                <td>{{ formatDate(order.date) }}</td>
-                <td>{{ order.status }}</td>
-              </tr>
+            <tr v-for="order in orders" :key="order.id">
+              <td>{{ order.id }}</td>
+              <td>{{ formatDate(order.date) }}</td>
+              <td>{{ order.status }}</td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -40,41 +40,33 @@
 <script>
 import axios from 'axios';
 import HeaderAdmin from "../components/HeaderAdmin.vue";
-import HeaderWorker from "../components/HeaderWorker.vue";
-import HeaderCompany from "../components/HeaderCompany.vue";
-import HeaderCustomer from "../components/HeaderCustomer.vue";
 
 export default {
+  computed: {
+    headerComponent() {
+      return HeaderAdmin
+    }
+  },
   data() {
     return {
-      workerId: this.$route.params.workerId,  // รับ workerId จาก route parameters
+      workerId: this.$route.params.workerId, // รับ workerId จาก route parameters
       orders: [],
       role: "admin",
     };
   },
-  computed: {
-    headerComponent() {
-      switch (this.role) {
-        case "admin":
-          return HeaderAdmin;
-        case "worker":
-          return HeaderWorker;
-        case "company":
-          return HeaderCompany;
-        case "customer":
-          return HeaderCustomer;
-        default:
-          return null;
-      }
-    },
-  },
   created() {
-    this.fetchOrders();
+    console.log("workerId from route params:", this.workerId);
+    if (this.workerId) {
+      this.fetchOrders();
+    } else {
+      console.error("workerId is not defined.");
+    }
   },
+
   methods: {
     async fetchOrders() {
       try {
-        const response = await axios.get(`http://localhost:8080/${this.workerId}`);
+        const response = await axios.get(`http://localhost:8080/transportation-workers/${this.workerId}`);
         this.orders = response.data;
       } catch (error) {
         console.error("Error fetching orders:", error);

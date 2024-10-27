@@ -1,15 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "@/views/LoginView.vue";
-import MainViews from "@/views/MainView.vue";
-import OrderView from "@/views/OrderView.vue";
-import OrderDetailView from "@/views/OrderDetailView.vue";
-import CreateUserView from "@/views/CreateUserView.vue";
-import WorkerListView from "@/views/WorkerListView.vue"
-import WorkerDetailView from "@/views/WorkerDetailView.vue";
-import AddOrderView from "@/views/AddOrderView.vue";
-import UserListView from "@/views/UserListView.vue";
-import UserDetailView from "@/views/UserDetailView.vue";
-import CreateOrderView from "@/views/CreateOrderView.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '@/views/LoginView.vue';
+import MainViews from '@/views/MainView.vue';
+import OrderView from '@/views/OrderView.vue';
+import OrderDetailView from '@/views/OrderDetailView.vue';
+import CreateUserView from '@/views/CreateUserView.vue';
+import WorkerListView from '@/views/WorkerListView.vue';
+import WorkerDetailView from '@/views/WorkerDetailView.vue';
+import AddOrderView from '@/views/AddOrderView.vue';
+import UserListView from '@/views/UserListView.vue';
+import UserDetailView from '@/views/UserDetailView.vue';
+import CreateOrderView from '@/views/CreateOrderView.vue';
 
 const routes = [
   {
@@ -28,7 +28,7 @@ const routes = [
     component: OrderView,
   },
   {
-    path :'/order-detail',
+    path: '/order-detail',
     name: 'order-detail',
     component: OrderDetailView,
   },
@@ -43,29 +43,30 @@ const routes = [
     component: WorkerListView,
   },
   {
-    path: '/worker-detail',
+    path: '/worker-detail/:workerId',
     name: 'worker-detail',
-    component: WorkerDetailView
+    component: WorkerDetailView,
+    props: true,
   },
   {
     path: '/add-order',
     name: 'add-order',
-    component: AddOrderView
+    component: AddOrderView,
   },
   {
     path: '/user-list',
     name: 'user-list',
-    component: UserListView
+    component: UserListView,
   },
   {
     path: '/user-detail',
     name: 'user-detail',
-    component: UserDetailView
+    component: UserDetailView,
   },
   {
     path: '/create-order',
     name: 'create-order',
-    component: CreateOrderView
+    component: CreateOrderView,
   },
 ];
 
@@ -75,10 +76,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const routeExists = routes.some(route => route.name === to.name);
+  const route = router.resolve(to);
 
-  if (!routeExists) {
-    next({ name: "login" });
+  if (!route) {
+    next({ name: 'login' });
   } else {
     next();
   }

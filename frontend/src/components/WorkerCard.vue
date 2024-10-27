@@ -26,7 +26,11 @@ export default {
   },
   methods: {
     goDetail() {
-      this.$router.push("/worker-detail");
+      if (this.workerId) {
+        this.$router.push({ name: "worker-detail", params: { workerId: this.workerId } });
+      } else {
+        console.error("workerId is not defined in WorkerCard.vue");
+      }
     },
   },
   computed: {

@@ -2,7 +2,7 @@
   <div class="order-card">
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
     <h2 class="order-id">Order ID: {{ orderId }}</h2>
-    <p class="due-date">Due Date: {{ dueDate }}</p>
+    <p class="due-date">Due Date: {{ date }}</p>
     <div class="button-group">
       <button class="details-button">Details</button>
       <button class="almost-there-button">Almost There</button>
@@ -25,7 +25,7 @@ export default {
       type: String,
       required: true,
     },
-    dueDate: {
+    date: {
       type: String,
       required: true,
     },
@@ -45,30 +45,30 @@ export default {
     },
   },
   methods: {
-  uploadFile() {
-    const formData = new FormData();
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
+    uploadFile() {
+      const formData = new FormData();
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
 
-    if (file) {
-      formData.append("file", file);
+      if (file) {
+        formData.append("file", file);
 
-      fetch('/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('File uploaded successfully:', data);
-      })
-      .catch(error => {
-        console.error('Error uploading file:', error);
-      });
-    } else {
-      alert("Please select a file to upload.");
-    }
-  },
-}
+        fetch('/upload', {
+          method: 'POST',
+          body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+              console.log('File uploaded successfully:', data);
+            })
+            .catch(error => {
+              console.error('Error uploading file:', error);
+            });
+      } else {
+        alert("Please select a file to upload.");
+      }
+    },
+  }
 };
 </script>
 
@@ -86,7 +86,7 @@ export default {
 .due-date {
   font-family: "Inter", sans-serif;
   margin: 0;
-  margin-bottom :10px;
+  margin-bottom: 10px;
 }
 
 .button-group {

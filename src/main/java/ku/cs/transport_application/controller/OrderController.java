@@ -31,8 +31,14 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUncheckOrder());
     }
 
+    @GetMapping("/orders/check-order")
+    public ResponseEntity<?> getCheckedOrder() {
+        return ResponseEntity.ok(orderService.getCheckedOrder());
+    }
+
+
     @GetMapping("/orders/{userId}")
-    public ResponseEntity<?> getUserOrder(@PathVariable("userID") UUID userID) {
+    public ResponseEntity<?> getUserOrder(@PathVariable("userId") UUID userID) {
         return ResponseEntity.ok(orderService.getOrdersByUser(userID));
     }
 

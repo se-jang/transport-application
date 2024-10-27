@@ -39,9 +39,4 @@ public class TransportationWorkerController {
         }
     }
 
-    @GetMapping("/add-orders")
-    public ResponseEntity<?> getCheckedOrders() {
-        return ResponseEntity.ok(orderService.getCheckedOrder());
-    }
-
 }
