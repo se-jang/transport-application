@@ -4,7 +4,7 @@
     <h2 class="order-id">Order ID: {{ orderId }}</h2>
     <p class="due-date">Due Date: {{ date }}</p>
     <div class="button-group">
-      <button class="details-button">Details</button>
+      <button class="details-button" @click="viewDetails">Details</button>
       <button class="almost-there-button">Almost There</button>
       <button class="success-button">Success</button>
       <input type="file" id="fileInput" style="display:none" />
@@ -67,6 +67,11 @@ export default {
       } else {
         alert("Please select a file to upload.");
       }
+
+    },
+    viewDetails() {
+      console.log(`Viewing details for order ID: ${this.orderId}`);
+      this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
     },
   }
 };
@@ -86,7 +91,7 @@ export default {
 .due-date {
   font-family: "Inter", sans-serif;
   margin: 0;
-  margin-bottom: 10px;
+  margin-bottom :10px;
 }
 
 .button-group {

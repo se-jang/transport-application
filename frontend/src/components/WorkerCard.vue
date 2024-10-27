@@ -40,8 +40,6 @@ export default {
           return "status-available";
         case "ongoing":
           return "status-ongoing";
-        case "unavailable":
-          return "status-unavailable";
         default:
           return "";
       }

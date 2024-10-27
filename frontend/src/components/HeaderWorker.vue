@@ -3,15 +3,15 @@
     <div class="header-container">
       <div class="logo">Transport application</div>
       <nav class="worker-nav">
-        <a href="#">My Order</a>
+        <router-link to="/orders">My Order</router-link>
       </nav>
     </div>
     <div class="worker-profile">
       <a href="#">Contact</a>
       <img
-        src="https://via.placeholder.com/40"
-        alt="Profile"
-        class="profile-image"
+          src="https://via.placeholder.com/40"
+          alt="Profile"
+          class="profile-image"
       />
     </div>
   </div>

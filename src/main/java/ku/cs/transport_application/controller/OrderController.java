@@ -1,5 +1,6 @@
 package ku.cs.transport_application.controller;
 
+import ku.cs.transport_application.DTO.OrderDTO;
 import ku.cs.transport_application.common.OrderStatus;
 import ku.cs.transport_application.request.OrderRequest;
 import ku.cs.transport_application.service.MailSenderService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,23 +29,23 @@ public class OrderController {
     private MailSenderService mailSenderService;
 
     @GetMapping("/orders/uncheck-orders")
-    public ResponseEntity<?> getUncheckOrder() {
+    public ResponseEntity<List<OrderDTO>> getUncheckOrder() {
         return ResponseEntity.ok(orderService.getUncheckOrder());
     }
 
     @GetMapping("/orders/check-orders")
-    public ResponseEntity<?> getCheckedOrder() {
+    public ResponseEntity<List<OrderDTO>> getCheckedOrder() {
         return ResponseEntity.ok(orderService.getCheckedOrder());
     }
 
 
     @GetMapping("/orders/{userId}")
-    public ResponseEntity<?> getUserOrder(@PathVariable("userId") UUID userID) {
+    public ResponseEntity<List<OrderDTO>> getUserOrder(@PathVariable("userId") UUID userID) {
         return ResponseEntity.ok(orderService.getOrdersByUser(userID));
     }
 
     @GetMapping("/orders/{transportationWorkerId}")
-    public ResponseEntity<?> getTransportationWorkerOrder(@PathVariable("transportationWorkerId") UUID transportationWorkerId) {
+    public ResponseEntity<List<OrderDTO>> getTransportationWorkerOrder(@PathVariable("transportationWorkerId") UUID transportationWorkerId) {
         return ResponseEntity.ok(orderService.getOrdersByWorker(transportationWorkerId));
     }
 
@@ -53,27 +55,27 @@ public class OrderController {
     }
 
     @GetMapping("/orders/all-orders")
-    public ResponseEntity <?> getAllOrder () {
+    public ResponseEntity <List<OrderDTO>> getAllOrder () {
         return ResponseEntity.ok(orderService.getAllOrder());
     }
 
     @GetMapping("/orders/delivered-orders")
-    public ResponseEntity <?> getDelivered() {
+    public ResponseEntity <List<OrderDTO>> getDelivered() {
         return ResponseEntity.ok(orderService.getDelivered());
     }
 
     @GetMapping("/orders/on-going-orders")
-    public ResponseEntity <?> getOnGoingOrder() {
+    public ResponseEntity <List<OrderDTO>> getOnGoingOrder() {
         return ResponseEntity.ok(orderService.getOnGoing());
     }
 
     @GetMapping("/orders/uploaded-orders")
-    public ResponseEntity <?> getUploadedOrder() {
+    public ResponseEntity <List<OrderDTO>> getUploadedOrder() {
         return ResponseEntity.ok(orderService.getUploaded());
     }
 
     @GetMapping("/orders/completed-orders")
-    public ResponseEntity <?> getCompletedOrder() {
+    public ResponseEntity <List<OrderDTO>> getCompletedOrder() {
         return ResponseEntity.ok(orderService.getComplete());
     }
 

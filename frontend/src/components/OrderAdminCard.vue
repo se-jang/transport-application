@@ -37,7 +37,7 @@ export default {
   methods: {
     viewDetails() {
       console.log(`Viewing details for order ID: ${this.orderId}`);
-      this.$router.push({name: 'OrderDetails', params: {orderId: this.orderId}});
+      this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
     },
   },
 };

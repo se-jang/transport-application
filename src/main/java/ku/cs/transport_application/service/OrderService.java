@@ -1,5 +1,6 @@
 package ku.cs.transport_application.service;
 
+import ku.cs.transport_application.DTO.OrderDTO;
 import ku.cs.transport_application.common.OrderStatus;
 import ku.cs.transport_application.entity.Order;
 import ku.cs.transport_application.entity.OrderLine;
@@ -42,55 +43,112 @@ public class OrderService {
     @Autowired
     private TransportationWorkerRepository twRepository;
 
-    public List<Order> getOrdersByUser(UUID id) {
+    public List<OrderDTO> getOrdersByUser(UUID id) {
         Optional<User> recordOptional = userRepository.findById(id);
         if (recordOptional.isPresent()) {
             User record = recordOptional.get();
-
             if (record.getRole() == USER) {
-                return orderRepository.findByUserId(record.getId());
-            } else {
-                return null;
+                return orderRepository.findByUserId(record.getId()).stream()
+                        .map(order -> new OrderDTO(
+                                order.getId(),
+                                order.getStatus(),
+                                order.getCustomerName(),
+                                order.getDate(),
+                                order.getDeliveredDate()
+                        ))
+                        .collect(Collectors.toList());
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
-    public List<Order> getOrdersByWorker(UUID id) {
+    public List<OrderDTO> getOrdersByWorker(UUID id) {
         Optional<TransportationWorker> recordOptional = twRepository.findById(id);
         if (recordOptional.isPresent()) {
             TransportationWorker record = recordOptional.get();
-
-            return orderRepository.findByWorkerId(record.getId());
-
-        } else {
-            return null;
+            return orderRepository.findByWorkerId(record.getId()).stream()
+                    .map(order -> new OrderDTO(
+                            order.getId(),
+                            order.getStatus(),
+                            order.getCustomerName(),
+                            order.getDate(),
+                            order.getDeliveredDate()
+                    ))
+                    .collect(Collectors.toList());
         }
+        return null;
     }
 
-    public List<Order> getUncheckOrder() {
-        return orderRepository.findByStatus(UNCHECK);
+    public List<OrderDTO> getUncheckOrder() {
+        return orderRepository.findByStatus(UNCHECK).stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getStatus(),
+                        order.getCustomerName(),
+                        order.getDate(),
+                        order.getDeliveredDate()
+                ))
+                .collect(Collectors.toList());
     }
 
-    public List<Order> getCheckedOrder() {
-        return orderRepository.findByStatus(CHECKED);
+    public List<OrderDTO> getCheckedOrder() {
+        return orderRepository.findByStatus(CHECKED).stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getStatus(),
+                        order.getCustomerName(),
+                        order.getDate(),
+                        order.getDeliveredDate()
+                ))
+                .collect(Collectors.toList());
     }
 
-    public List<Order> getOnGoing() {
-        return orderRepository.findByStatus(ONGOING);
+    public List<OrderDTO> getOnGoing() {
+        return orderRepository.findByStatus(ONGOING).stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getStatus(),
+                        order.getCustomerName(),
+                        order.getDate(),
+                        order.getDeliveredDate()
+                ))
+                .collect(Collectors.toList());
     }
 
-    public List<Order> getDelivered() {
-        return orderRepository.findByStatus(DELIVERED);
+    public List<OrderDTO> getDelivered() {
+        return orderRepository.findByStatus(DELIVERED).stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getStatus(),
+                        order.getCustomerName(),
+                        order.getDate(),
+                        order.getDeliveredDate()
+                ))
+                .collect(Collectors.toList());
     }
 
-    public List<Order> getUploaded() {
-        return orderRepository.findByStatus(UPLOADED);
+    public List<OrderDTO> getUploaded() {
+        return orderRepository.findByStatus(UPLOADED).stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getStatus(),
+                        order.getCustomerName(),
+                        order.getDate(),
+                        order.getDeliveredDate()
+                ))
+                .collect(Collectors.toList());
     }
 
-    public List<Order> getComplete() {
-        return orderRepository.findByStatus(COMPLETED);
+    public List<OrderDTO> getComplete() {
+        return orderRepository.findByStatus(COMPLETED).stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getStatus(),
+                        order.getCustomerName(),
+                        order.getDate(),
+                        order.getDeliveredDate()
+                ))
+                .collect(Collectors.toList());
     }
 
     public List<Order> getNotUncheckOrder() {
@@ -100,8 +158,16 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<Order> getAllOrder() {
-        return orderRepository.findAll();
+    public List<OrderDTO> getAllOrder() {
+        return orderRepository.findAll().stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getStatus(),
+                        order.getCustomerName(),
+                        order.getDate(),
+                        order.getDeliveredDate()
+                ))
+                .collect(Collectors.toList());
     }
 
     public OrderRequest getOrderDetail(UUID orderId) {
