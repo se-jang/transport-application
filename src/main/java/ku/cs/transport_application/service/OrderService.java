@@ -54,7 +54,8 @@ public class OrderService {
                                 order.getStatus(),
                                 order.getCustomerName(),
                                 order.getDate(),
-                                order.getDeliveredDate()
+                                order.getDeliveredDate(),
+                                order.getUser().getName()
                         ))
                         .collect(Collectors.toList());
             }
@@ -72,7 +73,8 @@ public class OrderService {
                             order.getStatus(),
                             order.getCustomerName(),
                             order.getDate(),
-                            order.getDeliveredDate()
+                            order.getDeliveredDate(),
+                            order.getUser().getName()
                     ))
                     .collect(Collectors.toList());
         }
@@ -86,7 +88,8 @@ public class OrderService {
                         order.getStatus(),
                         order.getCustomerName(),
                         order.getDate(),
-                        order.getDeliveredDate()
+                        order.getDeliveredDate(),
+                        order.getUser().getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -98,7 +101,8 @@ public class OrderService {
                         order.getStatus(),
                         order.getCustomerName(),
                         order.getDate(),
-                        order.getDeliveredDate()
+                        order.getDeliveredDate(),
+                        order.getUser().getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -110,7 +114,8 @@ public class OrderService {
                         order.getStatus(),
                         order.getCustomerName(),
                         order.getDate(),
-                        order.getDeliveredDate()
+                        order.getDeliveredDate(),
+                        order.getUser().getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -122,7 +127,8 @@ public class OrderService {
                         order.getStatus(),
                         order.getCustomerName(),
                         order.getDate(),
-                        order.getDeliveredDate()
+                        order.getDeliveredDate(),
+                        order.getUser().getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -134,7 +140,8 @@ public class OrderService {
                         order.getStatus(),
                         order.getCustomerName(),
                         order.getDate(),
-                        order.getDeliveredDate()
+                        order.getDeliveredDate(),
+                        order.getUser().getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -146,7 +153,8 @@ public class OrderService {
                         order.getStatus(),
                         order.getCustomerName(),
                         order.getDate(),
-                        order.getDeliveredDate()
+                        order.getDeliveredDate(),
+                        order.getUser().getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -165,7 +173,8 @@ public class OrderService {
                         order.getStatus(),
                         order.getCustomerName(),
                         order.getDate(),
-                        order.getDeliveredDate()
+                        order.getDeliveredDate(),
+                        order.getUser().getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -180,7 +189,11 @@ public class OrderService {
         orderRequest.setDate(order.getDate());
         orderRequest.setCustomerName(order.getCustomerName());
         orderRequest.setCustomerAddress(order.getCustomerAddress());
-        orderRequest.setWorkerUsername(order.getWorker().getUsername());
+        if (order.getWorker() != null) {
+            orderRequest.setWorkerUsername(order.getWorker().getUsername());
+        } else {
+            orderRequest.setWorkerUsername("N/A");
+        }
         orderRequest.setStatus(order.getStatus());
 
         orderRequest.setDeliveredDate(order.getDeliveredDate());
@@ -200,6 +213,8 @@ public class OrderService {
 
         return orderRequest;
     }
+
+
 
 
     public void upDateOrderStatus(UUID id, OrderStatus status) {

@@ -2,7 +2,6 @@ package ku.cs.transport_application.controller;
 
 import ku.cs.transport_application.DTO.OrderDTO;
 import ku.cs.transport_application.common.OrderStatus;
-import ku.cs.transport_application.request.OrderRequest;
 import ku.cs.transport_application.service.MailSenderService;
 import ku.cs.transport_application.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +38,12 @@ public class OrderController {
     }
 
 
-    @GetMapping("/orders/{userId}")
+    @GetMapping("/orders/user/{userId}")
     public ResponseEntity<List<OrderDTO>> getUserOrder(@PathVariable("userId") UUID userID) {
         return ResponseEntity.ok(orderService.getOrdersByUser(userID));
     }
 
-    @GetMapping("/orders/{transportationWorkerId}")
+    @GetMapping("/orders/worker/{transportationWorkerId}")
     public ResponseEntity<List<OrderDTO>> getTransportationWorkerOrder(@PathVariable("transportationWorkerId") UUID transportationWorkerId) {
         return ResponseEntity.ok(orderService.getOrdersByWorker(transportationWorkerId));
     }
@@ -116,10 +115,9 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/orders/{orderId}")
-    public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") UUID orderId) {
-        OrderRequest orderDetail = orderService.getOrderDetail(orderId);
-        return ResponseEntity.ok(orderDetail);
+    @GetMapping("/orders/order-detail/{orderId}")
+    public ResponseEntity<?> getOrderDetailById(@PathVariable("orderId") UUID orderId) {
+        return ResponseEntity.ok(orderService.getOrderDetail(orderId));
     }
 
     @GetMapping("/orders/{orderId}/shipment-doc")

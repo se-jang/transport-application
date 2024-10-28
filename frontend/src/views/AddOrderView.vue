@@ -12,13 +12,13 @@
 
         <div class="order-list">
           <AddOrderWorkerCard
-              v-for="order in orders"
-              :key="order.orderId"
-              :status="order.status"
-              :orderId="order.orderId"
-              :date="order.date"
-              :isChecked="selectedOrderId === order.orderId"
-              @checkOrder="selectOrder(order.orderId)"
+            v-for="order in orders"
+            :key="order.orderId"
+            :status="order.status"
+            :orderId="order.orderId"
+            :date="order.date"
+            :isChecked="selectedOrderId === order.orderId" 
+            @checkOrder="selectOrder(order.orderId)" 
           />
         </div>
       </div>

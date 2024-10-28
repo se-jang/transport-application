@@ -18,7 +18,6 @@
             <option value="uploaded">Uploaded</option>
             <option value="complete">Complete</option>
           </select>
-          <button v-if="userRole !== 'ADMIN'" @click="fetchOwnOrders">My Orders</button>
         </div>
         <component
             v-for="order in orders"
@@ -55,13 +54,12 @@ export default {
   data() {
     return {
       orders: [],
-      selectedStatus: "all",
-      workerId: this.$route.params.workerId,
-      userId: this.$route.params.userId
+      selectedStatus: "all"
     };
   },
   created() {
-    this.fetchOrders();
+    const orderId = this.$route.params.id;
+    this.fetchOrdersBasedOnRole(orderId);
   },
   computed: {
     ...mapGetters(["userRole"]),
@@ -91,6 +89,21 @@ export default {
     },
   },
   methods: {
+    async fetchOrdersBasedOnRole(orderId) {
+    switch (this.userRole) {
+      case "USER":
+        await this.fetchOwnOrders(orderId);
+        break;
+      case "ADMIN":
+        await this.fetchOrders();
+        break;
+      case "WORKER":
+        await this.fetchWorkerOrders(orderId);
+        break;
+      default:
+        console.error("Unknown user role");
+    }
+  },
     async fetchOrders() {
       try {
         const response = await axios.get("http://localhost:8080/orders/all-orders?fields=id,date,status,customerName");
@@ -151,9 +164,9 @@ export default {
       }
     },
 
-    async fetchOwnOrders() {
+    async fetchOwnOrders(userId) {
       try {
-        const response = await axios.get(`http://localhost:8080/orders/${this.userId}`);
+        const response = await axios.get(`http://localhost:8080/orders/user/${userId}`);
         this.orders = response.data.map(order => ({
           id: order.id,
           date: order.date || 'N/A',
@@ -169,13 +182,14 @@ export default {
         console.error('Error fetching own orders:', error);
       }
     },
-  },
-  mounted() {
-    if (this.userRole === 'ADMIN') {
-      this.fetchOrders();
-    } else {
-      this.fetchOwnOrders();
-    }
+    async fetchWorkerOrders(workerId) {
+      try {
+        const response = await axios.get(`http://localhost:8080/orders/worker/${workerId}`);
+        this.orders = response.data;
+      } catch (error) {
+        console.error("Error fetching worker orders:", error);
+      }
+    },
   },
 };
 </script>

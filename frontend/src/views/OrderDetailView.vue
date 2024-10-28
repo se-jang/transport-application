@@ -5,19 +5,19 @@
     </header>
 
     <div class="main-container">
-      <div class="order-detail-container">
-        <button class="back-button">Back</button>
-        <p class="order-id-text">Order ID: 12345</p>
+      <div class="order-detail-container" v-if="order">
+        <button class="back-button" @click="$router.back()">Back</button>
+        <p class="order-id-text">Order ID: {{ order.id }}</p>
         <div class="order-info-wrapper">
           <div class="order-info-box">
             <div class="order-info-left">
-              <p><strong>Due date:</strong></p>
-              <p><strong>Company Name:</strong></p>
+              <p><strong>Due date:</strong> {{ formatDate(order.date) }}</p>
+              <p><strong>Company Name:</strong> {{ order.companyName || 'N/A' }}</p>
             </div>
             <div class="order-info-right">
-              <p><strong>Status:</strong></p>
-              <p><strong>Customer Name:</strong></p>
-              <p><strong>Address:</strong></p>
+              <p><strong>Status:</strong> {{ order.status }}</p>
+              <p><strong>Customer Name:</strong> {{ order.customerName }}</p>
+              <p><strong>Address:</strong> {{ order.address || 'N/A' }}</p>
             </div>
           </div>
         </div>
@@ -34,64 +34,78 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Product A</td>
-                <td>Type 1</td>
-                <td>10</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Product B</td>
-                <td>Type 2</td>
-                <td>5</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Product C</td>
-                <td>Type 3</td>
-                <td>20</td>
+              <tr v-for="product in order.productDetails" :key="product.id">
+                <td>{{ product.id }}</td>
+                <td>{{ product.productName }}</td>
+                <td>{{ product.productType }}</td>
+                <td v-if="product.quantity">{{ product.quantity }}</td>
+                <td v-else>N/A</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <button v-if="role === 'admin'" class="checked-button">Checked</button>
+        <button v-if="userRole === 'admin'" class="checked-button">Checked</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
-import HeaderCustomer from "../components/HeaderCustomer.vue";
 
 export default {
+  name: "OrderDetail",
   data() {
     return {
-      role: "admin",
+      order: null,
     };
   },
   computed: {
+    ...mapGetters(["userRole"]),
     headerComponent() {
-      switch (this.role) {
-        case "admin":
+      switch (this.userRole) {
+        case "ADMIN":
           return HeaderAdmin;
-        case "worker":
+        case "WORKER":
           return HeaderWorker;
-        case "company":
+        case "USER":
           return HeaderCompany;
-        case "customer":
-          return HeaderCustomer;
         default:
           return null;
       }
     },
   },
+  methods: {
+    async fetchOrderDetails() {
+      try {
+          const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
+          console.log("Order data:", this.order);
+          this.order = response.data;
+      } catch (error) {
+          console.error("Error fetching order details:", error);
+      }
+    },
+
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }).format(date);
+    },
+  },
+  mounted() {
+    this.fetchOrderDetails();
+  },
 };
 </script>
+
 
 <style>
 :root {

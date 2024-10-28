@@ -15,4 +15,5 @@ public class OrderDTO {
     private String customerName;
     private LocalDateTime date;
     private LocalDateTime deliveredDate;
+    private String creatorName;
 }

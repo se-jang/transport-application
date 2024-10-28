@@ -130,11 +130,11 @@ export default {
   font-size: 20px;
   margin: 10px 0 0 0;
   text-align: center;
-  margin-bottom: 6%;
+  margin-bottom: 20%;
 }
 
 .cargo {
-  margin-bottom: 9%;
+  margin-bottom: 30%;
 }
 
 .fade {

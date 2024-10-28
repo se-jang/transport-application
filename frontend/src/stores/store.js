@@ -16,6 +16,10 @@ export default createStore({
         setUsername(state, username) {
             state.username = username;
         },
+        clearUserData(state) {
+            state.userRole = "";
+            state.username = "";
+        },
     },
     actions: {
         updateUserRole({ commit }, role) {
@@ -24,5 +28,9 @@ export default createStore({
         updateUsername({ commit }, username) {
             commit("setUsername", username);
         },
+        clearUserData({ commit }) {
+            commit("clearUserData");
+        },
     },
 });
+
