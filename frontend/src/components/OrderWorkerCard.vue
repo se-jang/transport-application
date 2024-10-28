@@ -62,6 +62,7 @@ export default {
     },
     uploadFile() {
       const formData = new FormData();
+      const orderId = this.orderId;
 
       if (this.selectedFile) {
         formData.append("file", this.selectedFile);
@@ -84,6 +85,32 @@ export default {
       } else {
         alert("Please select a file to upload.");
       }
+
+      const status = "UPLOADED";
+      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          orderId: orderId,
+          status: status
+        })
+      })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data.message);
+            alert(data.message || 'Order status updated successfully');
+          })
+          .catch(error => {
+            console.error('Error updating order status:', error);
+            alert('Error updating order status');
+          });
     },
     formatDate(dateString) {
       const date = new Date(dateString);
