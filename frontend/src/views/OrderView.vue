@@ -7,9 +7,9 @@
     <div class="main-container">
       <div class="order-container">
         <h2 class="order-title">Order</h2>
-        <div>
-          <label v-if="userRole === 'ADMIN'" for="status">Filter by Status:</label>
-          <select v-if="userRole === 'ADMIN'" v-model="selectedStatus" @change="fetchOrdersFilter">
+        <div v-if="userRole === 'ADMIN'">
+          <label for="status">Filter by Status:</label>
+          <select v-model="selectedStatus" @change="fetchOrdersFilter">
             <option value="all">All</option>
             <option value="uncheck">Unchecked</option>
             <option value="check">Not Unchecked</option>
@@ -26,6 +26,7 @@
             :orderId="order.id"
             :date="order.date || 'N/A'"
             :status="order.status"
+            :customerName="order.customerName"
         />
       </div>
     </div>
@@ -54,12 +55,16 @@ export default {
   data() {
     return {
       orders: [],
-      selectedStatus: "all"
+      selectedStatus: "all",
     };
   },
   created() {
-    const orderId = this.$route.params.id;
-    this.fetchOrdersBasedOnRole(orderId);
+    const userId = this.$route.params.id;
+    if (userId) {
+      this.fetchOrdersBasedOnRole(userId);
+    } else {
+      this.fetchOrders();
+    }
   },
   computed: {
     ...mapGetters(["userRole"]),
@@ -89,103 +94,93 @@ export default {
     },
   },
   methods: {
-    async fetchOrdersBasedOnRole(orderId) {
-    switch (this.userRole) {
-      case "USER":
-        await this.fetchOwnOrders(orderId);
-        break;
-      case "ADMIN":
-        await this.fetchOrders();
-        break;
-      case "WORKER":
-        await this.fetchWorkerOrders(orderId);
-        break;
-      default:
-        console.error("Unknown user role");
-    }
-  },
+    async fetchOrdersBasedOnRole(userId) {
+      switch (this.userRole) {
+        case "USER":
+          await this.fetchOwnOrders(userId);
+          break;
+        case "ADMIN":
+          await this.fetchOrders();
+          break;
+        case "WORKER":
+          await this.fetchWorkerOrders(userId);
+          break;
+        default:
+          console.error("Unknown user role");
+      }
+    },
     async fetchOrders() {
       try {
         const response = await axios.get("http://localhost:8080/orders/all-orders?fields=id,date,status,customerName");
-        const data = Array.isArray(response.data) ? response.data : [response.data];
-        this.orders = data.map(order => ({
+        this.orders = response.data.map(order => ({
           id: order.id,
-          date: order.date || 'N/A',
+          date: order.date || "N/A",
           status: order.status,
         }));
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     },
-
     async fetchOrdersFilter() {
       let endpoint;
       switch (this.selectedStatus) {
-        case 'uncheck':
-          endpoint = 'http://localhost:8080/orders/uncheck-orders';
+        case "uncheck":
+          endpoint = "http://localhost:8080/orders/uncheck-orders";
           break;
-        case 'check':
-          endpoint = 'http://localhost:8080/orders/check-orders';
+        case "check":
+          endpoint = "http://localhost:8080/orders/check-orders";
           break;
-        case 'on-going':
-          endpoint = 'http://localhost:8080/orders/on-going-orders';
+        case "on-going":
+          endpoint = "http://localhost:8080/orders/on-going-orders";
           break;
-        case 'delivered':
-          endpoint = 'http://localhost:8080/orders/delivered-orders';
+        case "delivered":
+          endpoint = "http://localhost:8080/orders/delivered-orders";
           break;
-        case 'uploaded':
-          endpoint = 'http://localhost:8080/orders/uploaded-orders';
+        case "uploaded":
+          endpoint = "http://localhost:8080/orders/uploaded-orders";
           break;
-        case 'complete':
-          endpoint = 'http://localhost:8080/orders/completed-orders';
+        case "complete":
+          endpoint = "http://localhost:8080/orders/completed-orders";
           break;
-        case 'all':
         default:
-          endpoint = 'http://localhost:8080/orders/all-orders';
+          endpoint = "http://localhost:8080/orders/all-orders";
           break;
       }
 
       try {
         const response = await axios.get(endpoint);
-        const data = Array.isArray(response.data) ? response.data : response.data ? [response.data] : [];
-        this.orders = data.map(order => ({
+        this.orders = response.data.map(order => ({
           id: order.id,
-          date: order.date || 'N/A',
-          status: order.status.toLowerCase(),
+          date: order.date || "N/A",
+          status: order.status,
           customerName: order.customerName,
-          customerAddress: order.customerAddress,
-          orderLines: order.orderLines ? order.orderLines.map(line => ({
-            productId: line.id.productId,
-            quantity: line.quantity,
-          })) : [],
         }));
       } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error("Error fetching filtered orders:", error);
       }
     },
-
     async fetchOwnOrders(userId) {
       try {
         const response = await axios.get(`http://localhost:8080/orders/user/${userId}`);
         this.orders = response.data.map(order => ({
           id: order.id,
-          date: order.date || 'N/A',
-          status: order.status.toLowerCase(),
+          date: order.date || "N/A",
+          status: order.status,
           customerName: order.customerName,
-          customerAddress: order.customerAddress,
-          orderLines: order.orderLines.map(line => ({
-            productId: line.id.productId,
-            quantity: line.quantity,
-          })),
         }));
       } catch (error) {
-        console.error('Error fetching own orders:', error);
+        console.error("Error fetching own orders:", error);
       }
     },
     async fetchWorkerOrders(workerId) {
       try {
         const response = await axios.get(`http://localhost:8080/orders/worker/${workerId}`);
-        this.orders = response.data;
+        this.orders = response.data.map(order => ({
+          id: order.id,
+          date: order.date || "N/A",
+          status: order.status,
+          customerName: order.customerName,
+        }));
       } catch (error) {
         console.error("Error fetching worker orders:", error);
       }
@@ -193,6 +188,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style scoped>

@@ -23,7 +23,7 @@ const routes = [
     component: MainViews,
   },
   {
-    path: '/orders/:id',
+    path: '/orders/:id?',
     name: 'orders',
     component: OrderView,
   },

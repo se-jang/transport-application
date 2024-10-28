@@ -11,7 +11,7 @@
         <div class="order-info-wrapper">
           <div class="order-info-box">
             <div class="order-info-left">
-              <p><strong>Due date:</strong> {{ formatDate(order.date) }}</p>
+              <p><strong>Date:</strong> {{ formatDate(order.date) }}</p>
               <p><strong>Company Name:</strong> {{ order.companyName || 'N/A' }}</p>
             </div>
             <div class="order-info-right">
@@ -26,21 +26,21 @@
           <p class="product-list-title">Product List</p>
           <table class="product-list-table">
             <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Amount</th>
-              </tr>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Amount</th>
+            </tr>
             </thead>
             <tbody>
-              <tr v-for="product in order.productDetails" :key="product.id">
-                <td>{{ product.id }}</td>
-                <td>{{ product.productName }}</td>
-                <td>{{ product.productType }}</td>
-                <td v-if="product.quantity">{{ product.quantity }}</td>
-                <td v-else>N/A</td>
-              </tr>
+            <tr v-for="product in order.productDetails" :key="product.id">
+              <td>{{ product.id }}</td>
+              <td>{{ product.productName }}</td>
+              <td>{{ product.productType }}</td>
+              <td v-if="product.quantity">{{ product.quantity }}</td>
+              <td v-else>N/A</td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -83,11 +83,11 @@ export default {
   methods: {
     async fetchOrderDetails() {
       try {
-          const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
-          console.log("Order data:", this.order);
-          this.order = response.data;
+        const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
+        console.log("Order data:", this.order);
+        this.order = response.data;
       } catch (error) {
-          console.error("Error fetching order details:", error);
+        console.error("Error fetching order details:", error);
       }
     },
 
@@ -175,7 +175,7 @@ export default {
   cursor: pointer;
   width: auto;
   margin-bottom: 20px;
-  
+
 }
 
 .checked-button {
