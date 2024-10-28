@@ -12,7 +12,7 @@
           <select v-model="selectedStatus" @change="fetchOrdersFilter">
             <option value="all">All</option>
             <option value="uncheck">Unchecked</option>
-            <option value="check">Not Unchecked</option>
+            <option value="check">Checked</option>
             <option value="on-going">On-going</option>
             <option value="delivered">Delivered</option>
             <option value="uploaded">Uploaded</option>
