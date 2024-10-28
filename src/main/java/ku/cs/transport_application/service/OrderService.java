@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -237,19 +239,28 @@ public class OrderService {
         }
     }
 
-    public void uploadFile(UUID orderID, String fileName, String uploadDir) {
-        String path = uploadDir + fileName;
-        File uploadedFile = new File(path);
+    public void uploadFile(UUID orderID, MultipartFile file) throws IOException {
+        String uploadDir = "src/main/resources/static/images/uploads/";
+        String fileName = file.getOriginalFilename();
+        assert fileName != null;
 
-        if (!uploadedFile.exists()) {
-            throw new IllegalArgumentException("File does not exist: " + path);
+        File uploadPath = new File(uploadDir);
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs(); // สร้างไดเร็กทอรีถ้ายังไม่มี
         }
 
+        File uploadedFile = new File(uploadDir + fileName);
+        file.transferTo(uploadedFile); // อัปโหลดไฟล์ไปยังเซิร์ฟเวอร์
+
+        // ตรวจสอบว่ามี order อยู่ในฐานข้อมูลหรือไม่
         Order order = orderRepository.findById(orderID)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
-        order.setShipmentDocDir(path);
+
+        order.setShipmentDocDir(uploadedFile.getPath());
         orderRepository.save(order);
     }
+
+
 
     public Resource getShipmentDoc(UUID orderId) {
         Order order = orderRepository.findById(orderId)

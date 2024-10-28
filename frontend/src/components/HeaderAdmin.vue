@@ -1,7 +1,7 @@
 <template>
   <div class="admin-header">
     <div class="header-container">
-      <div class="logo">Transport application</div>
+      <router-link to="/main" class="logo">Transport application</router-link>
       <nav class="admin-nav">
         <router-link to="/orders">Order</router-link>
         <router-link to="/worker-list">Transport worker</router-link>
@@ -10,11 +10,12 @@
       </nav>
     </div>
     <div class="admin-profile">
-      <a href="#">Contact</a>
+      <a href="#" @click="contact">Contact</a>
+      <a href="#" @click="logout">Logout</a>
       <img
-        src="https://via.placeholder.com/40"
-        alt="Profile"
-        class="profile-image"
+          src="https://via.placeholder.com/40"
+          alt="Profile"
+          class="profile-image"
       />
     </div>
   </div>
@@ -23,6 +24,15 @@
 <script>
 export default {
   name: "HeaderAdmin",
+  methods: {
+    logout(){
+      this.$store.dispatch("clearUserData");
+      this.$router.push("/login");
+    },
+    contact(){
+      alert("Tel: 089-***-****")
+    }
+  }
 };
 </script>
 
@@ -34,6 +44,14 @@ export default {
   background-color: #fff;
   padding: 10px 20px;
   border-bottom: 2px solid #e0e0e0;
+}
+
+.logo {
+  text-decoration: none;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  margin-right: 20px;
 }
 
 .header-container {

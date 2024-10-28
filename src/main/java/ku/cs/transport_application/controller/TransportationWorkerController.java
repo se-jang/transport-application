@@ -1,12 +1,14 @@
 package ku.cs.transport_application.controller;
 
 
+import ku.cs.transport_application.DTO.TransportationWorkerDTO;
 import ku.cs.transport_application.service.OrderService;
 import ku.cs.transport_application.service.TransportationWorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,8 +22,9 @@ public class TransportationWorkerController {
     private OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<?> getTransportationWorkers() {
-        return ResponseEntity.ok(transportationWorkerService.getAvailableWorker());
+    public ResponseEntity<List<TransportationWorkerDTO>> getTransportationWorkers() {
+        List<TransportationWorkerDTO> workerDTO = transportationWorkerService.getAllTransportationWorker();
+        return ResponseEntity.ok(workerDTO);
     }
 
     @GetMapping("/{workerId}")

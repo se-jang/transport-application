@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Service
 public class MailSenderService {
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -30,12 +31,14 @@ public class MailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
-        User user = userRepository.findByName(order.getCustomerName());
+        User user = userRepository.findByName(order.getUser().getName());
         String email = user.getEmail();
+
         String subject = String.format("Order Update: Your Order %s is now %s", orderId, order.getStatus());
         String body = String.format("Dear %s,\n\nWe would like to inform you that your order is now %s. " +
                 "If you have any questions or require further assistance, please do not hesitate to contact us.\n\n" +
-                "Thank you for choosing our service!\n\nBest regards,\nTransportation Application", user.getName(),order.getStatus());
+                "Thank you for choosing our service!\n\nBest regards,\nTransportation Application", user.getName(), order.getStatus());
+
         message.setTo(email);
         message.setSubject(subject);
         message.setText(body);

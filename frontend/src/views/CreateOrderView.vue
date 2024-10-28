@@ -124,7 +124,7 @@ export default {
   max-width: 70%;
   height: 94vh;
   margin: 0 auto;
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -132,7 +132,7 @@ export default {
   max-width: 80%;
   height: 89.7%;
   margin: auto;
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
@@ -175,8 +175,8 @@ h2 {
   display: inline-block;
   text-align: left;
   margin-top: 5%;
-  margin-bottom: 0px; 
-  margin-left: 10%; 
+  margin-bottom: 0px;
+  margin-left: 10%;
 }
 
 h3{
@@ -186,7 +186,7 @@ h3{
 .input {
   width: 100%;
   max-width: 500px;
-  padding: 5px; 
+  padding: 5px;
   box-sizing: border-box;
 }
 

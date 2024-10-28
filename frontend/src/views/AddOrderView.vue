@@ -8,17 +8,17 @@
       <div class="order-container">
         <h2 class="order-title">Add Order</h2>
         <button class="back-button" @click="goBack">Back</button>
-        <button class="add-button" @click="addSelectedOrders">Add</button>
+        <button @click="assignWorker">Assign Worker</button>
 
         <div class="order-list">
           <AddOrderWorkerCard
-            v-for="order in orders"
-            :key="order.orderId"
-            :status="order.status"
-            :orderId="order.orderId"
-            :date="order.date"
-            :isChecked="selectedOrderId === order.orderId" 
-            @checkOrder="selectOrder(order.orderId)" 
+              v-for="order in orders"
+              :key="order.id"
+              :status="order.status"
+              :orderId="order.id"
+              :date="order.date"
+              :isChecked="selectedOrderId === order.id"
+              @checkOrder="selectOrder(order.id)"
           />
         </div>
       </div>
@@ -38,6 +38,7 @@ export default {
   data() {
     return {
       role: "admin",
+      selectedWorkerId: this.$route.params.workerId,
       selectedOrderId: null,
       orders: [],
     };
@@ -48,19 +49,58 @@ export default {
     },
   },
   methods: {
+    async assignWorker() {
+      console.log("Worker ID: ", this.selectedWorkerId);
+      console.log("Order ID: ", this.selectedOrderId);
+      if (!this.selectedOrderId || !this.selectedWorkerId) {
+        console.warn("Please select an order and a worker before assigning.");
+        return;
+      }
+      try {
+        const status = "ONGOING";
+        const response = await axios.post(
+            `http://localhost:8080/worker/worker-detail/${this.selectedWorkerId}/add-order`,
+            null,
+            {
+              params: { workerId: this.selectedWorkerId, orderId: this.selectedOrderId },
+            }
+        );
+        console.log(response.data.message);
+        const statusUpdateResponse = await fetch(
+            `http://localhost:8080/orders/order-detail/${this.selectedOrderId}/change-status-order`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                orderId: this.selectedOrderId,
+                status: status
+              }),
+            }
+        );
+
+        const statusUpdateData = await statusUpdateResponse.json();
+        console.log(statusUpdateData.message);
+        alert(statusUpdateData.message || 'Order status updated to ONGOING successfully.');
+
+        this.$router.push({ name: 'worker-detail', params: { workerId: this.selectedWorkerId } });
+      } catch (error) {
+        console.error("Failed to assign worker:", error);
+      }
+    },
     goBack() {
       this.$router.go(-1);
     },
-    addSelectedOrders() {
-      console.log(`Selected Order ID: ${this.selectedOrderId}`);
-    },
     selectOrder(orderId) {
+      console.log("Selected Order ID:", orderId);
       this.selectedOrderId = orderId;
     },
     async fetchOrders() {
       try {
         const response = await axios.get("http://localhost:8080/orders/check-orders");
         this.orders = response.data;
+        console.log("orders:", this.orders);
       } catch (error) {
         console.error("Failed to fetch orders:", error);
       }
@@ -72,9 +112,10 @@ export default {
 };
 </script>
 
+
 <style scoped>
 :root {
-  --main-bg-color: #4a4a4a;
+  --main-bg-color: #717171;
   --sub-bg-color: #eeeeee;
   --card-bg-color: #ffffff;
 }

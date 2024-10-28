@@ -1,124 +1,133 @@
 <template>
-    <div class="order-card">
-      <div class="checkbox-container">
-        <input
-          type="checkbox"
-          class="order-checkbox"
-          :checked="isChecked"  
-          @change="toggleCheckbox"
-        />
-      </div>
-      <div class="status-indicator" :class="statusClass">{{ status }}</div>
-      <h2 class="order-id">Order ID: {{ orderId }}</h2>
-      <p class="due-date">Due Date: {{ date }}</p>
-      <button class="details-button">Details</button>
+  <div class="order-card">
+    <div class="checkbox-container">
+      <input type="radio" :checked="isChecked" @change="onCheck" />
     </div>
-  </template>
-    
-  <script>
-  export default {
-    name: "AddOrderWorkerCard",
-    props: {
-      status: {
-        type: String,
-        default: "ongoing",
-      },
-      orderId: {
-        type: String,
-        required: true,
-      },
-      date: {
-        type: String,
-        required: true,
-      },
-      isChecked: {  // เพิ่ม prop สำหรับจัดการสถานะ checkbox
-        type: Boolean,
-        default: false,
-      },
+    <div class="status-indicator" :class="statusClass">{{ status }}</div>
+    <h2 class="order-id">Order ID: {{ orderId }}</h2>
+    <p class="due-date">Date: {{ formatDate(date) }}</p>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  name: "AddOrderWorkerCard",
+  props: {
+    status: {
+      type: String,
+      default: "ongoing",
     },
-    methods: {
-      toggleCheckbox() {
-        this.$emit('checkOrder', this.orderId);  // Emit event เมื่อมีการเปลี่ยนแปลง checkbox
-      },
+    orderId: {
+      type: String,
+      required: true,
     },
-    computed: {
-      statusClass() {
-        switch (this.status) {
-          case "checked":
-            return "status-checked";
-          case "ongoing":
-            return "status-ongoing";
-          case "delivered":
-            return "status-delivered";
-          default:
-            return "";
-        }
-      },
+    date: {
+      type: String,
+      required: true,
     },
-  };
-  </script>
-    
-  <style scoped>
-  .order-card {
-    position: relative;
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 15px;
-  }
-    
-  .order-id,
-  .due-date {
-    font-family: "Inter", sans-serif;
-    margin: 0;
-    margin-bottom: 10px;
-    margin-left: 20px;
-  }
-    
-  .details-button {
-    padding: 5px 10px;
-    font-family: "Inter", sans-serif;
-    background-color: gray;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto;
-    margin-left: 20px;
-  }
-    
-  .status-indicator {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    border-radius: 5px;
-  }
-    
-  .status-checked {
-    background-color: red;
-  }
-    
-  .status-ongoing {
-    background-color: orange;
-  }
-    
-  .status-delivered {
-    background-color: green;
-  }
-    
-  .checkbox-container {
-    position: absolute;
-    top: 60px;
-    left: 10px;
-  }
-    
-  .order-checkbox {
-    cursor: pointer;
-  }
-  </style>
+    isChecked: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    toggleCheckbox() {
+      this.$emit('toggleOrderSelection', this.orderId); // Emit event เมื่อมีการเปลี่ยนแปลง checkbox
+      console.log("Order ID: ", this.orderId);
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+    },
+    viewDetails() {
+      console.log(`Viewing details for order ID: ${this.orderId}`);
+      this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
+    },
+    onCheck() {
+      this.$emit("checkOrder", this.orderId); // ส่ง orderId กลับไปที่ AddOrderView
+    },
+  },
+  computed: {
+    ...mapGetters(['id', 'username']),
+    statusClass() {
+      switch (this.status) {
+        case "checked":
+          return "status-checked";
+        case "ongoing":
+          return "status-ongoing";
+        case "delivered":
+          return "status-delivered";
+        default:
+          return "";
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.order-card {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+}
+
+.order-id,
+.due-date {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+.details-button {
+  padding: 5px 10px;
+  font-family: "Inter", sans-serif;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto;
+  margin-left: 20px;
+}
+
+.status-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  border-radius: 5px;
+}
+
+.status-checked {
+  background-color: red;
+}
+
+.status-ongoing {
+  background-color: orange;
+}
+
+.status-delivered {
+  background-color: green;
+}
+
+.checkbox-container {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+}
+
+.order-checkbox {
+  cursor: pointer;
+}
+</style>
   

@@ -51,7 +51,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/add-order',
+    path: '/worker/worker-detail/:workerId/add-order',
     name: 'add-order',
     component: AddOrderView,
   },

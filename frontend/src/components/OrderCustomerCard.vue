@@ -6,14 +6,14 @@
     <div class="button-group">
       <button class="details-button">Details</button>
       <button
-        v-if="status === 'delivered'"
-        class="success-button"
+          v-if="status === 'delivered'"
+          class="success-button"
       >
         Success
       </button>
       <button
-        v-if="status === 'delivered'"
-        class="refund-button"
+          v-if="status === 'delivered'"
+          class="refund-button"
       >
         Refund
       </button>
@@ -69,7 +69,7 @@ export default {
 .due-date {
   font-family: "Inter", sans-serif;
   margin: 0;
-  margin-bottom :10px;
+  margin-bottom: 10px;
 }
 
 .button-group {

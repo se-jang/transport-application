@@ -132,7 +132,7 @@ export default {
   max-width: 70%;
   height: 94vh;
   margin: 0 auto;
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -141,7 +141,7 @@ export default {
   height: 88%;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
@@ -157,18 +157,18 @@ export default {
 
 .form-group {
   width: 25%;
-  display: flex; 
+  display: flex;
   flex-direction: column;
-  align-items: flex-start; 
-  margin-bottom: 3%; 
+  align-items: flex-start;
+  margin-bottom: 3%;
 }
 
 input{
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px; 
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
+  border-radius: 5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 select {
@@ -185,7 +185,7 @@ select {
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
-  cursor: pointer;       
+  cursor: pointer;
 }
 
 
@@ -193,8 +193,8 @@ h1 {
   display: inline-block;
   text-align: left;
   margin-top: 5%;
-  margin-bottom: 0px; 
-  margin-left: 10%; 
+  margin-bottom: 0px;
+  margin-left: 10%;
 }
 
 label {
@@ -212,7 +212,7 @@ label {
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
-  cursor: pointer;       
+  cursor: pointer;
 }
 
 .accept-button:hover {
@@ -229,7 +229,7 @@ label {
   width: 5%;
   background-color: #363636;
   color: rgb(255, 255, 255);
-  border: none; 
+  border: none;
   border-radius: 5px;
   cursor: pointer;
 }

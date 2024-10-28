@@ -45,7 +45,7 @@
           </table>
         </div>
 
-        <button v-if="userRole === 'admin'" class="checked-button">Checked</button>
+        <button v-if="userRole === 'ADMIN' && order.status === 'UNCHECK'" @click="checked" class="checked-button">Checked</button>
       </div>
     </div>
   </div>
@@ -66,7 +66,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["userRole"]),
+    ...mapGetters(["userRole", "id"]),
     headerComponent() {
       switch (this.userRole) {
         case "ADMIN":
@@ -84,8 +84,8 @@ export default {
     async fetchOrderDetails() {
       try {
         const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
-        console.log("Order data:", this.order);
         this.order = response.data;
+        console.log("Order data:", this.order);
       } catch (error) {
         console.error("Error fetching order details:", error);
       }
@@ -99,6 +99,37 @@ export default {
         day: "numeric",
       }).format(date);
     },
+    checked() {
+      const orderId = this.$route.params.orderId;
+      console.log("order: ", orderId);
+      const status = "CHECKED";
+
+      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          orderId: orderId,
+          status: status
+        })
+      })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data.message);
+            alert(data.message || 'Order status updated successfully');
+            this.$router.push({ name: 'orders' });
+          })
+          .catch(error => {
+            console.error('Error updating order status:', error);
+            alert('Error updating order status');
+          });
+    }
   },
   mounted() {
     this.fetchOrderDetails();
@@ -137,7 +168,7 @@ export default {
 }
 
 .order-detail-container {
-  background-color: #e0e0e0;
+  background-color: #ffffff;
   padding: 20px;
   width: 80%;
   max-width: 1000px;

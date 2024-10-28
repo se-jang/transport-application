@@ -38,15 +38,16 @@ public class LoginController {
 
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             String token = jwtService.generateToken(user.getUsername());
-            return ResponseEntity.ok(new JwtResponse(token, user.getRole().name(), user.getUsername()));
+            return ResponseEntity.ok(new JwtResponse(token, user.getRole().name(), user.getUsername(), user.getId()));
         }
 
         if (worker != null && passwordEncoder.matches(request.getPassword(), worker.getPassword())) {
             String token = jwtService.generateToken(worker.getUsername());
-            return ResponseEntity.ok(new JwtResponse(token, "WORKER", worker.getUsername()));
+            return ResponseEntity.ok(new JwtResponse(token, "WORKER", worker.getUsername(), worker.getId()));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
     }
+
 
 }

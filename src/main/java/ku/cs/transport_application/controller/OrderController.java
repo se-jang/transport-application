@@ -2,8 +2,10 @@ package ku.cs.transport_application.controller;
 
 import ku.cs.transport_application.DTO.OrderDTO;
 import ku.cs.transport_application.common.OrderStatus;
+import ku.cs.transport_application.common.TransportationWorkerStatus;
 import ku.cs.transport_application.service.MailSenderService;
 import ku.cs.transport_application.service.OrderService;
+import ku.cs.transport_application.service.TransportationWorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,9 @@ public class OrderController {
 
     @Autowired
     private MailSenderService mailSenderService;
+
+    @Autowired
+    private TransportationWorkerService transportationWorkerService;
 
     @GetMapping("/orders/uncheck-orders")
     public ResponseEntity<List<OrderDTO>> getUncheckOrder() {
@@ -85,17 +91,14 @@ public class OrderController {
         }
 
         try {
-            String uploadDir = "src/main/resources/static/images/uploads/";
             String fileName = file.getOriginalFilename();
-            byte[] fileBytes = file.getBytes();
-
             assert fileName != null;
 
-            if ((!fileName.endsWith(".pdf"))) {
+            if (!fileName.endsWith(".pdf")) {
                 return new ResponseEntity<>(Map.of("error", "Only PDF files are allowed"), HttpStatus.BAD_REQUEST);
             }
 
-            orderService.uploadFile(orderId, fileName, uploadDir);
+            orderService.uploadFile(orderId, file);
 
             return new ResponseEntity<>(Map.of("message", "File uploaded successfully", "fileName", fileName), HttpStatus.OK);
         } catch (IOException e) {
@@ -103,9 +106,24 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/change-order-status")
-    public ResponseEntity<?> changeOrderStatus(@RequestParam("orderId") UUID orderId,
-                                               @RequestParam("status") OrderStatus status) {
+    @PostMapping("/change-order-worker-status")
+    public ResponseEntity<?> changeOrderAndWorkerStatus(@RequestParam("orderId") UUID orderId,
+                                                        @RequestParam("workerId") UUID workerId,
+                                                        @RequestParam("status") OrderStatus status,
+                                                        @RequestParam("workerStatus") TransportationWorkerStatus workerStatus) {
+        try {
+            orderService.upDateOrderStatus(orderId, status);
+            transportationWorkerService.updateTransportationWorker(workerId, workerStatus);
+            mailSenderService.sendEmail(orderId);
+            return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/orders/order-detail/{orderId}/change-status-order")
+    public ResponseEntity<?> changeOrderTOChecked(@PathVariable("orderId") UUID orderId,
+                                                  @RequestParam("status") OrderStatus status) {
         try {
             orderService.upDateOrderStatus(orderId, status);
             mailSenderService.sendEmail(orderId);
@@ -128,6 +146,16 @@ public class OrderController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
                 .body(fileResource);
+    }
+
+    @PostMapping("/worker/worker-detail/{workerId}/add-order")
+    public ResponseEntity<?> assignWorkerToOrder(@RequestParam("orderId") UUID orderId, @PathVariable("workerId") UUID workerId) {
+        try {
+            orderService.upDateOrderToWorker(workerId, orderId);
+            return new ResponseEntity<>(Map.of("message", "Worker assigned to order successfully"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "Failed to assign worker to order"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

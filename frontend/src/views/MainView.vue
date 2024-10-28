@@ -14,14 +14,14 @@
           <div class="image-overlay"></div>
           <div class="fade"></div>
           <img src="../assets/boat.png" alt="Small Image 1" />
-          <h1 class="text title">Sea Freight</h1> 
+          <h1 class="text title">Sea Freight</h1>
           <span class="text">Our Transport Application provides a comprehensive range of services, including our Sea Shipping service, which delivers to ports worldwide. We cater to the diverse needs of our global client base.</span>
         </div>
         <div class="small-image">
           <div class="fade plane"></div>
           <div class="image-overlay"></div>
           <img src="../assets/plane.png" alt="Small Image 2" />
-          <h1 class="text title">Air Freight</h1> 
+          <h1 class="text title">Air Freight</h1>
           <span class="text">Our transportation application excels in delivering expert international air freight forwarding services and providing customized air freight logistics solutions tailored to meet your specific needs.
 
 </span>
@@ -30,7 +30,7 @@
           <div class="fade truck"></div>
           <div class="image-overlay"></div>
           <img src="../assets/truck.png" alt="Small Image 3" />
-          <h1 class="text title cargo">Cargo Handling</h1> 
+          <h1 class="text title cargo">Cargo Handling</h1>
           <span class="text">Our transport application specializes in break bulk cargo services that accommodate all types of cargo, regardless of size or shape. We are committed to delivering an exceptional experience in project cargo handling, ensuring high-quality service tailored to your specific needs.</span>
         </div>
       </div>
