@@ -8,7 +8,7 @@
       <div class="order-container">
         <h2 class="order-title">Add Order</h2>
         <button class="back-button" @click="goBack">Back</button>
-        <button @click="assignWorker(order.orderId, selectedWorkerId)">Assign Worker</button>
+        <button @click="assignWorker">Assign Worker</button>
 
         <div class="order-list">
           <AddOrderWorkerCard
@@ -38,6 +38,7 @@ export default {
   data() {
     return {
       role: "admin",
+      selectedWorkerId: this.$route.params.workerId, // ใช้ workerId ที่รับมาจาก route params
       selectedOrderId: null,
       orders: [],
     };
@@ -48,22 +49,28 @@ export default {
     },
   },
   methods: {
-    async assignWorker(orderId, workerId) {
-  try {
-    const response = await axios.post(`/orders/${orderId}/assign-worker`, null, {
-      params: { workerId },
-    });
-    console.log(response.data.message);
-  } catch (error) {
-    console.error("Failed to assign worker:", error);
-  }
-}
-,
+    async assignWorker() {
+      console.log("Worker ID: ", this.selectedWorkerId);
+      console.log("Order ID: ", this.selectedOrderId);
+      if (!this.selectedOrderId || !this.selectedWorkerId) {
+        console.warn("Please select an order and a worker before assigning.");
+        return;
+      }
+      try {
+        const response = await axios.post(
+          `http://localhost:8080/worker/worker-detail/${this.selectedWorkerId}/add-order`,
+          null,
+          {
+            params: { workerId: this.selectedWorkerId, orderId: this.selectedOrderId },
+          }
+        );
+        console.log(response.data.message);
+      } catch (error) {
+        console.error("Failed to assign worker:", error);
+      }
+    },
     goBack() {
       this.$router.go(-1);
-    },
-    addSelectedOrders() {
-      console.log(`Selected Order ID: ${this.selectedOrderId}`);
     },
     selectOrder(orderId) {
       this.selectedOrderId = orderId;
@@ -72,6 +79,7 @@ export default {
       try {
         const response = await axios.get("http://localhost:8080/orders/check-orders");
         this.orders = response.data;
+        console.log("orders:", orders);
       } catch (error) {
         console.error("Failed to fetch orders:", error);
       }
@@ -82,6 +90,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 :root {

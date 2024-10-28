@@ -77,7 +77,7 @@ export default {
       return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
     },
     addOrder() {
-      this.$router.push("/add-order");
+      this.$router.push({ name: "add-order", params: { workerId: this.workerId } });
     },
   },
 };

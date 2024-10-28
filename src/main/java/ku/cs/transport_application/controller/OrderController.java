@@ -148,7 +148,7 @@ public class OrderController {
                 .body(fileResource);
     }
 
-    @PostMapping("/orders/{orderId}/assign-worker")
+    @PostMapping("/worker/worker-detail/{workerId}/add-order")
     public ResponseEntity<?> assignWorkerToOrder(@PathVariable("orderId") UUID orderId, @RequestParam("workerId") UUID workerId) {
         try {
             orderService.upDateOrderToWorker(workerId, orderId);

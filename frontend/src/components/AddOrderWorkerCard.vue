@@ -1,48 +1,43 @@
 <template>
-    <div class="order-card">
-      <div class="checkbox-container">
-        <input
-          type="checkbox"
-          class="order-checkbox"
-          :checked="isChecked"  
-          @change="toggleCheckbox"
-        />
-      </div>
-      <div class="status-indicator" :class="statusClass">{{ status }}</div>
-      <h2 class="order-id">Order ID: {{ orderId }}</h2>
-      <p class="due-date">Date: {{ formatDate(date) }}</p>
-      <button class="details-button" @click="viewDetails">Details</button>
+  <div class="order-card">
+    <div class="checkbox-container">
+      <input type="radio" :checked="isChecked" @change="onCheck" />
     </div>
-  </template>
-    
-  <script>
-  import { mapGetters } from 'vuex';
+    <div class="status-indicator" :class="statusClass">{{ status }}</div>
+    <h2 class="order-id">Order ID: {{ orderId }}</h2>
+    <p class="due-date">Date: {{ formatDate(date) }}</p>
+  </div>
+</template>
 
-  export default {
-    name: "AddOrderWorkerCard",
-    props: {
-      status: {
-        type: String,
-        default: "ongoing",
-      },
-      orderId: {
-        type: String,
-        required: true,
-      },
-      date: {
-        type: String,
-        required: true,
-      },
-      isChecked: {  // เพิ่ม prop สำหรับจัดการสถานะ checkbox
-        type: Boolean,
-        default: false,
-      },
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  name: "AddOrderWorkerCard",
+  props: {
+    status: {
+      type: String,
+      default: "ongoing",
     },
-    methods: {
-      toggleCheckbox() {
-        this.$emit('checkOrder', this.orderId);  // Emit event เมื่อมีการเปลี่ยนแปลง checkbox
-      },
-      formatDate(dateString) {
+    orderId: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    isChecked: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    toggleCheckbox() {
+      this.$emit('toggleOrderSelection', this.orderId); // Emit event เมื่อมีการเปลี่ยนแปลง checkbox
+      console.log("Order ID: ", this.orderId);
+    },
+    formatDate(dateString) {
       const date = new Date(dateString);
       return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
     },
@@ -50,24 +45,27 @@
       console.log(`Viewing details for order ID: ${this.orderId}`);
       this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
     },
+    onCheck() {
+      this.$emit("checkOrder", this.orderId); // ส่ง orderId กลับไปที่ AddOrderView
     },
-    computed: {
-      ...mapGetters(['id','username']),
-      statusClass() {
-        switch (this.status) {
-          case "checked":
-            return "status-checked";
-          case "ongoing":
-            return "status-ongoing";
-          case "delivered":
-            return "status-delivered";
-          default:
-            return "";
-        }
-      },
+  },
+  computed: {
+    ...mapGetters(['id', 'username']),
+    statusClass() {
+      switch (this.status) {
+        case "checked":
+          return "status-checked";
+        case "ongoing":
+          return "status-ongoing";
+        case "delivered":
+          return "status-delivered";
+        default:
+          return "";
+      }
     },
-  };
-  </script>
+  },
+};
+</script>
     
   <style scoped>
   .order-card {
