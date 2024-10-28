@@ -8,7 +8,7 @@
       <div class="order-container">
         <h2 class="order-title">Add Order</h2>
         <button class="back-button" @click="goBack">Back</button>
-        <button class="add-button" @click="addSelectedOrders">Add</button>
+        <button @click="assignWorker(order.orderId, selectedWorkerId)">Assign Worker</button>
 
         <div class="order-list">
           <AddOrderWorkerCard
@@ -48,6 +48,17 @@ export default {
     },
   },
   methods: {
+    async assignWorker(orderId, workerId) {
+  try {
+    const response = await axios.post(`/orders/${orderId}/assign-worker`, null, {
+      params: { workerId },
+    });
+    console.log(response.data.message);
+  } catch (error) {
+    console.error("Failed to assign worker:", error);
+  }
+}
+,
     goBack() {
       this.$router.go(-1);
     },

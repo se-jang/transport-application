@@ -26,26 +26,26 @@
           <p class="product-list-title">Product List</p>
           <table class="product-list-table">
             <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Amount</th>
-            </tr>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Amount</th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="product in order.productDetails" :key="product.id">
-              <td>{{ product.id }}</td>
-              <td>{{ product.productName }}</td>
-              <td>{{ product.productType }}</td>
-              <td v-if="product.quantity">{{ product.quantity }}</td>
-              <td v-else>N/A</td>
-            </tr>
+              <tr v-for="product in order.productDetails" :key="product.id">
+                <td>{{ product.id }}</td>
+                <td>{{ product.productName }}</td>
+                <td>{{ product.productType }}</td>
+                <td v-if="product.quantity">{{ product.quantity }}</td>
+                <td v-else>N/A</td>
+              </tr>
             </tbody>
           </table>
         </div>
 
-        <button v-if="userRole === 'admin'" class="checked-button">Checked</button>
+        <button v-if="userRole === 'ADMIN' && order.status == 'UNCHECK'" @click="checked" class="checked-button">Checked</button>
       </div>
     </div>
   </div>
@@ -66,7 +66,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["userRole"]),
+    ...mapGetters(["userRole", "id"]),
     headerComponent() {
       switch (this.userRole) {
         case "ADMIN":
@@ -83,11 +83,11 @@ export default {
   methods: {
     async fetchOrderDetails() {
       try {
-        const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
-        console.log("Order data:", this.order);
-        this.order = response.data;
+          const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
+          console.log("Order data:", this.order);
+          this.order = response.data;
       } catch (error) {
-        console.error("Error fetching order details:", error);
+          console.error("Error fetching order details:", error);
       }
     },
 
@@ -99,6 +99,36 @@ export default {
         day: "numeric",
       }).format(date);
     },
+    checked() {
+      const orderId = this.$route.params.orderId;
+      console.log("order: ", orderId);
+      const status = "CHECKED";
+
+      fetch('http://localhost:8080/orders/order-detail/${this.$route.params.orderId}/checked-order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            orderId: orderId,
+            status: status
+        })
+      })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);
+        alert(data.message || 'Order status updated successfully');
+    })
+    .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+    });
+    }
   },
   mounted() {
     this.fetchOrderDetails();
@@ -175,7 +205,7 @@ export default {
   cursor: pointer;
   width: auto;
   margin-bottom: 20px;
-
+  
 }
 
 .checked-button {

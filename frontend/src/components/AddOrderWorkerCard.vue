@@ -10,12 +10,14 @@
       </div>
       <div class="status-indicator" :class="statusClass">{{ status }}</div>
       <h2 class="order-id">Order ID: {{ orderId }}</h2>
-      <p class="due-date">Due Date: {{ date }}</p>
-      <button class="details-button">Details</button>
+      <p class="due-date">Date: {{ formatDate(date) }}</p>
+      <button class="details-button" @click="viewDetails">Details</button>
     </div>
   </template>
     
   <script>
+  import { mapGetters } from 'vuex';
+
   export default {
     name: "AddOrderWorkerCard",
     props: {
@@ -40,8 +42,17 @@
       toggleCheckbox() {
         this.$emit('checkOrder', this.orderId);  // Emit event เมื่อมีการเปลี่ยนแปลง checkbox
       },
+      formatDate(dateString) {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+    },
+    viewDetails() {
+      console.log(`Viewing details for order ID: ${this.orderId}`);
+      this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
+    },
     },
     computed: {
+      ...mapGetters(['id','username']),
       statusClass() {
         switch (this.status) {
           case "checked":

@@ -2,7 +2,7 @@
   <div class="order-card">
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
     <h2 class="order-id">Order ID: {{ orderId }}</h2>
-    <p class="due-date">Due Date: {{ date }}</p>
+    <p class="due-date">Date: {{ formatDate(date) }}</p>
     <button class="details-button" @click="viewDetails">Details</button>
     <button v-if="status === 'delivered'" class="bill-button">Bill</button>
   </div>
@@ -29,6 +29,10 @@ export default {
     viewDetails() {
       console.log(`Viewing details for order ID: ${this.orderId}`);
       this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
     },
   },
   computed: {

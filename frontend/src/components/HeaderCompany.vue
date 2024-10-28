@@ -7,9 +7,10 @@
         <router-link to="/orders">My Order</router-link>
       </nav>
     </div>
-    
+
     <div class="company-profile">
-      <a href="#">Contact</a>
+      <a href="#" @click="contact">Contact</a>
+      <a href="#" @click="logout">Logout</a>
       <img
         src="https://via.placeholder.com/40"
         alt="Profile"
@@ -19,9 +20,19 @@
   </div>
 </template>
 
+
 <script>
 export default {
   name: "HeaderCompany",
+  methods: {
+    logout(){
+      this.$store.dispatch("clearUserData");
+      this.$router.push("/login");
+    },
+    contact(){
+      alert("Tel: 089-***-****")
+    }
+  }
 };
 </script>
 
