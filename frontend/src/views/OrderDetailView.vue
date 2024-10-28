@@ -12,12 +12,12 @@
           <div class="order-info-box">
             <div class="order-info-left">
               <p><strong>Date:</strong> {{ formatDate(order.date) }}</p>
-              <p><strong>Company Name:</strong> {{ order.companyName || 'N/A' }}</p>
+              <p><strong>Transportation Worker:</strong> {{ order.workerId || 'N/A' }}</p>
             </div>
             <div class="order-info-right">
               <p><strong>Status:</strong> {{ order.status }}</p>
               <p><strong>Customer Name:</strong> {{ order.customerName }}</p>
-              <p><strong>Address:</strong> {{ order.address || 'N/A' }}</p>
+              <p><strong>Customer Address:</strong> {{ order.customerAddress || 'N/A' }}</p>
             </div>
           </div>
         </div>

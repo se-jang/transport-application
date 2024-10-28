@@ -21,12 +21,9 @@ export default {
   },
   methods: {
     goDetail() {
-      if (this.userId) {
-        this.$router.push({ name: "/user-detail", params: { userId: this.userId } });
-      } else {
-        console.error("userId is not defined in UserCard.vue");
-      }
-    },
+      console.log("Navigating to user detail for ID:", this.userId);
+      this.$router.push({ name: 'user-detail', params: { userId: this.userId } });
+    }
   }
 };
 </script>

@@ -28,7 +28,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["updateUserRole", "updateUsername"]),
+    ...mapActions(["updateUserRole", "updateUsername", "updateId"]),
     async login() {
       try {
         const response = await fetch("http://localhost:8080/login", {
@@ -45,7 +45,7 @@ export default {
         if (response.ok) {
           const data = await response.json();
 
-          if (data.token && data.role && data.username) {
+          if (data.token && data.role && data.username && data.id) {
             localStorage.setItem("jwt", data.token);
 
             const userRole = data.role;
@@ -53,9 +53,12 @@ export default {
 
             console.log("User role:", userRole);
             console.log("Username:", username);
+            console.log("worker: ", data.id)
 
             this.updateUserRole(userRole);
             this.updateUsername(username);
+            this.updateId(data.id);
+
 
             this.$router.push("/main");
           } else {

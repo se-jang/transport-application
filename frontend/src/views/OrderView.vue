@@ -59,7 +59,8 @@ export default {
     };
   },
   created() {
-    const userId = this.$route.params.id;
+    const userId = this.id;
+    console.log("User ID:", userId);
     if (userId) {
       this.fetchOrdersBasedOnRole(userId);
     } else {
@@ -67,7 +68,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userRole"]),
+    ...mapGetters(["userRole", "id"]),
     headerComponent() {
       switch (this.userRole) {
         case "ADMIN":

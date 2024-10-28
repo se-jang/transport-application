@@ -26,11 +26,13 @@ const routes = [
     path: '/orders/:id?',
     name: 'orders',
     component: OrderView,
+    props: true,
   },
   {
     path: '/orders/order-detail/:orderId',
     name: 'order-detail',
     component: OrderDetailView,
+    props: true,
   },
   {
     path: '/create-user',
@@ -59,9 +61,10 @@ const routes = [
     component: UserListView,
   },
   {
-    path: '/user-detail',
+    path: '/user-detail/:userId',
     name: 'user-detail',
     component: UserDetailView,
+    props: true
   },
   {
     path: '/create-order',
