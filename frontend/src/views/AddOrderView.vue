@@ -12,13 +12,13 @@
 
         <div class="order-list">
           <AddOrderWorkerCard
-              v-for="order in orders"
-              :key="order.id"
-              :status="order.status"
-              :orderId="order.id"
-              :date="order.date"
-              :isChecked="selectedOrderId === order.id"
-              @checkOrder="selectOrder(order.id)"
+            v-for="order in orders"
+            :key="order.id"
+            :status="order.status"
+            :orderId="order.id"
+            :date="order.date"
+            :isChecked="selectedOrderId === order.id"
+            @checkOrder="selectOrder(order.id)"
           />
         </div>
       </div>
@@ -59,11 +59,11 @@ export default {
       try {
         const status = "ONGOING";
         const response = await axios.post(
-            `http://localhost:8080/worker/worker-detail/${this.selectedWorkerId}/add-order`,
-            null,
-            {
-              params: { workerId: this.selectedWorkerId, orderId: this.selectedOrderId },
-            }
+          `http://localhost:8080/worker/worker-detail/${this.selectedWorkerId}/add-order`,
+          null,
+          {
+            params: { workerId: this.selectedWorkerId, orderId: this.selectedOrderId },
+          }
         );
         console.log(response.data.message);
         const statusUpdateResponse = await fetch(

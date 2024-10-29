@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     toggleCheckbox() {
-      this.$emit('toggleOrderSelection', this.orderId); // Emit event เมื่อมีการเปลี่ยนแปลง checkbox
+      this.$emit('toggleOrderSelection', this.orderId);
       console.log("Order ID: ", this.orderId);
     },
     formatDate(dateString) {
@@ -46,7 +46,7 @@ export default {
       this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
     },
     onCheck() {
-      this.$emit("checkOrder", this.orderId); // ส่ง orderId กลับไปที่ AddOrderView
+      this.$emit("checkOrder", this.orderId);
     },
   },
   computed: {
@@ -66,68 +66,68 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.order-card {
-  position: relative;
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 15px;
-}
-
-.order-id,
-.due-date {
-  font-family: "Inter", sans-serif;
-  margin: 0;
-  margin-bottom: 10px;
-  margin-left: 20px;
-}
-
-.details-button {
-  padding: 5px 10px;
-  font-family: "Inter", sans-serif;
-  background-color: gray;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: auto;
-  margin-left: 20px;
-}
-
-.status-indicator {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 5px 10px;
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-  border-radius: 5px;
-}
-
-.status-checked {
-  background-color: red;
-}
-
-.status-ongoing {
-  background-color: orange;
-}
-
-.status-delivered {
-  background-color: green;
-}
-
-.checkbox-container {
-  position: absolute;
-  top: 60px;
-  left: 10px;
-}
-
-.order-checkbox {
-  cursor: pointer;
-}
-</style>
+    
+  <style scoped>
+  .order-card {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+  }
+    
+  .order-id,
+  .due-date {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
+    
+  .details-button {
+    padding: 5px 10px;
+    font-family: "Inter", sans-serif;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+    margin-left: 20px;
+  }
+    
+  .status-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+  }
+    
+  .status-checked {
+    background-color: red;
+  }
+    
+  .status-ongoing {
+    background-color: orange;
+  }
+    
+  .status-delivered {
+    background-color: green;
+  }
+    
+  .checkbox-container {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+  }
+    
+  .order-checkbox {
+    cursor: pointer;
+  }
+  </style>
   

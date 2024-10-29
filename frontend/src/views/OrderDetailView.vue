@@ -26,26 +26,29 @@
           <p class="product-list-title">Product List</p>
           <table class="product-list-table">
             <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Amount</th>
-            </tr>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Amount</th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="product in order.productDetails" :key="product.id">
-              <td>{{ product.id }}</td>
-              <td>{{ product.productName }}</td>
-              <td>{{ product.productType }}</td>
-              <td v-if="product.quantity">{{ product.quantity }}</td>
-              <td v-else>N/A</td>
-            </tr>
+              <tr v-for="product in order.productDetails" :key="product.id">
+                <td>{{ product.id }}</td>
+                <td>{{ product.productName }}</td>
+                <td>{{ product.productType }}</td>
+                <td v-if="product.quantity">{{ product.quantity }}</td>
+                <td v-else>N/A</td>
+              </tr>
             </tbody>
           </table>
         </div>
 
         <button v-if="userRole === 'ADMIN' && order.status === 'UNCHECK'" @click="checked" class="checked-button">Checked</button>
+        <button v-if="userRole === 'ADMIN' && order.status === 'UPLOADED'" @click="clickComplete" class="checked-button">Complete</button>
+        <button v-if="userRole === 'ADMIN' && order.status === 'UPLOADED'" @click="showFileModal" class="file-pop">File</button>
+        <FileViewerModal :isVisible="isFileModalVisible" :fileUrl="fileUrl" @close="isFileModalVisible = false" />
       </div>
     </div>
   </div>
@@ -57,12 +60,18 @@ import { mapGetters } from "vuex";
 import HeaderAdmin from "../components/HeaderAdmin.vue";
 import HeaderWorker from "../components/HeaderWorker.vue";
 import HeaderCompany from "../components/HeaderCompany.vue";
+import FileViewerModal from "../components/FileViewerModal.vue";
 
 export default {
   name: "OrderDetail",
+  components: {
+    FileViewerModal
+  },
   data() {
     return {
       order: null,
+      isFileModalVisible: false,
+      fileUrl: ""
     };
   },
   computed: {
@@ -83,11 +92,11 @@ export default {
   methods: {
     async fetchOrderDetails() {
       try {
-        const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
-        this.order = response.data;
-        console.log("Order data:", this.order);
+          const response = await axios.get(`http://localhost:8080/orders/order-detail/${this.$route.params.orderId}`);
+          this.order = response.data;
+          console.log("Order data:", this.order);
       } catch (error) {
-        console.error("Error fetching order details:", error);
+          console.error("Error fetching order details:", error);
       }
     },
 
@@ -107,28 +116,63 @@ export default {
       fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
-          orderId: orderId,
-          status: status
+            orderId: orderId,
+            status: status
         })
       })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log(data.message);
-            alert(data.message || 'Order status updated successfully');
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);
+        alert(data.message || 'Order status updated successfully');
             this.$router.push({ name: 'orders' });
-          })
-          .catch(error => {
-            console.error('Error updating order status:', error);
-            alert('Error updating order status');
-          });
+    })
+    .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+    });
+    },
+    clickComplete() {
+      const orderId = this.$route.params.orderId;
+      console.log("order: ", orderId);
+      const status = "COMPLETED";
+
+      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            orderId: orderId,
+            status: status
+        })
+      })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);
+        alert(data.message || 'Order status updated successfully');
+            this.$router.push({ name: 'orders' });
+    })
+    .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+    });
+    },
+    showFileModal() {
+      this.fileUrl = `http://localhost:8080/orders/order-detail/${this.$route.params.orderId}/shipment-doc`;
+      this.isFileModalVisible = true;
     }
   },
   mounted() {
@@ -206,13 +250,26 @@ export default {
   cursor: pointer;
   width: auto;
   margin-bottom: 20px;
-
+  
 }
 
 .checked-button {
   position: absolute;
   bottom: 20px;
   right: 20px;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto;
+}
+
+.file-pop {
+  position: absolute;
+  bottom: 20px;
+  right: 150px;
   background-color: var(--button-bg-color);
   color: var(--button-text-color);
   border: none;

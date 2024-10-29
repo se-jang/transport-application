@@ -52,7 +52,7 @@ export default {
           return "";
       }
     },
-  },
+  },  
   methods: {
     triggerFileInput() {
       document.getElementById('fileInput').click();
@@ -61,56 +61,54 @@ export default {
       this.selectedFile = event.target.files[0];
     },
     uploadFile() {
-      const formData = new FormData();
-      const orderId = this.orderId;
-
-      if (this.selectedFile) {
-        formData.append("file", this.selectedFile);
-        formData.append("orderId", this.orderId);
-
-        fetch('http://localhost:8080/upload', {
-          method: 'POST',
-          body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-              console.log('File uploaded successfully:', data);
-              alert(data.message || 'File uploaded successfully');
-              this.selectedFile = null;
-            })
-            .catch(error => {
-              console.error('Error uploading file:', error);
-              alert('Error uploading file');
-            });
-      } else {
+      if (!this.selectedFile) {
         alert("Please select a file to upload.");
+        return;
       }
+      
+      const formData = new FormData();
+      formData.append("orderId", 
+        new Blob([JSON.stringify(this.orderId)], {
+                type: 'application/json',
+            })
+        );
+      formData.append("file", this.selectedFile);
+
+      fetch('http://localhost:8080/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('File uploaded successfully:', data);
+        alert(data.message || 'File uploaded successfully');
+        this.selectedFile = null;
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+        alert('Error uploading file');
+      });
 
       const status = "UPLOADED";
-      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+      fetch(`http://localhost:8080/orders/order-detail/${this.orderId}/change-status-order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
-          orderId: orderId,
+          orderId: this.orderId,
           status: status
         })
       })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log(data.message);
-            alert(data.message || 'Order status updated successfully');
-          })
-          .catch(error => {
-            console.error('Error updating order status:', error);
-            alert('Error updating order status');
-          });
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message);
+        alert(data.message || 'Order status updated successfully');
+      })
+      .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+      });
     },
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -121,70 +119,70 @@ export default {
       this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
     },
     OnGoing() {
-      const orderId = this.orderId;
-      console.log("order: ", orderId);
-      const workerId = this.id;
-      console.log("worker: ", workerId);
-      const status = "ONGOING";
-      const workerStatus = "ONGOING";
+    const orderId = this.orderId;
+    console.log("order: ", orderId);
+    const workerId = this.id;
+    console.log("worker: ", workerId);
+    const status = "ONGOING";
+    const workerStatus = "ONGOING";
 
-      fetch('http://localhost:8080/change-order-worker-status', {
+    fetch('http://localhost:8080/change-order-worker-status', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
-          orderId: orderId,
-          workerId: workerId,
-          status: status,
-          workerStatus: workerStatus
+            orderId: orderId,
+            workerId: workerId,
+            status: status,
+            workerStatus: workerStatus
         })
-      })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log(data.message);
-            alert(data.message || 'Order status updated successfully');
-          })
-          .catch(error => {
-            console.error('Error updating order status:', error);
-            alert('Error updating order status');
-          });
-    },
-    Success() {
-      const orderId = this.orderId;
-      console.log("order: ", orderId);
-      const status = "DELIVERED";
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);
+        alert(data.message || 'Order status updated successfully');
+    })
+    .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+    });
+},
+  Success() {
+    const orderId = this.orderId;
+    console.log("order: ", orderId);
+    const status = "DELIVERED";
 
-      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+    fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
-          orderId: orderId,
-          status: status
+            orderId: orderId,
+            status: status
         })
-      })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log(data.message);
-            alert(data.message || 'Order status updated successfully');
-          })
-          .catch(error => {
-            console.error('Error updating order status:', error);
-            alert('Error updating order status');
-          });
-    }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);
+        alert(data.message || 'Order status updated successfully');
+    })
+    .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+    });
+  }
 
   }
 };

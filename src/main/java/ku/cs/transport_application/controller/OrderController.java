@@ -85,7 +85,7 @@ public class OrderController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("orderId") UUID orderId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestPart("orderId") UUID orderId, @RequestPart("file") MultipartFile file) {
         if (file.isEmpty()) {
             return new ResponseEntity<>(Map.of("error", "File is empty"), HttpStatus.BAD_REQUEST);
         }
@@ -108,9 +108,9 @@ public class OrderController {
 
     @PostMapping("/change-order-worker-status")
     public ResponseEntity<?> changeOrderAndWorkerStatus(@RequestParam("orderId") UUID orderId,
-                                                        @RequestParam("workerId") UUID workerId,
-                                                        @RequestParam("status") OrderStatus status,
-                                                        @RequestParam("workerStatus") TransportationWorkerStatus workerStatus) {
+                                               @RequestParam("workerId") UUID workerId,
+                                               @RequestParam("status") OrderStatus status,
+                                               @RequestParam("workerStatus") TransportationWorkerStatus workerStatus) {
         try {
             orderService.upDateOrderStatus(orderId, status);
             transportationWorkerService.updateTransportationWorker(workerId, workerStatus);
@@ -121,9 +121,21 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/orders/order-detail/{orderId}/change-status")
+    public ResponseEntity<?> changeOrderStatus(@RequestParam("orderId") UUID orderId,
+                                                        @RequestParam("status") OrderStatus status) {
+        try {
+            orderService.upDateOrderStatus(orderId, status);
+            mailSenderService.sendEmail(orderId);
+            return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/orders/order-detail/{orderId}/change-status-order")
     public ResponseEntity<?> changeOrderTOChecked(@PathVariable("orderId") UUID orderId,
-                                                  @RequestParam("status") OrderStatus status) {
+                                               @RequestParam("status") OrderStatus status) {
         try {
             orderService.upDateOrderStatus(orderId, status);
             mailSenderService.sendEmail(orderId);
@@ -138,14 +150,14 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderDetail(orderId));
     }
 
-    @GetMapping("/orders/{orderId}/shipment-doc")
-    public ResponseEntity<Resource> getShipmentDoc(@PathVariable UUID orderId) {
-        Resource fileResource = orderService.getShipmentDoc(orderId);
-
+    @GetMapping("/orders/order-detail/{orderId}/shipment-doc")
+    public ResponseEntity<Resource> viewShipmentDoc(@PathVariable UUID orderId) {
+        Resource file = orderService.getShipmentDoc(orderId);
         return ResponseEntity.ok()
+                .header("X-Frame-Options", "ALLOW-FROM http://localhost:5173")
+                .header("Content-Security-Policy", "frame-ancestors 'self' http://localhost:5173")
                 .contentType(MediaType.APPLICATION_PDF)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
-                .body(fileResource);
+                .body(file);
     }
 
     @PostMapping("/worker/worker-detail/{workerId}/add-order")

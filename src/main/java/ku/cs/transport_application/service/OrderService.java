@@ -21,8 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -216,9 +218,6 @@ public class OrderService {
         return orderRequest;
     }
 
-
-
-
     public void upDateOrderStatus(UUID id, OrderStatus status) {
         Order record = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
@@ -240,23 +239,22 @@ public class OrderService {
     }
 
     public void uploadFile(UUID orderID, MultipartFile file) throws IOException {
-        String uploadDir = "src/main/resources/static/images/uploads/";
+        String uploadDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator + "uploads";
         String fileName = file.getOriginalFilename();
         assert fileName != null;
 
-        File uploadPath = new File(uploadDir);
-        if (!uploadPath.exists()) {
-            uploadPath.mkdirs(); // สร้างไดเร็กทอรีถ้ายังไม่มี
-        }
+        Files.createDirectories(Paths.get(uploadDir));
+
+        fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
         File uploadedFile = new File(uploadDir + fileName);
-        file.transferTo(uploadedFile); // อัปโหลดไฟล์ไปยังเซิร์ฟเวอร์
+        Path path = Paths.get(uploadDir, fileName);
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-        // ตรวจสอบว่ามี order อยู่ในฐานข้อมูลหรือไม่
         Order order = orderRepository.findById(orderID)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
-        order.setShipmentDocDir(uploadedFile.getPath());
+        order.setShipmentDocDir(String.valueOf(path));
         orderRepository.save(order);
     }
 
