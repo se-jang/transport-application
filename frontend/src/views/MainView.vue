@@ -1,8 +1,6 @@
 <template>
   <div>
-    <header>
-      <component :is="headerComponent"></component>
-    </header>
+    <Header></Header>
     <div class="image-grid">
       <div class="big-image">
         <div class="image-overlay"></div>
@@ -40,25 +38,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HeaderAdmin from "../components/HeaderAdmin.vue";
-import HeaderWorker from "../components/HeaderWorker.vue";
-import HeaderCompany from "../components/HeaderCompany.vue";
+import Header from "../components/Header.vue";
 
 export default {
+  components: {
+    Header,
+  },
   computed: {
     ...mapGetters(["userRole"]),
-    headerComponent() {
-      switch (this.userRole) {
-        case "ADMIN":
-          return HeaderAdmin;
-        case "WORKER":
-          return HeaderWorker;
-        case "USER":
-          return HeaderCompany;
-        default:
-          return null;
-      }
-    },
   },
 };
 </script>
@@ -83,13 +70,32 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0px;
+  justify-content: center;
 }
 
 .small-image {
   overflow: hidden;
   height: 285px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
+
+.text.title {
+  margin-top: auto;
+  margin-bottom: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.text {
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  z-index: 2;
+}
+
 
 .image-overlay {
   position: absolute;
@@ -101,8 +107,7 @@ export default {
   z-index: 1;
 }
 
-.big-image img,
-.small-image img {
+.big-image img{
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -111,30 +116,17 @@ export default {
   z-index: 0;
 }
 
+.small-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  border-radius: 0px;
+  z-index: 0;
+}
+
 .truck-image img {
-  object-position: bottom;
-}
-
-.text {
-  position: absolute;
-  bottom: 40px;
-  left: 10px;
-  right: 10px;
-  color: white;
-  font-size: 14px;
-  z-index: 2;
-  text-align: center;
-}
-
-.title {
-  font-size: 20px;
-  margin: 10px 0 0 0;
-  text-align: center;
-  margin-bottom: 20%;
-}
-
-.cargo {
-  margin-bottom: 30%;
+  object-position: center 80%;
 }
 
 .fade {

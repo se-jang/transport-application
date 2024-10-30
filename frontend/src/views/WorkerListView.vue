@@ -1,8 +1,6 @@
 <template>
   <div class="page-container">
-    <header>
-      <component :is="headerComponent"></component>
-    </header>
+    <Header></Header>
 
     <div class="main-container">
       <div class="worker-container">
@@ -22,9 +20,7 @@
   <script>
   import axios from "axios";
   import { mapGetters } from "vuex";
-  import HeaderAdmin from "../components/HeaderAdmin.vue";
-  import HeaderWorker from "../components/HeaderWorker.vue";
-  import HeaderCompany from "../components/HeaderCompany.vue";
+  import Header from "../components/Header.vue";
   import WorkerCard from "../components/WorkerCard.vue";
   
   export default {
@@ -36,20 +32,11 @@
     created() {
       this.fetchWorkers();
     },
+    components: {
+      Header,WorkerCard,
+    },
     computed: {
       ...mapGetters(["userRole", "username"]),
-      headerComponent() {
-        switch (this.userRole) {
-          case "ADMIN":
-            return HeaderAdmin;
-          case "WORKER":
-            return HeaderWorker;
-          case "USER":
-            return HeaderCompany;
-          default:
-            return null;
-        }
-      },
     },
     methods: {
       async fetchWorkers() {
@@ -57,7 +44,6 @@
           const response = await axios.get("http://localhost:8080/transportation-workers");
           console.log("Response data:", response.data);
 
-          // ตรวจสอบว่า response.data เป็นอาเรย์หรือไม่
           if (Array.isArray(response.data)) {
             this.workers = response.data.map(worker => ({
               id: worker.id,
@@ -73,9 +59,6 @@
         }
       },
     },
-  components: {
-    WorkerCard,
-  },
   };
   </script>
   

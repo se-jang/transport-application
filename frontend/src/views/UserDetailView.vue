@@ -1,11 +1,9 @@
 <template>
   <div class="user-detail-page">
-    <header>
-      <component :is="headerComponent"></component>
-      <h2>User ID: {{ userId }}</h2>
-    </header>
+    <Header></Header>
 
     <div class="main-container">
+      <h2>User ID: {{ userId }}</h2>
       <div class="content-container">
         <div class="user-info-wrapper">
           <div class="user-info-box" v-if="userInfo">
@@ -52,13 +50,15 @@
 
 <script>
 import axios from 'axios';
-import HeaderAdmin from "../components/HeaderAdmin.vue";
+import { mapGetters } from "vuex";
+import Header from "../components/Header.vue";
 
 export default {
+  components: {
+    Header,
+  },
   computed: {
-    headerComponent() {
-      return HeaderAdmin;
-    },
+    ...mapGetters(["userRole"]),
   },
   data() {
     return {

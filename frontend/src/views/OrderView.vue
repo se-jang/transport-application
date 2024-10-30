@@ -1,8 +1,6 @@
 <template>
   <div class="page-container">
-    <header>
-      <component :is="headerComponent"></component>
-    </header>
+    <Header></Header>
 
     <div class="main-container">
       <div class="order-container">
@@ -35,9 +33,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HeaderAdmin from "../components/HeaderAdmin.vue";
-import HeaderWorker from "../components/HeaderWorker.vue";
-import HeaderCompany from "../components/HeaderCompany.vue";
+import Header from "../components/Header.vue";
 import OrderAdminCard from "../components/OrderAdminCard.vue";
 import OrderWorkerCard from "../components/OrderWorkerCard.vue";
 import OrderCompanyCard from "../components/OrderCompanyCard.vue";
@@ -45,9 +41,7 @@ import axios from "axios";
 
 export default {
   components: {
-    HeaderAdmin,
-    HeaderWorker,
-    HeaderCompany,
+    Header,
     OrderAdminCard,
     OrderWorkerCard,
     OrderCompanyCard,
@@ -69,18 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters(["userRole", "id"]),
-    headerComponent() {
-      switch (this.userRole) {
-        case "ADMIN":
-          return HeaderAdmin;
-        case "WORKER":
-          return HeaderWorker;
-        case "USER":
-          return HeaderCompany;
-        default:
-          return null;
-      }
-    },
     orderComponent() {
       switch (this.userRole) {
         case "ADMIN":

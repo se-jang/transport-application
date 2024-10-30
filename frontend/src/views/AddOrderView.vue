@@ -1,9 +1,6 @@
 <template>
   <div class="page-container">
-    <header>
-      <component :is="headerComponent"></component>
-    </header>
-
+    <Header></Header>
     <div class="main-container">
       <div class="order-container">
         <h2 class="order-title">Add Order</h2>
@@ -28,12 +25,11 @@
 
 <script>
 import axios from "axios";
-import HeaderAdmin from "../components/HeaderAdmin.vue";
-import AddOrderWorkerCard from "../components/AddOrderWorkerCard.vue";
+import Header from "../components/Header.vue";
 
 export default {
   components: {
-    AddOrderWorkerCard,
+    Header,
   },
   data() {
     return {

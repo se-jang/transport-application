@@ -1,9 +1,6 @@
 <template>
   <div class="page-container">
-    <header>
-      <component :is="headerComponent"></component>
-    </header>
-
+    <Header></Header>
     <div class="main-container">
       <div class="order-detail-container" v-if="order">
         <button class="back-button" @click="$router.back()">Back</button>
@@ -57,14 +54,13 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
-import HeaderAdmin from "../components/HeaderAdmin.vue";
-import HeaderWorker from "../components/HeaderWorker.vue";
-import HeaderCompany from "../components/HeaderCompany.vue";
+import Header from "../components/Header.vue";
 import FileViewerModal from "../components/FileViewerModal.vue";
 
 export default {
   name: "OrderDetail",
   components: {
+    Header,
     FileViewerModal
   },
   data() {
@@ -76,18 +72,6 @@ export default {
   },
   computed: {
     ...mapGetters(["userRole", "id"]),
-    headerComponent() {
-      switch (this.userRole) {
-        case "ADMIN":
-          return HeaderAdmin;
-        case "WORKER":
-          return HeaderWorker;
-        case "USER":
-          return HeaderCompany;
-        default:
-          return null;
-      }
-    },
   },
   methods: {
     async fetchOrderDetails() {

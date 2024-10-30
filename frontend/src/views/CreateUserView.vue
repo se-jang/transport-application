@@ -1,7 +1,5 @@
 <template>
-  <header>
-    <component :is="headerComponent"></component>
-  </header>
+  <Header></Header>
   <div class="container">
     <h1>Create User</h1>
     <button class="back-button" @click="goBack">Back</button>
@@ -43,28 +41,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HeaderAdmin from "../components/HeaderAdmin.vue";
-import HeaderWorker from "../components/HeaderWorker.vue";
-import HeaderCompany from "../components/HeaderCompany.vue";
-import HeaderCustomer from "../components/HeaderCustomer.vue";
+import Header from "../components/Header.vue";
 
 export default {
+  components: {
+    Header,
+  },
   computed: {
     ...mapGetters(["userRole"]),
-    headerComponent() {
-      switch (this.userRole) {
-        case "ADMIN":
-          return HeaderAdmin;
-        case "WORKER":
-          return HeaderWorker;
-        case "USER":
-          return HeaderCompany;
-        case "customer":
-          return HeaderCustomer;
-        default:
-          return null;
-      }
-    },
   },
   data() {
     return {

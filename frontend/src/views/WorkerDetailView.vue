@@ -1,11 +1,9 @@
 <template>
   <div class="worker-details-page">
-    <header>
-      <component :is="headerComponent"></component>
-      <h2>Worker ID: {{ workerId }}</h2>
-    </header>
+    <Header></Header>
 
     <div class="main-container">
+      <h2>Worker ID: {{ workerId }}</h2>
       <div class="content-container">
         <div class="order-list-header">
           <h2>Order list</h2>
@@ -39,13 +37,15 @@
 
 <script>
 import axios from 'axios';
-import HeaderAdmin from "../components/HeaderAdmin.vue";
+import { mapGetters } from "vuex";
+import Header from "../components/Header.vue";
 
 export default {
+  components: {
+    Header,
+  },
   computed: {
-    headerComponent() {
-      return HeaderAdmin
-    }
+    ...mapGetters(["userRole"]),
   },
   data() {
     return {

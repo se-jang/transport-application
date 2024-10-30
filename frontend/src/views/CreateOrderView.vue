@@ -1,7 +1,5 @@
 <template>
-  <header>
-    <component :is="headerComponent"></component>
-  </header>
+  <Header></Header>
   <div class="sub-container">
     <h2>Create Order</h2>
     <div class="form-container">
@@ -43,25 +41,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HeaderAdmin from "../components/HeaderAdmin.vue";
-import HeaderWorker from "../components/HeaderWorker.vue";
-import HeaderCompany from "../components/HeaderCompany.vue";
+import Header from "../components/Header.vue";
 
 export default {
+  components: {
+    Header,
+  },
   computed: {
     ...mapGetters(["userRole", "username"]),
-    headerComponent() {
-      switch (this.userRole) {
-        case "ADMIN":
-          return HeaderAdmin;
-        case "WORKER":
-          return HeaderWorker;
-        case "USER":
-          return HeaderCompany;
-        default:
-          return null;
-      }
-    },
   },
   data() {
     return {

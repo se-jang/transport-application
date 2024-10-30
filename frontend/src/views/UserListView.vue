@@ -1,8 +1,6 @@
 <template>
     <div class="page-container">
-      <header>
-        <component :is="headerComponent"></component>
-      </header>
+      <Header></Header>
 
       <div class="main-container">
         <div class="user-container">
@@ -21,8 +19,8 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
-import HeaderAdmin from "../components/HeaderAdmin.vue";
 import UserCard from "../components/UserCard.vue";
+import Header from "../components/Header.vue";
 
 export default {
   data() {
@@ -35,9 +33,6 @@ export default {
   },
   computed: {
     ...mapGetters(["userRole", "username"]),
-    headerComponent() {
-      return HeaderAdmin;
-    },
   },
   methods: {
     async fetchUsers() {
@@ -50,7 +45,7 @@ export default {
     },
   },
   components: {
-    UserCard,
+    Header, UserCard,
   },
 };
 </script>
