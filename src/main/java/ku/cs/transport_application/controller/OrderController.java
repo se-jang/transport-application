@@ -3,6 +3,7 @@ package ku.cs.transport_application.controller;
 import ku.cs.transport_application.DTO.OrderDTO;
 import ku.cs.transport_application.common.OrderStatus;
 import ku.cs.transport_application.common.TransportationWorkerStatus;
+import ku.cs.transport_application.service.FileService;
 import ku.cs.transport_application.service.MailSenderService;
 import ku.cs.transport_application.service.OrderService;
 import ku.cs.transport_application.service.TransportationWorkerService;
@@ -24,6 +25,9 @@ public class OrderController {
 
     @Autowired
     private MailSenderService mailSenderService;
+
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private TransportationWorkerService transportationWorkerService;
@@ -105,7 +109,7 @@ public class OrderController {
 
     @GetMapping("/orders/order-detail/{orderId}/shipment-doc")
     public ResponseEntity<Resource> viewShipmentDoc(@PathVariable UUID orderId) {
-        Resource file = orderService.getShipmentDoc(orderId);
+        Resource file = fileService.getShipmentDoc(orderId);
         return ResponseEntity.ok()
                 .header("X-Frame-Options", "ALLOW-FROM http://localhost:5173")
                 .header("Content-Security-Policy", "frame-ancestors 'self' http://localhost:5173")
@@ -122,5 +126,4 @@ public class OrderController {
             return new ResponseEntity<>(Map.of("error", "Failed to assign worker to order"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

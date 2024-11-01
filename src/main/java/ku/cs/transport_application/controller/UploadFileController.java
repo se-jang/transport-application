@@ -1,5 +1,6 @@
 package ku.cs.transport_application.controller;
 
+import ku.cs.transport_application.service.FileService;
 import ku.cs.transport_application.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class UploadFileController {
 
     @Autowired
-    private OrderService orderService;
+    private FileService fileService;
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestPart("orderId") UUID orderId, @RequestPart("file") MultipartFile file) throws IOException {
@@ -31,7 +32,7 @@ public class UploadFileController {
             throw new IllegalArgumentException("Only PDF files are allowed");
         }
 
-        orderService.uploadFile(orderId, file);
+        fileService.uploadFile(orderId, file);
         return ResponseEntity.ok(Map.of("message", "File uploaded successfully", "fileName", fileName));
     }
 }
