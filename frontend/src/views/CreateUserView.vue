@@ -2,7 +2,6 @@
   <Header></Header>
   <div class="container">
     <h1>Create User</h1>
-    <button class="back-button" @click="goBack">Back</button>
     <div class="create-user-container">
       <form @submit.prevent="handleSubmit" method="post" class="create-user-form">
         <div class="form-group">
@@ -92,10 +91,6 @@ export default {
         alert("An error occurred. Please try again.");
       }
     },
-
-    goBack() {
-      window.history.back();
-    },
     resetForm() {
       this.formData = {
         username: "",
@@ -179,22 +174,6 @@ h1 {
   margin-top: 5%;
   margin-bottom: 0px; 
   margin-left: 10%; 
-}
-
-.back-button {
-  display: inline-block;
-  margin-top: 5%;
-  margin-bottom: 0px;
-  margin-right: 21%;
-  background-color: #363636;
-  color: rgb(255, 255, 255);
-  border: none; 
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.back-button:hover {
-  background-color: #808080;
 }
 
 label {
