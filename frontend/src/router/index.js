@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from '@/stores/store.js';
 import LoginView from '@/views/LoginView.vue';
+import UnauthorizedView from '@/views/UnauthorizedView.vue';
+import NotFound from '@/views/NotFound.vue';
 import MainViews from '@/views/MainView.vue';
 import OrderView from '@/views/OrderView.vue';
 import OrderDetailView from '@/views/OrderDetailView.vue';
@@ -21,60 +23,81 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView,
+    meta: { requiresAuth: false},
+  },
+  {
+    path: '/unauthorized',
+    name: 'unauthorized',
+    component: UnauthorizedView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/main',
     name: 'main',
     component: MainViews,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN', 'USER', 'WORKER']},
   },
   {
     path: '/orders/:id?',
     name: 'orders',
     component: OrderView,
     props: true,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN', 'USER', 'WORKER']},
   },
   {
     path: '/orders/order-detail/:orderId',
     name: 'order-detail',
     component: OrderDetailView,
     props: true,
+    meta: { requiresAuth: false, allowedRoles: ['ADMIN', 'USER', 'WORKER']},
   },
   {
     path: '/create-user',
     name: 'createUser',
     component: CreateUserView,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN']},
   },
   {
     path: '/worker-list',
     name: 'worker-list',
     component: WorkerListView,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN']},
   },
   {
     path: '/worker-detail/:workerId',
     name: 'worker-detail',
     component: WorkerDetailView,
     props: true,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN']},
   },
   {
     path: '/worker/worker-detail/:workerId/add-order',
     name: 'add-order',
     component: AddOrderView,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN']},
   },
   {
     path: '/user-list',
     name: 'user-list',
     component: UserListView,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN']},
   },
   {
     path: '/user-detail/:userId',
     name: 'user-detail',
     component: UserDetailView,
-    props: true
+    props: true,
+    meta: { requiresAuth: true, allowedRoles: ['ADMIN']},
   },
   {
     path: '/create-order',
     name: 'create-order',
     component: CreateOrderView,
+    meta: { requiresAuth: true, allowedRoles: ['USER']},
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: NotFound,
   },
 ];
 
@@ -84,17 +107,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const routeExists = router.getRoutes().some(route => route.path === to.path); 
+  const token = localStorage.getItem("jwt");
   const userRole = store.getters.userRole;
-  const adminRoutes = ['/create-user', '/user-list', '/user-detail/:userId', '/worker-list', '/worker-detail/:workerId', '/worker/worker-detail/:workerId/add-order'];
-  const userRoutes = ['/create-order'];
 
-  if (!routeExists) {
-    next({ name: 'login' });
-  } else if (adminRoutes.includes(to.path) && userRole !== 'ADMIN') {
-    next({ name: 'login' });
-  } else if (userRoutes.includes(to.path) && userRole !== 'USER') {
-    next({ name: 'login' });
+  if (to.meta.requiresAuth && !token) {
+    next({ path: "/login" });
+  } else if (to.meta.allowedRoles && !to.meta.allowedRoles.includes(userRole)) {
+    next({ path: "/unauthorized" });
   } else {
     next();
   }
