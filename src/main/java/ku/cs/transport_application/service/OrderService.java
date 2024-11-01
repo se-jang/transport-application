@@ -72,6 +72,7 @@ public class OrderService {
         if (recordOptional.isPresent()) {
             TransportationWorker record = recordOptional.get();
             return orderRepository.findByWorkerId(record.getId()).stream()
+                    .filter(order -> !order.getStatus().equals(COMPLETED))
                     .map(order -> new OrderDTO(
                             order.getId(),
                             order.getStatus(),

@@ -1,6 +1,6 @@
 package ku.cs.transport_application.service;
 
-import ku.cs.transport_application.entity.Order;
+import giku.cs.transport_application.entity.Order;
 import ku.cs.transport_application.repository.OrderRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
