@@ -163,10 +163,10 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<Order> getNotUploadOrder() {
+    public List<Order> getNotCompleteOrder() {
         List<Order> notUncheckOrders = orderRepository.findAll();
         return notUncheckOrders.stream()
-                .filter(order -> !(order.getStatus() == UPLOADED))
+                .filter(order -> !(order.getStatus() == COMPLETED))
                 .collect(Collectors.toList());
     }
 

@@ -49,9 +49,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByWorker(transportationWorkerId));
     }
 
-    @GetMapping("/orders/not-uploaded-orders")
-    public ResponseEntity<?> getNotUploadOrder() {
-        return ResponseEntity.ok(orderService.getNotUploadOrder());
+    @GetMapping("/orders/not-complete-orders")
+    public ResponseEntity<?> getCompleteOrder() {
+        return ResponseEntity.ok(orderService.getNotCompleteOrder());
     }
 
     @GetMapping("/orders/all-orders")
