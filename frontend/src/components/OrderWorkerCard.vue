@@ -2,7 +2,8 @@
   <div class="order-card">
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
     <h2 class="order-id">Order ID: {{ orderId }}</h2>
-    <p class="due-date">Date: {{ formatDate(date) }}</p>
+    <p class="customer-name">Customer Name: {{ customerName }}</p>
+    <p class="due-date">Date: {{ formattedDate(date) }}</p>
     <div class="button-group">
       <button class="details-button" @click="viewDetails">Details</button>
       <button class="on-going-button" @click="OnGoing">On Going</button>
@@ -17,6 +18,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import dayjs from "dayjs";
 export default {
   name: "OrderWorkerCard",
   props: {
@@ -29,6 +31,10 @@ export default {
       required: true,
     },
     date: {
+      type: String,
+      required: true,
+    },
+    customerName: {
       type: String,
       required: true,
     },
@@ -110,9 +116,8 @@ export default {
         alert('Error updating order status');
       });
     },
-    formatDate(dateString) {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+    formattedDate() {
+      return dayjs(this.date).format('DD/MM/YYYY HH:mm:ss');
     },
     viewDetails() {
       console.log(`Viewing details for order ID: ${this.orderId}`);
@@ -199,7 +204,9 @@ export default {
 }
 
 .order-id,
-.due-date {
+.due-date,
+.customer-name,
+.customer-address {
   font-family: "Inter", sans-serif;
   margin: 0;
   margin-bottom :10px;

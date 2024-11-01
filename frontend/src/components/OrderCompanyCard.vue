@@ -2,13 +2,16 @@
   <div class="order-card">
     <div class="status-indicator" :class="statusClass">{{ status }}</div>
     <h2 class="order-id">Order ID: {{ orderId }}</h2>
-    <p class="due-date">Date: {{ formatDate(date) }}</p>
+    <p class="customer-name">Customer Name: {{ customerName }}</p>
+    <p class="due-date">Date: {{ formattedDate(date) }}</p>
     <button class="details-button" @click="viewDetails">Details</button>
     <button v-if="status === 'delivered'" class="bill-button">Bill</button>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs';
+
 export default {
   name: "OrderCompanyCard",
   props: {
@@ -24,15 +27,18 @@ export default {
       type: String,
       required: true,
     },
+    customerName: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     viewDetails() {
       console.log(`Viewing details for order ID: ${this.orderId}`);
       this.$router.push({ name: 'order-detail', params: { orderId: this.orderId } });
     },
-    formatDate(dateString) {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+    formattedDate() {
+      return dayjs(this.date).format('DD/MM/YYYY HH:mm:ss');
     },
   },
   computed: {
@@ -63,7 +69,9 @@ export default {
 }
 
 .order-id,
-.due-date {
+.due-date,
+.customer-name,
+.customer-address {
   font-family: "Inter", sans-serif;
   margin: 0;
   margin-bottom :10px;

@@ -8,7 +8,7 @@
         <div class="order-info-wrapper">
           <div class="order-info-box">
             <div class="order-info-left">
-              <p><strong>Date:</strong> {{ formatDate(order.date) }}</p>
+              <p><strong>Date:</strong> {{ formattedDate(order.date) }}</p>
               <p><strong>Transportation Worker:</strong> {{ order.workerId || 'N/A' }}</p>
             </div>
             <div class="order-info-right">
@@ -56,6 +56,7 @@ import axios from "axios";
 import { mapGetters } from "vuex";
 import Header from "../components/Header.vue";
 import FileViewerModal from "../components/FileViewerModal.vue";
+import dayjs from "dayjs";
 
 export default {
   name: "OrderDetail",
@@ -84,13 +85,8 @@ export default {
       }
     },
 
-    formatDate(dateString) {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      }).format(date);
+    formattedDate() {
+      return dayjs(this.date).format('DD/MM/YYYY HH:mm:ss');
     },
     checked() {
       const orderId = this.$route.params.orderId;

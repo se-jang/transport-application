@@ -99,7 +99,8 @@ export default {
           id: order.id,
           date: order.date || "N/A",
           status: order.status,
-        }));
+          customerName: order.customerName
+        })).sort((a, b) => new Date(b.date) - new Date(a.date));
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -137,7 +138,7 @@ export default {
           date: order.date || "N/A",
           status: order.status,
           customerName: order.customerName,
-        }));
+        })).sort((a, b) => new Date(b.date) - new Date(a.date));
       } catch (error) {
         console.error("Error fetching filtered orders:", error);
       }
@@ -150,7 +151,7 @@ export default {
           date: order.date || "N/A",
           status: order.status,
           customerName: order.customerName,
-        }));
+        })).sort((a, b) => new Date(b.date) - new Date(a.date));
       } catch (error) {
         console.error("Error fetching own orders:", error);
       }
@@ -163,7 +164,7 @@ export default {
           date: order.date || "N/A",
           status: order.status,
           customerName: order.customerName,
-        }));
+        })).sort((a, b) => new Date(b.date) - new Date(a.date));
       } catch (error) {
         console.error("Error fetching worker orders:", error);
       }

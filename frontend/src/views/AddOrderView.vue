@@ -14,6 +14,7 @@
             :status="order.status"
             :orderId="order.id"
             :date="order.date"
+            :customerName="order.customerName"
             :isChecked="selectedOrderId === order.id"
             @checkOrder="selectOrder(order.id)"
           />
