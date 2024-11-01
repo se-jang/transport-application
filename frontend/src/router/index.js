@@ -84,14 +84,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const route = router.resolve(to);
+  const routeExists = router.getRoutes().some(route => route.path === to.path); 
   const userRole = store.getters.userRole;
+  const adminRoutes = ['/create-user', '/user-list', '/user-detail/:userId', '/worker-list', '/worker-detail/:workerId', '/worker/worker-detail/:workerId/add-order'];
+  const userRoutes = ['/create-order'];
 
-  if (!route) {
+  if (!routeExists) {
     next({ name: 'login' });
-  } else if (to.path === '/create-user' || to.path === '/user-list' || to.path === '/user-detail/:userId' || to.path === '/worker-list' || to.path === '/worker-detail/:workerId'  || to.path === '/worker/worker-detail/:workerId/add-order' && userRole !== 'ADMIN'){
-     
-  }else {
+  } else if (adminRoutes.includes(to.path) && userRole !== 'ADMIN') {
+    next({ name: 'login' });
+  } else if (userRoutes.includes(to.path) && userRole !== 'USER') {
+    next({ name: 'login' });
+  } else {
     next();
   }
 });
