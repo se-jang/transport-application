@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import store from '@/stores/store.js';
 import LoginView from '@/views/LoginView.vue';
 import MainViews from '@/views/MainView.vue';
 import OrderView from '@/views/OrderView.vue';
@@ -12,6 +13,10 @@ import UserDetailView from '@/views/UserDetailView.vue';
 import CreateOrderView from '@/views/CreateOrderView.vue';
 
 const routes = [
+  {
+    path: '/',
+    redirect: '/login',
+  },
   {
     path: '/login',
     name: 'login',
@@ -80,10 +85,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const route = router.resolve(to);
+  const userRole = store.getters.userRole;
 
   if (!route) {
     next({ name: 'login' });
-  } else {
+  } else if (to.path === '/create-user' || to.path === '/user-list' || to.path === '/user-detail/:userId' || to.path === '/worker-list' || to.path === '/worker-detail/:workerId'  || to.path === '/worker/worker-detail/:workerId/add-order' && userRole !== 'ADMIN'){
+     
+  }else {
     next();
   }
 });

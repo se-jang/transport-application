@@ -49,9 +49,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByWorker(transportationWorkerId));
     }
 
-    @GetMapping("/orders/not-uncheck-orders")
-    public ResponseEntity<?> getNotUncheckOrder() {
-        return ResponseEntity.ok(orderService.getNotUncheckOrder());
+    @GetMapping("/orders/not-uploaded-orders")
+    public ResponseEntity<?> getNotUploadOrder() {
+        return ResponseEntity.ok(orderService.getNotUploadOrder());
     }
 
     @GetMapping("/orders/all-orders")

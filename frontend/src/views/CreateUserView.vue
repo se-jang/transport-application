@@ -181,6 +181,22 @@ h1 {
   margin-left: 10%; 
 }
 
+.back-button {
+  display: inline-block;
+  margin-top: 5%;
+  margin-bottom: 0px;
+  margin-right: 21%;
+  background-color: #363636;
+  color: rgb(255, 255, 255);
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #808080;
+}
+
 label {
   margin-bottom: 5px;
   font-weight: bold;
@@ -201,24 +217,6 @@ label {
 
 .accept-button:hover {
   background-color: #24be2c;
-}
-
-
-.back-button {
-  display: inline-block;
-  margin-top: 5%;
-  margin-bottom: auto;
-  margin-left: auto;
-  margin-right: 21%;
-  width: 5%;
-  background-color: #363636;
-  color: rgb(255, 255, 255);
-  border: none; 
-  border-radius: 5px;
-  cursor: pointer;
-}
-.back-button:hover {
-  background-color: #808080;
 }
 
 </style>
