@@ -1,7 +1,6 @@
 package ku.cs.transport_application.service;
 
 import ku.cs.transport_application.common.OrderStatus;
-import ku.cs.transport_application.common.ProductType;
 import ku.cs.transport_application.entity.*;
 import ku.cs.transport_application.repository.OrderLineRepository;
 import ku.cs.transport_application.repository.OrderRepository;
@@ -29,9 +28,6 @@ public class CreateOrderService {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     public void createOrder(OrderRequest request) {
         Order order = new Order();

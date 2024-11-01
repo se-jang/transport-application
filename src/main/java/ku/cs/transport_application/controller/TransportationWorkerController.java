@@ -32,14 +32,4 @@ public class TransportationWorkerController {
         return ResponseEntity.ok(orderService.getOrdersByWorker(workerId));
     }
 
-    @PostMapping("/{workerId}/add-orders")
-    public ResponseEntity<?> addOrderToWorker(@PathVariable UUID workerId, @RequestBody UUID orderId) {
-        try {
-            orderService.upDateOrderToWorker(workerId, orderId);
-            return ResponseEntity.ok("Order added to worker successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
 }

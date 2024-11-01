@@ -31,9 +31,7 @@ public class CreateUserController {
         if (user.getRole() == UserRole.WORKER) {
             createWorkerService.createWorker(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("Worker created successfully");
-        }
-
-        else if (user.getRole() == UserRole.USER) {
+        } else if (user.getRole() == UserRole.USER) {
             createUserService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
         }

@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static ku.cs.transport_application.common.TransportationWorkerStatus.AVAILABLE;
-
 @Service
 public class TransportationWorkerService {
 
@@ -42,19 +40,5 @@ public class TransportationWorkerService {
 
     public TransportationWorker findWorkerByUsername(String username) {
         return transportationWorkerRepository.findByUsername(username);
-    }
-
-    public List<TransportationWorkerDTO> getAvailableWorker() {
-        List<TransportationWorker> workers = transportationWorkerRepository.findByStatus(AVAILABLE);
-        return workers.stream().map(worker -> {
-            TransportationWorkerDTO dto = new TransportationWorkerDTO();
-            dto.setId(worker.getId());
-            dto.setUsername(worker.getUsername());
-            dto.setName(worker.getName());
-            dto.setPhoneNumber(worker.getPhoneNumber());
-            dto.setEmail(worker.getEmail());
-            dto.setStatus(worker.getStatus());
-            return dto;
-        }).collect(Collectors.toList());
     }
 }

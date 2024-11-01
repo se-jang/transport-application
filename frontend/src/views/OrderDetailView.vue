@@ -97,7 +97,7 @@ export default {
       console.log("order: ", orderId);
       const status = "CHECKED";
 
-      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -128,7 +128,7 @@ export default {
       console.log("order: ", orderId);
       const status = "COMPLETED";
 
-      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+      fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

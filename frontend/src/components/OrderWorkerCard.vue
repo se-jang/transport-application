@@ -90,7 +90,7 @@ export default {
       });
 
       const status = "UPLOADED";
-      fetch(`http://localhost:8080/orders/order-detail/${this.orderId}/change-status-order`, {
+      fetch(`http://localhost:8080/orders/order-detail/${this.orderId}/change-status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -158,7 +158,7 @@ export default {
     console.log("order: ", orderId);
     const status = "DELIVERED";
 
-    fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status-order`, {
+    fetch(`http://localhost:8080/orders/order-detail/${orderId}/change-status`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

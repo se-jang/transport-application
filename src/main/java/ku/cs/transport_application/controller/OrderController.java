@@ -8,15 +8,10 @@ import ku.cs.transport_application.service.OrderService;
 import ku.cs.transport_application.service.TransportationWorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -84,65 +79,23 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getComplete());
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestPart("orderId") UUID orderId, @RequestPart("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return new ResponseEntity<>(Map.of("error", "File is empty"), HttpStatus.BAD_REQUEST);
-        }
-
-        try {
-            String fileName = file.getOriginalFilename();
-            assert fileName != null;
-
-            if (!fileName.endsWith(".pdf")) {
-                return new ResponseEntity<>(Map.of("error", "Only PDF files are allowed"), HttpStatus.BAD_REQUEST);
-            }
-
-            orderService.uploadFile(orderId, file);
-
-            return new ResponseEntity<>(Map.of("message", "File uploaded successfully", "fileName", fileName), HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(Map.of("error", "Failed to upload file"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @PostMapping("/change-order-worker-status")
     public ResponseEntity<?> changeOrderAndWorkerStatus(@RequestParam("orderId") UUID orderId,
                                                @RequestParam("workerId") UUID workerId,
                                                @RequestParam("status") OrderStatus status,
                                                @RequestParam("workerStatus") TransportationWorkerStatus workerStatus) {
-        try {
-            orderService.upDateOrderStatus(orderId, status);
-            transportationWorkerService.updateTransportationWorker(workerId, workerStatus);
-            mailSenderService.sendEmail(orderId);
-            return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        orderService.upDateOrderStatus(orderId, status);
+        transportationWorkerService.updateTransportationWorker(workerId, workerStatus);
+        mailSenderService.sendEmail(orderId);
+        return ResponseEntity.ok(Map.of("message", "Order status updated successfully"));
     }
 
     @PostMapping("/orders/order-detail/{orderId}/change-status")
-    public ResponseEntity<?> changeOrderStatus(@RequestParam("orderId") UUID orderId,
+    public ResponseEntity<?> changeOrderStatus(@PathVariable("orderId") UUID orderId,
                                                         @RequestParam("status") OrderStatus status) {
-        try {
-            orderService.upDateOrderStatus(orderId, status);
-            mailSenderService.sendEmail(orderId);
-            return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/orders/order-detail/{orderId}/change-status-order")
-    public ResponseEntity<?> changeOrderTOChecked(@PathVariable("orderId") UUID orderId,
-                                               @RequestParam("status") OrderStatus status) {
-        try {
-            orderService.upDateOrderStatus(orderId, status);
-            mailSenderService.sendEmail(orderId);
-            return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(Map.of("error", "Failed to update order status"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        orderService.upDateOrderStatus(orderId, status);
+        mailSenderService.sendEmail(orderId);
+        return new ResponseEntity<>(Map.of("message", "Order status updated successfully"), HttpStatus.OK);
     }
 
     @GetMapping("/orders/order-detail/{orderId}")

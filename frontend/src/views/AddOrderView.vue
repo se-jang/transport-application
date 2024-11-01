@@ -63,7 +63,7 @@ export default {
         );
         console.log(response.data.message);
         const statusUpdateResponse = await fetch(
-            `http://localhost:8080/orders/order-detail/${this.selectedOrderId}/change-status-order`,
+            `http://localhost:8080/orders/order-detail/${this.selectedOrderId}/change-status`,
             {
               method: 'POST',
               headers: {

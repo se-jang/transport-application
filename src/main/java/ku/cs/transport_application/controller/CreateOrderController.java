@@ -19,7 +19,6 @@ public class CreateOrderController {
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequest request) {
         createOrderService.createOrder(request);
-
         return ResponseEntity.status(HttpStatus.CREATED).body("Order created successfully");
     }
 }

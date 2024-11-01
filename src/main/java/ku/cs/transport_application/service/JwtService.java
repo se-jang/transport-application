@@ -1,6 +1,5 @@
 package ku.cs.transport_application.service;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +16,7 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    private long expirationTime = 86400000; // 24 hours
+    private long expirationTime = 86400000;
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = Base64.getDecoder().decode(secretKey);
@@ -36,20 +35,4 @@ public class JwtService {
         return builder.compact();
     }
 
-    public Claims parseToken(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            Claims claims = parseToken(token);
-            return claims.getExpiration().after(new Date());
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
