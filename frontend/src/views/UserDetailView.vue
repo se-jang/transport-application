@@ -94,8 +94,8 @@ export default {
         console.error("Error fetching user orders:", error);
       }
     },
-    formattedDate() {
-      return dayjs(this.date).format('DD/MM/YYYY HH:mm:ss');
+    formattedDate(date) {
+      return dayjs(date).format('DD/MM/YYYY HH:mm:ss');
     },
   },
 };

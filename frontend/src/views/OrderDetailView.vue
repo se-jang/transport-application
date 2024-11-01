@@ -85,8 +85,8 @@ export default {
       }
     },
 
-    formattedDate() {
-      return dayjs(this.date).format('DD/MM/YYYY HH:mm:ss');
+    formattedDate(date) {
+      return dayjs(date).format('DD/MM/YYYY HH:mm:ss');
     },
     checked() {
       const orderId = this.$route.params.orderId;

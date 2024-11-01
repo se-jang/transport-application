@@ -73,8 +73,8 @@ export default {
         console.error("Error fetching orders:", error);
       }
     },
-    formattedDate() {
-      return dayjs(this.date).format('DD/MM/YYYY HH:mm:ss');
+    formattedDate(date) {
+      return dayjs(date).format('DD/MM/YYYY HH:mm:ss');
     },
     addOrder() {
       this.$router.push({ name: "add-order", params: { workerId: this.workerId } });
@@ -91,7 +91,6 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Inter", sans-serif;
 }
 
 .main-container {

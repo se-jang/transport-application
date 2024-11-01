@@ -5,7 +5,7 @@
       <div class="order-container">
         <h2 class="order-title">Add Order</h2>
         <button class="back-button" @click="goBack">Back</button>
-        <button @click="assignWorker">Assign Worker</button>
+        <button v-if="orders.length > 0" @click="assignWorker">Assign Worker</button>
 
         <div class="order-list">
           <AddOrderWorkerCard
@@ -27,10 +27,13 @@
 <script>
 import axios from "axios";
 import Header from "../components/Header.vue";
+import AddOrderWorkerCard from "@/components/AddOrderWorkerCard.vue";
+import {mapGetters} from "vuex";
 
 export default {
   components: {
     Header,
+    AddOrderWorkerCard,
   },
   data() {
     return {
@@ -41,9 +44,7 @@ export default {
     };
   },
   computed: {
-    headerComponent() {
-      return HeaderAdmin;
-    },
+    ...mapGetters(["userRole"]),
   },
   methods: {
     async assignWorker() {
