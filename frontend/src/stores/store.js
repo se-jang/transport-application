@@ -2,9 +2,9 @@ import { createStore } from 'vuex';
 
 export default createStore({
     state: {
-        userRole: "",
-        username: "",
-        id: null,
+        userRole: localStorage.getItem('userRole') || "",
+        username: localStorage.getItem('username') || "",
+        id: localStorage.getItem('id') || null,
     },
     getters: {
         userRole: (state) => state.userRole,
@@ -14,17 +14,23 @@ export default createStore({
     mutations: {
         setUserRole(state, role) {
             state.userRole = role;
+            localStorage.setItem('userRole', role); // เก็บค่าลง Local Storage
         },
         setUsername(state, username) {
             state.username = username;
+            localStorage.setItem('username', username); // เก็บค่าลง Local Storage
         },
         setId(state, id) {
             state.id = id;
+            localStorage.setItem('id', id); // เก็บค่าลง Local Storage
         },
         clearUserData(state) {
             state.userRole = "";
             state.username = "";
             state.id = null;
+            localStorage.removeItem('userRole'); // ลบค่าจาก Local Storage
+            localStorage.removeItem('username'); // ลบค่าจาก Local Storage
+            localStorage.removeItem('id'); // ลบค่าจาก Local Storage
         },
     },
     actions: {
