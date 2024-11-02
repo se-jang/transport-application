@@ -42,7 +42,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getCheckedOrder());
     }
 
-
     @GetMapping("/orders/user/{userId}")
     public ResponseEntity<List<OrderDTO>> getUserOrder(@PathVariable("userId") UUID userID) {
         return ResponseEntity.ok(orderService.getOrdersByUser(userID));
@@ -115,15 +114,5 @@ public class OrderController {
                 .header("Content-Security-Policy", "frame-ancestors 'self' http://localhost:5173")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(file);
-    }
-
-    @PostMapping("/worker/worker-detail/{workerId}/add-order")
-    public ResponseEntity<?> assignWorkerToOrder(@RequestParam("orderId") UUID orderId, @PathVariable("workerId") UUID workerId) {
-        try {
-            orderService.upDateOrderToWorker(workerId, orderId);
-            return new ResponseEntity<>(Map.of("message", "Worker assigned to order successfully"), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(Map.of("error", "Failed to assign worker to order"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 }
