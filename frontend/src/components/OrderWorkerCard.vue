@@ -116,6 +116,7 @@ export default {
         alert('Error updating order status');
       });
     },
+
     formattedDate() {
       return dayjs(this.date).format('DD/MM/YYYY HH:mm:ss');
     },
