@@ -2,6 +2,7 @@ package ku.cs.transport_application.service;
 
 import ku.cs.transport_application.DTO.OrderDTO;
 import ku.cs.transport_application.common.OrderStatus;
+import ku.cs.transport_application.common.TransportationWorkerStatus;
 import ku.cs.transport_application.entity.Order;
 import ku.cs.transport_application.entity.OrderLine;
 import ku.cs.transport_application.entity.TransportationWorker;
@@ -12,6 +13,7 @@ import ku.cs.transport_application.repository.TransportationWorkerRepository;
 import ku.cs.transport_application.repository.UserRepository;
 import ku.cs.transport_application.request.OrderRequest;
 import ku.cs.transport_application.request.ProductDetailRequest;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -224,6 +226,22 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         record.setStatus(status);
         orderRepository.save(record);
+
+        if (status.equals(OrderStatus.COMPLETED)) {
+            updateWorkerStatus(record.getWorker().getId());
+        }
+    }
+
+    private void updateWorkerStatus(UUID workerId) {
+        List<OrderDTO> orders = getOrdersByWorker(workerId);
+        boolean allComplete = orders.stream().allMatch(order -> order.getStatus().equals(OrderStatus.COMPLETED));
+
+        if (allComplete) {
+            TransportationWorker worker = twRepository.findById(workerId)
+                    .orElseThrow(() -> new RuntimeException("Worker not found"));
+            worker.setStatus(TransportationWorkerStatus.AVAILABLE);
+            twRepository.save(worker);
+        }
     }
 
     public void upDateOrderToWorker(UUID workerId, UUID orderId) {

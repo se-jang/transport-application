@@ -1,7 +1,8 @@
 package ku.cs.transport_application.service;
 
-import giku.cs.transport_application.entity.Order;
+import ku.cs.transport_application.entity.Order;
 import ku.cs.transport_application.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.UUID;
 
 @Service
 public class FileService {
+
+    @Autowired
     OrderRepository orderRepository;
 
     public void uploadFile(UUID orderID, MultipartFile file) throws IOException {
