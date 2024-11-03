@@ -22,8 +22,8 @@ public class TransportationWorkerService {
     @Autowired
     TransportationWorkerRepository transportationWorkerRepository;
 
-    public List<TransportationWorkerDTO> getAllTransportationWorker() {
-        List<TransportationWorker> workers = transportationWorkerRepository.findAll();
+    public List<TransportationWorkerDTO> getAvailableTransportationWorker() {
+        List<TransportationWorker> workers = transportationWorkerRepository.findByStatus(TransportationWorkerStatus.AVAILABLE);
         return workers.stream().map(worker -> {
             TransportationWorkerDTO dto = new TransportationWorkerDTO();
             dto.setId(worker.getId());

@@ -25,7 +25,7 @@ public class TransportationWorkerController {
 
     @GetMapping
     public ResponseEntity<List<TransportationWorkerDTO>> getTransportationWorkers() {
-        List<TransportationWorkerDTO> workerDTO = transportationWorkerService.getAllTransportationWorker();
+        List<TransportationWorkerDTO> workerDTO = transportationWorkerService.getAvailableTransportationWorker();
         return ResponseEntity.ok(workerDTO);
     }
 
