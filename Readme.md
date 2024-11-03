@@ -99,10 +99,6 @@ spring.mail.debug=true
     - `OrderController` ดูแลการแสดงและจัดการคำสั่งซื้อที่มีอยู่
     - `CreateUserRequest` เป็นคลาสที่ใช้ในการสร้างผู้ใช้ใหม่ ซึ่งรวมถึงการตรวจสอบความถูกต้องของข้อมูลที่ส่งเข้ามา
 
-### Open/Closed Principle (OCP)
-- **การใช้งานในโค้ด:**
-    - ใช้ `UserRole` enum เพื่อจัดการบทบาทของผู้ใช้ ซึ่งช่วยให้สามารถเพิ่มบทบาทใหม่ได้โดยไม่ต้องปรับเปลี่ยนโค้ดในคลาสที่ใช้งาน
-
 ### Dependency Inversion Principle (DIP)
 - **การใช้งานในโค้ด:**
     - ใช้ Spring's `@Autowired` เพื่อจัดการ Dependency Injection ใน Service ต่าง ๆ เช่น `UserService` และ `OrderService` ช่วยให้โค้ดมีความยืดหยุ่นและง่ายต่อการทดสอบ
