@@ -3,8 +3,8 @@
     <Header></Header>
 
     <div class="main-container">
-      <h2>Worker ID: {{ workerId }}</h2>
       <div class="content-container">
+        <h2 class="worker-h2">Worker ID: {{ workerId }}</h2>
         <div class="order-list-header">
           <h2>Order list</h2>
           <button class="add-button" @click="addOrder">Add</button>

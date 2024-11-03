@@ -3,8 +3,8 @@
     <Header></Header>
 
     <div class="main-container">
-      <h2>User ID: {{ userId }}</h2>
       <div class="content-container">
+        <h2 class="user-h2">User ID: {{ userId }}</h2>
         <div class="user-info-wrapper">
           <div class="user-info-box" v-if="userInfo">
             <div class="user-info-left">
@@ -116,13 +116,6 @@ export default {
     box-sizing: border-box;
   }
   
-  .page-container {
-    background-color: var(--main-bg-color);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
   .main-container {
     display: flex;
     justify-content: center;
@@ -132,7 +125,6 @@ export default {
   
   .user-detail-container {
     background-color: #e0e0e0;
-    padding: 20px;
     width: 80%;
     max-width: 1000px;
     border-radius: 8px;
@@ -181,7 +173,6 @@ export default {
   .user-info-right {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     text-align: left;
     margin-right: 100px;
   }
@@ -189,7 +180,6 @@ export default {
   .user-info-left {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     text-align: left;
     margin-left: 5px;
   }

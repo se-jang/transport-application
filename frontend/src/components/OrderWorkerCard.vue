@@ -6,12 +6,12 @@
     <p class="due-date">Date: {{ formattedDate(date) }}</p>
     <div class="button-group">
       <button class="details-button" @click="viewDetails">Details</button>
-      <button class="on-going-button" @click="OnGoing">On Going</button>
-      <button class="success-button" @click="Success">Success</button>
+      <button class="on-going-button" v-if="order.status === 'ONGOING'" @click="OnGoing">On Going</button>
+      <button class="success-button" v-if="order.status === 'ONGOING'" @click="Success">Success</button>
       <input type="file" id="fileInput" style="display:none" @change="handleFileSelect" />
-      <button type="button" @click="triggerFileInput">Select File</button>
+      <button type="button" v-if="order.status === 'DELIVERED'" @click="triggerFileInput">Select File</button>
       <span v-if="selectedFile">Selected File: {{ selectedFile.name }}</span>
-      <button type="button" @click="uploadFile" :disabled="!selectedFile">Upload</button>
+      <button type="button" v-if="order.status === 'DELIVERED'" @click="uploadFile" :disabled="!selectedFile">Upload</button>
     </div>
   </div>
 </template>
@@ -37,6 +37,10 @@ export default {
     customerName: {
       type: String,
       required: true,
+    },
+    order: {
+        type: Object,
+        required: true,
     },
   },
   data() {

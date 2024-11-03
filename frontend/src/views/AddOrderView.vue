@@ -51,7 +51,7 @@ export default {
       console.log("Worker ID: ", this.selectedWorkerId);
       console.log("Order ID: ", this.selectedOrderId);
       if (!this.selectedOrderId || !this.selectedWorkerId) {
-        console.warn("Please select an order and a worker before assigning.");
+        alert("Please select an order and a worker before assigning.");
         return;
       }
       try {

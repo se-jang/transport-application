@@ -4,7 +4,7 @@
     <div class="main-container">
       <div class="order-detail-container" v-if="order">
         <button class="back-button" @click="$router.back()">Back</button>
-        <p class="order-id-text">Order ID: {{ order.id }}</p>
+        <p class="order-id-text">Order ID: {{ this.$route.params.orderId }}</p>
         <div class="order-info-wrapper">
           <div class="order-info-box">
             <div class="order-info-left">

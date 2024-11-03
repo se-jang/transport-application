@@ -8,7 +8,6 @@ import ku.cs.transport_application.repository.ProductRepository;
 import ku.cs.transport_application.repository.UserRepository;
 import ku.cs.transport_application.request.OrderRequest;
 import ku.cs.transport_application.request.ProductDetailRequest;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
