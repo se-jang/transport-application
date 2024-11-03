@@ -1,23 +1,24 @@
 package ku.cs.transport_application.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import ku.cs.transport_application.common.ProductType;
 import lombok.Data;
-import java.util.UUID;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
 public class Product {
     @Id
     @GeneratedValue
-    private final UUID id;
+    private UUID id;
 
-    private int amount;
     private String name;
 
-    @ManyToOne
-    private Type type;
+    private ProductType type;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderLine> orderLines = new ArrayList<>();
 }

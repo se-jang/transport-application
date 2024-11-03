@@ -1,9 +1,6 @@
 package ku.cs.transport_application.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import ku.cs.transport_application.common.OrderStatus;
 import lombok.Data;
 
@@ -14,15 +11,27 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue
-    private final UUID id;
+    private UUID id;
 
     private OrderStatus status;
+    private String customerName;
+    private String customerAddress;
     private LocalDateTime date;
-    private User customer;
+    private LocalDateTime deliveredDate;
+    private String shipmentDocDir;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "worker_id")
+    private TransportationWorker worker;
 
     @OneToMany(mappedBy = "order")
-    private List<Product> products = new ArrayList<>();;
+    private List<OrderLine> orderLines = new ArrayList<>();
 }
