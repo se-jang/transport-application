@@ -73,8 +73,6 @@
   .main-container {
     display: flex;
     justify-content: center;
-    padding-top: 0%;
-    padding-bottom: 0%;
     flex: 1;
   }
   
@@ -88,11 +86,11 @@
   
   .worker-container {
     background-color: #e6e6e6;
-    padding: 20px;
+    padding: 10px;
     width: 80%;
     max-width: 1200px;
     overflow-y: auto;
-    min-height: 100%;
+    height: 100%;
   }
   </style>
   

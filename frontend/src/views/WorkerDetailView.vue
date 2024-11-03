@@ -29,7 +29,7 @@
           </table>
         </div>
 
-        <button class="back-button" @click="$router.back()">Back</button>
+        <button class="back-button" @click="goBack">Back</button>
       </div>
     </div>
   </div>
@@ -78,6 +78,9 @@ export default {
     },
     addOrder() {
       this.$router.push({ name: "add-order", params: { workerId: this.workerId } });
+    },
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };

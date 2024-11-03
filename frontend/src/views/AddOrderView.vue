@@ -3,8 +3,10 @@
     <Header></Header>
     <div class="main-container">
       <div class="order-container">
-        <h2 class="order-title">Add Order</h2>
-        <button class="back-button" @click="goBack">Back</button>
+        <div class="order-header">
+          <h2 class="order-title">Add Order</h2>
+          <button class="back" @click="goBack">Back</button>
+        </div>
         <button v-if="orders.length > 0" @click="assignWorker">Assign Worker</button>
 
         <div class="order-list">
@@ -149,15 +151,22 @@ export default {
   height: 100%;
 }
 
-.back-button {
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back{
   background-color: black;
   color: white;
   border: none;
   padding: 8px 12px;
   cursor: pointer;
   font-size: 14px;
-  margin-top: 60px;
-  margin-right: 120px;
+  margin-bottom: 10px;
+  width: 10%;
 }
 
 .add-button {
