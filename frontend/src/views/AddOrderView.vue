@@ -57,7 +57,7 @@ export default {
       try {
         const status = "ONGOING";
         const response = await axios.post(
-          `http://localhost:8080/worker/worker-detail/${this.selectedWorkerId}/add-order`,
+          `http://localhost:8080/transportation-workers/worker/worker-detail/${this.selectedWorkerId}/add-order`,
           null,
           {
             params: { workerId: this.selectedWorkerId, orderId: this.selectedOrderId },
