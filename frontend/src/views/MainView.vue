@@ -4,7 +4,7 @@
     <div class="image-grid">
       <div class="big-image">
         <div class="image-overlay"></div>
-        <img src="../assets/storage.png" alt="Big Image" />
+        <img src="../assets/storage.png" alt="Big Image"/>
         <h1 class="text big">Effortless transportation</h1>
       </div>
       <div class="small-images">
@@ -148,10 +148,14 @@ export default {
 }
 
 .big {
+  position: absolute;
   bottom: 42%;
+  left: 50%;
+  transform: translateX(-50%);
   color: white;
   font-size: 100px;
   z-index: 2;
   text-align: center;
 }
+
 </style>

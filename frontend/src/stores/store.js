@@ -28,9 +28,9 @@ export default createStore({
             state.userRole = "";
             state.username = "";
             state.id = null;
-            localStorage.removeItem('userRole'); // ลบค่าจาก Local Storage
-            localStorage.removeItem('username'); // ลบค่าจาก Local Storage
-            localStorage.removeItem('id'); // ลบค่าจาก Local Storage
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('username');
+            localStorage.removeItem('id');
         },
     },
     actions: {

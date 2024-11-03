@@ -44,12 +44,18 @@ export default {
   computed: {
     statusClass() {
       switch (this.status) {
-        case "checked":
+        case "UNCHECK":
+          return "status-uncheck";
+        case "CHECKED":
           return "status-checked";
-        case "ongoing":
+        case "ONGOING":
           return "status-ongoing";
-        case "delivered":
+        case "DELIVERED":
           return "status-delivered";
+        case "UPLOADED":
+          return "status-uploaded";
+        case "COMPLETED":
+          return "status-completed";
         default:
           return "";
       }
@@ -101,18 +107,33 @@ export default {
   border-radius: 5px;
 }
 
+.status-uncheck {
+  font-family: "Inter", sans-serif;
+  background-color: #D3D3D3;
+}
+
 .status-checked {
   font-family: "Inter", sans-serif;
-  background-color: red;
+  background-color: #1E90FF;
 }
 
 .status-ongoing {
   font-family: "Inter", sans-serif;
-  background-color: orange;
+  background-color: #FFA500;
 }
 
 .status-delivered {
   font-family: "Inter", sans-serif;
-  background-color: green;
+  background-color: #32CD32;
+}
+
+.status-uploaded {
+  font-family: "Inter", sans-serif;
+  background-color: #8A2BE2;
+}
+
+.status-completed {
+  font-family: "Inter", sans-serif;
+  background-color: #00289e;
 }
 </style>

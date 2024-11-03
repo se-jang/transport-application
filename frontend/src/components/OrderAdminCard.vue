@@ -34,12 +34,22 @@ export default {
   },
   computed: {
     statusClass() {
-      return {
-        "status-red": this.status === "UNCHECKED",
-        "status-orange": this.status === "NOT_UNCHECKED",
-        "status-green": this.status === "DELIVERED",
-        "status-yellow": this.status === "ON_GOING",
-      };
+      switch (this.status) {
+        case "UNCHECK":
+          return "status-uncheck";
+        case "CHECKED":
+          return "status-checked";
+        case "ONGOING":
+          return "status-ongoing";
+        case "DELIVERED":
+          return "status-delivered";
+        case "UPLOADED":
+          return "status-uploaded";
+        case "COMPLETED":
+          return "status-completed";
+        default:
+          return "";
+      }
     },
   },
   methods: {
@@ -93,5 +103,35 @@ export default {
   font-weight: bold;
   color: white;
   border-radius: 5px;
+}
+
+.status-uncheck {
+  font-family: "Inter", sans-serif;
+  background-color: #D3D3D3;
+}
+
+.status-checked {
+  font-family: "Inter", sans-serif;
+  background-color: #1E90FF;
+}
+
+.status-ongoing {
+  font-family: "Inter", sans-serif;
+  background-color: #FFA500;
+}
+
+.status-delivered {
+  font-family: "Inter", sans-serif;
+  background-color: #32CD32;
+}
+
+.status-uploaded {
+  font-family: "Inter", sans-serif;
+  background-color: #8A2BE2;
+}
+
+.status-completed {
+  font-family: "Inter", sans-serif;
+  background-color: #00289e;
 }
 </style>

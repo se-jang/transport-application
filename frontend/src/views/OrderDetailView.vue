@@ -9,7 +9,7 @@
           <div class="order-info-box">
             <div class="order-info-left">
               <p><strong>Date:</strong> {{ formattedDate(order.date) }}</p>
-              <p><strong>Transportation Worker:</strong> {{ order.workerId || 'N/A' }}</p>
+              <p><strong>Transportation Worker:</strong> {{ order.workerUsername || 'N/A' }}</p>
             </div>
             <div class="order-info-right">
               <p><strong>Status:</strong> {{ order.status }}</p>

@@ -48,7 +48,7 @@
             this.workers = response.data.map(worker => ({
               id: worker.id,
               name: worker.name,
-              status: worker.status.toLowerCase(),
+              status: worker.status,
             }));
           } else {
             console.warn("Expected an array but got:", response.data);

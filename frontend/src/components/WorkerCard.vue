@@ -36,9 +36,9 @@ export default {
   computed: {
     statusClass() {
       switch (this.status) {
-        case "available":
+        case "AVAILABLE":
           return "status-available";
-        case "ongoing":
+        case "ONGOING":
           return "status-ongoing";
         default:
           return "";
@@ -95,10 +95,5 @@ export default {
 .status-ongoing {
   font-family: "Inter", sans-serif;
   background-color: orange;
-}
-
-.status-unavailable {
-  font-family: "Inter", sans-serif;
-  background-color: red;
 }
 </style>

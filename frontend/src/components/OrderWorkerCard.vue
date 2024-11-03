@@ -6,12 +6,12 @@
     <p class="due-date">Date: {{ formattedDate(date) }}</p>
     <div class="button-group">
       <button class="details-button" @click="viewDetails">Details</button>
-      <button class="on-going-button" v-if="order.status === 'ONGOING'" @click="OnGoing">On Going</button>
-      <button class="success-button" v-if="order.status === 'ONGOING'" @click="Success">Success</button>
+      <button class="on-going-button" v-if="status === 'ONGOING' && isOnGoingClicked === false" @click="OnGoing">On Going</button>
+      <button class="success-button" v-if="status === 'ONGOING' && isOnGoingClicked" @click="Success">Success</button>
       <input type="file" id="fileInput" style="display:none" @change="handleFileSelect" />
-      <button type="button" v-if="order.status === 'DELIVERED'" @click="triggerFileInput">Select File</button>
+      <button type="button" v-if="status === 'DELIVERED' || status === 'UPLOADED'" @click="triggerFileInput">Select File</button>
       <span v-if="selectedFile">Selected File: {{ selectedFile.name }}</span>
-      <button type="button" v-if="order.status === 'DELIVERED'" @click="uploadFile" :disabled="!selectedFile">Upload</button>
+      <button type="button" v-if="status === 'DELIVERED' || status === 'UPLOADED'" @click="uploadFile" :disabled="!selectedFile">Upload</button>
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
   props: {
     status: {
       type: String,
-      default: "ongoing",
+      default: "ONGOING",
     },
     orderId: {
       type: String,
@@ -38,30 +38,28 @@ export default {
       type: String,
       required: true,
     },
-    order: {
-        type: Object,
-        required: true,
-    },
   },
   data() {
     return {
       selectedFile: null,
+      isOnGoingClicked: false,
     };
   },
   computed: {
     ...mapGetters(['id']),
     statusClass() {
       switch (this.status) {
-        case "checked":
-          return "status-checked";
-        case "ongoing":
+        case "ONGOING":
           return "status-ongoing";
-        case "delivered":
+        case "DELIVERED":
           return "status-delivered";
+        case "UPLOADED":
+          return "status-uploaded";
         default:
           return "";
       }
     },
+    
   },  
   methods: {
     triggerFileInput() {
@@ -114,6 +112,7 @@ export default {
       .then(data => {
         console.log(data.message);
         alert(data.message || 'Order status updated successfully');
+        this.$router.go(0);
       })
       .catch(error => {
         console.error('Error updating order status:', error);
@@ -156,6 +155,7 @@ export default {
     })
     .then(data => {
         console.log(data.message);
+        this.isOnGoingClicked = true;
         alert(data.message || 'Order status updated successfully');
     })
     .catch(error => {
@@ -187,6 +187,7 @@ export default {
     .then(data => {
         console.log(data.message);
         alert(data.message || 'Order status updated successfully');
+        this.$router.go(0);
     })
     .catch(error => {
         console.error('Error updating order status:', error);
@@ -248,22 +249,22 @@ export default {
   padding: 5px 10px;
   font-size: 14px;
   font-weight: bold;
-  color: white;
+  color: rgb(255, 255, 255);
   border-radius: 5px;
-}
-
-.status-checked {
-  font-family: "Inter", sans-serif;
-  background-color: red;
 }
 
 .status-ongoing {
   font-family: "Inter", sans-serif;
-  background-color: orange;
+  background-color: #FFA500;
 }
 
 .status-delivered {
   font-family: "Inter", sans-serif;
-  background-color: green;
+  background-color: #32CD32;
+}
+
+.status-uploaded {
+  font-family: "Inter", sans-serif;
+  background-color: #8A2BE2;
 }
 </style>
