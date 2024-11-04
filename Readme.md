@@ -12,7 +12,7 @@
 3. **Frontend Setup**:
    - เข้าไปที่โฟลเดอร์ frontend: `cd frontend`
    - ติดตั้ง dependencies: `npm install`
-   - รัน application: `npm run serve`
+   - รัน application: `npm run dev`
 
 ## Configuration
 
@@ -79,7 +79,7 @@ spring.mail.debug=true
     - 0 คือ Admin
     - 1 คือ User
     - 2 คือ Worker
-- หากต้องการสร้างผู้ใช้ที่มีบทบาทเป็น Admin จะต้องสร้างผู้ใช้เป็น User ก่อน จากนั้นทำการเปลี่ยน status ของผู้ใช้ในฐานข้อมูลเป็น 0 เพื่อกำหนดให้เป็น Admin
+- หากต้องการสร้างผู้ใช้ที่มีบทบาทเป็น Admin จะต้องสร้างผู้ใช้เป็น User ก่อน จากนั้นทำการเปลี่ยน role ของผู้ใช้ในฐานข้อมูลเป็น 0 เพื่อกำหนดให้เป็น Admin
 
 ### Field Descriptions
 - **username**: ชื่อผู้ใช้ ต้องมีความยาวอย่างน้อย 4 ตัวอักษร
